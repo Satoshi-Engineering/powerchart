@@ -1,0 +1,38 @@
+# use docker image and service according to: https://docs.gitlab.com/ci/docker/using_docker_build/#use-docker-in-docker
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+build:
+  stage: build
+  rules:
+    - !reference [.shared_config, rules, on_development_build]
+    - !reference [.shared_config, rules, on_production_build]
+  tags:
+    - docker
+    - x86
+  image: docker:27.5.1
+  services:
+    - docker:27.5.1-dind
+  before_script:
+    - docker info
+  script:
+    - apk add jq git
+    - |
+      VERSION=$(jq -r '.version' package.json)
+      SHORT_HASH=$(git rev-parse --short HEAD)
+      if [ -z "$CI_COMMIT_TAG" ]; then
+        VERSION="${VERSION}.${SHORT_HASH}"
+      fi
+    - |
+      docker build \
+        --build-arg VERSION=$VERSION \
+        --build-arg NUXT_UI_PRO_LICENSE=$NUXT_UI_PRO_LICENSE \
+        -t powerchart:$VERSION \
+        .
+    - echo Logging in to $DOCKER_REGISTRY_HOST
+    - echo $DOCKER_REGISTRY_PASSWORD | docker login --username $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY_HOST
+    - docker tag powerchart:$VERSION $DOCKER_REGISTRY_HOST/powerchart:$VERSION
+    - docker push $DOCKER_REGISTRY_HOST/powerchart:$VERSION
+    - docker tag powerchart:$VERSION $DOCKER_REGISTRY_HOST/powerchart:latest
+    - docker push $DOCKER_REGISTRY_HOST/powerchart:latest

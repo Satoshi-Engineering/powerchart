@@ -1,0 +1,46 @@
+{
+  "name": "powerchart",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "nuxt typecheck",
+    "test:unit": "vitest run",
+    "test:units": "npm run test:unit",
+    "test:unit:watch": "vitest",
+    "test:units:watch": "npm run test:unit:watch",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "npm run test:e2e -- --ui",
+    "audit": "better-npm-audit audit",
+    "bump-version-and-push": "./scripts/bump-version-and-push/bump-version-and-push.sh"
+  },
+  "dependencies": {
+    "@nuxt/eslint": "^1.3.0",
+    "@nuxt/icon": "^1.12.0",
+    "@nuxt/ui-pro": "^3.1.1",
+    "@nuxtjs/i18n": "^9.5.4",
+    "console-hooks": "^1.0.2",
+    "eslint": "^9.26.0",
+    "nuxt": "^3.17.2",
+    "playwright": "^1.52.0",
+    "playwright-core": "^1.52.0",
+    "telegram-sender": "^1.0.6",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.1",
+    "vue-tsc": "^2.2.10",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@nuxt/test-utils": "^3.18.0",
+    "@playwright/test": "^1.52.0",
+    "better-npm-audit": "^3.11.0",
+    "changelogen": "^0.6.1",
+    "vitest": "^3.1.3"
+  }
+}

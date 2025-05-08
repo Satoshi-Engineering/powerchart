@@ -1,0 +1,20 @@
+checks:
+  stage: quality-check
+  rules:
+    - when: on_success
+  cache:
+    - !reference [.shared_config, cache, node_modules]
+  script:
+    - npm run audit
+    - npm run lint
+    - npm run typecheck
+
+test-unit:
+  stage: quality-check
+  rules:
+    - when: on_success
+  cache:
+    - !reference [.shared_config, cache, node_modules]
+  script:
+    - npx nuxi prepare
+    - npm run test:unit

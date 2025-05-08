@@ -1,0 +1,33 @@
+deploy_production:
+  image: alpine
+  stage: deploy
+  rules:
+    - !reference [.shared_config, rules, on_production_deploy]
+  dependencies:
+    - build
+  before_script:
+    - apk update && apk add openssh-client rsync
+    - mkdir ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no" >> ~/.ssh/config
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_USER_SSH_KEY" | ssh-add -
+  script:
+    - echo "Deploying on production environment $DEPLOY_PRODUCTION_SERVER"
+    - ssh -p 222 -tt $DEPLOY_USER@$DEPLOY_PRODUCTION_SERVER sudo $DEPLOY_PRODUCTION_SCRIPT
+
+deploy_development:
+  image: alpine
+  stage: deploy
+  rules:
+    - !reference [.shared_config, rules, on_development_deploy]
+  dependencies:
+    - build
+  before_script:
+    - apk update && apk add openssh-client rsync
+    - mkdir ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no" >> ~/.ssh/config
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_USER_SSH_KEY" | ssh-add -
+  script:
+    - echo "Deploying on development environment $DEPLOY_DEVELOPMENT_SERVER"
+    - ssh -p 222 -tt $DEPLOY_USER@$DEPLOY_DEVELOPMENT_SERVER sudo $DEPLOY_DEVELOPMENT_SCRIPT

@@ -1,0 +1,33 @@
+# ------------- VARIABLES
+# Configure them in https://gitlab.satoshiengineering.com/satoshiengineering/lightning-tip-cards/-/settings/ci_cd
+#
+# Values can be found in enpass
+# - DOCKER_REGISTRY_HOST
+# - DOCKER_REGISTRY_USER
+# - DOCKER_REGISTRY_PASSWORD
+# - DEPLOY_USER
+# - DEPLOY_USER_SSH_KEY
+# - DEPLOY_PRODUCTION_SERVER
+# - DEPLOY_PRODUCTION_SCRIPT
+# - DEPLOY_DEVELOPMENT_SERVER
+# - DEPLOY_DEVELOPMENT_SCRIPT
+#
+
+image: node:lts-bookworm-slim
+
+# ------------- STAGES
+# List of stages for jobs, and their order of execution
+stages:
+  - quality-check
+  - e2e
+  - build
+  - deploy
+
+# ------------- INCLUDES
+include:
+  - 'gitlab-ci/.shared_config.yml'
+  - 'gitlab-ci/install.yml'
+  - 'gitlab-ci/quality-check.yml'
+  - 'gitlab-ci/e2e.yml'
+  - 'gitlab-ci/build.yml'
+  - 'gitlab-ci/deploy.yml'

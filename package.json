@@ -4,7 +4,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "build": "nuxt build",
+    "build": "npm run build:nuxt && npm run build:cli",
+    "build:nuxt": "nuxt build",
+    "build:cli": "tsc -p ./cli/tsconfig.json && tsc-alias -p ./cli/tsconfig.json",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

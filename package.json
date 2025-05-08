@@ -45,6 +45,7 @@
     "@types/lodash.kebabcase": "^4.1.9",
     "better-npm-audit": "^3.11.0",
     "changelogen": "^0.6.1",
+    "tsc-alias": "^1.8.16",
     "vitest": "^3.1.3"
   }
 }

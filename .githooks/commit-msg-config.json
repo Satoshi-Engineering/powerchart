@@ -11,12 +11,5 @@
     "revert",
     "style",
     "test"
-  ],
-  "scopes": [
-    "backend",
-    "frontend",
-    "shared",
-    "auth",
-    "e2e"
   ]
 }

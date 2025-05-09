@@ -48,6 +48,7 @@
       <div
         v-else-if="showContent"
         class="w-full overflow-x-auto"
+        data-testid="electricity-price-chart"
       >
         <svg
           class="mx-auto"

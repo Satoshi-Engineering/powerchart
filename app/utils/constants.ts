@@ -1,0 +1,2 @@
+export const ELECTRICITY_PRICE_COLOR = '#FFCB47'
+export const ELECTRICITY_TAX_COLOR = '#9A998C'

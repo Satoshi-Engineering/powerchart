@@ -1,5 +1,24 @@
 {
   "general": {
     "welcomeMessage": "Willkommen beim Powerchart"
+  },
+  "errors": {
+    "loadingPricesFailed": "Preise konnten nicht vom Server geladen werden."
+  },
+  "components": {
+    "datepicker": {
+      "previous": "Voriger",
+      "next": "Nächster"
+    }
+  },
+  "priceComponents": {
+    "labelPrice": "Strompreis",
+    "salesTax": "Umsatzsteuer"
+  },
+  "pages": {
+    "table": {
+      "addVat": "Umsatzsteuer hinzufügen (20 %)",
+      "fixedCosts": "Fixkosten"
+    }
   }
 }

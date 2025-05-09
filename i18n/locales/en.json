@@ -1,5 +1,24 @@
 {
   "general": {
     "welcomeMessage": "Welcome to Powerchart"
+  },
+  "errors": {
+    "loadingPricesFailed": "Unable to load prices from server."
+  },
+  "components": {
+    "datepicker": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "priceComponents": {
+    "labelPrice": "Electricity price",
+    "salesTax": "Sales tax"
+  },
+  "pages": {
+    "table": {
+      "addVat": "Add VAT (20 %)",
+      "fixedCosts": "Fixed costs"
+    }
   }
 }

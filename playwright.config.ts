@@ -1,10 +1,6 @@
 import { defineConfig, devices } from '@playwright/test'
 import { isCI, isWindows } from 'std-env'
 
-const devicesToTest = [
-  'Desktop Chrome',
-] satisfies Array<string | typeof devices[string]>
-
 export default defineConfig({
   tsconfig: './tsconfig.json',
   testDir: './e2e',
@@ -30,5 +26,12 @@ export default defineConfig({
   timeout: isWindows ? 60000 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'list',
-  projects: devicesToTest.map((p) => typeof p === 'string' ? ({ name: p, use: devices[p] }) : p),
+  globalSetup: './e2e/mocks/mocks.setup',
+  globalTeardown: './e2e/mocks/mocks.teardown',
+  projects: [
+    {
+      name: 'chrome with mocks',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
 })

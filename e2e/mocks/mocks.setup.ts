@@ -1,3 +1,3 @@
 import { MockAwattarApi } from '~~/e2e/mocks/MockAwattarApi'
 
-export default () => MockAwattarApi.init(3050)
+export default async () => MockAwattarApi.init(3050)

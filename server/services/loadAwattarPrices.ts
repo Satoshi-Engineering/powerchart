@@ -4,6 +4,8 @@ import { z } from 'zod'
 
 import { AwattarPrice } from '~~/shared/data/AwattarPrice'
 
+const config = useRuntimeConfig()
+
 /**
  * @param dateIso day formatted as YYYY-MM-DD
  */
@@ -46,5 +48,5 @@ const buildUrl = (dateIso: string) => {
   const targetDate = DateTime.fromISO(dateIso).startOf('day')
   const start = targetDate.toMillis()
   const end = targetDate.plus({ days: 1 }).toMillis()
-  return `https://api.awattar.at/v1/marketdata?start=${start}&end=${end}`
+  return `${config.awattarApiOrigin}/v1/marketdata?start=${start}&end=${end}`
 }

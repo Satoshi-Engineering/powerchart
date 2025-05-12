@@ -1,140 +1,138 @@
 <template>
-  <UContainer class="py-10">
-    <div class="flex-1 flex flex-col items-center overflow-hidden">
-      <div class="relative w-full flex mt-4 px-2 justify-left md:justify-center">
-        <button
-          class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-l disabled:opacity-50"
-          :disabled="!prevDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
-          @click="selectPrevDate"
-        >
-          {{ type === 'xs' ? '<' : $t('components.datepicker.previous') }}
-        </button>
-        <label class="bg-gray-300 py-2 px-4">
-          <input
-            type="date"
-            class="bg-transparent outline-none"
-            :value="currentDateIso"
-            :min="(minDate.toISODate() as string)"
-            :max="(maxDate.toISODate() as string)"
-            @change="selectDate"
-          >
-        </label>
-        <button
-          class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-r disabled:opacity-50"
-          :disabled="!nextDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
-          @click="selectNextDate"
-        >
-          {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}
-        </button>
-        <button
-          class="absolute right-0 h-full bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mr-2 py-2 px-4 rounded disabled:opacity-50"
-          @click="showInfo = !showInfo"
-        >
-          ?
-        </button>
-      </div>
-      <div
-        v-if="showLoadingAnimation"
-        class="flex-1 grid justify-center content-center"
+  <div class="flex-1 flex flex-col items-center overflow-hidden">
+    <div class="relative w-full flex mt-4 px-2 justify-left md:justify-center">
+      <button
+        class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-l disabled:opacity-50"
+        :disabled="!prevDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
+        @click="selectPrevDate"
       >
-        <AnimatedLoadingWheel />
-      </div>
-      <div
-        v-else-if="showContent && currentDateIso != null && loadingFailed.includes(currentDateIso)"
-        class="flex-1 grid justify-center content-center text-red-600"
-      >
-        {{ $t('errors.loadingPricesFailed') }}
-      </div>
-      <div
-        v-else-if="showContent"
-        class="w-full overflow-x-auto"
-        data-testid="electricity-price-chart"
-      >
-        <svg
-          class="mx-auto"
-          :width="width + margins.left + margins.right"
-          :height="height + margins.top + margins.bottom"
+        {{ type === 'xs' ? '<' : $t('components.datepicker.previous') }}
+      </button>
+      <label class="bg-gray-300 py-2 px-4">
+        <input
+          type="date"
+          class="bg-transparent outline-none"
+          :value="currentDateIso"
+          :min="(minDate.toISODate() as string)"
+          :max="(maxDate.toISODate() as string)"
+          @change="selectDate"
         >
-          <g :transform="`translate(${margins.left}, ${margins.top})`">
-            <g>
-              <g
-                v-for="bars in stackedData"
-                :key="bars.key"
-                :fill="colorsByBarKey[bars.key]"
-              >
-                <rect
-                  v-for="bar in bars"
-                  :key="bars.key + bar.data.group"
-                  :x="x(String(bar.data.group))"
-                  :y="y(bar[1])"
-                  :height="Math.max(y(bar[0]) - y(bar[1]), 0)"
-                  :width="x.bandwidth()"
-                />
-              </g>
-              <g :fill="ELECTRICITY_PRICE_COLOR">
-                <rect
-                  v-for="bar in negativeBars"
-                  :key="bar.key"
-                  :x="x(bar.group)"
-                  :y="y(0)"
-                  :height="y(bar.power) - y(0)"
-                  :width="x.bandwidth()"
-                />
-              </g>
-            </g>
-            <g ref="vAxisLeft" />
+      </label>
+      <button
+        class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-r disabled:opacity-50"
+        :disabled="!nextDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
+        @click="selectNextDate"
+      >
+        {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}
+      </button>
+      <button
+        class="absolute right-0 h-full bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mr-2 py-2 px-4 rounded disabled:opacity-50"
+        @click="showInfo = !showInfo"
+      >
+        ?
+      </button>
+    </div>
+    <div
+      v-if="showLoadingAnimation"
+      class="flex-1 grid justify-center content-center"
+    >
+      <AnimatedLoadingWheel />
+    </div>
+    <div
+      v-else-if="showContent && currentDateIso != null && loadingFailed.includes(currentDateIso)"
+      class="flex-1 grid justify-center content-center text-red-600"
+    >
+      {{ $t('errors.loadingPricesFailed') }}
+    </div>
+    <div
+      v-else-if="showContent"
+      class="w-full overflow-x-auto"
+      data-testid="electricity-price-chart"
+    >
+      <svg
+        class="mx-auto"
+        :width="width + margins.left + margins.right"
+        :height="height + margins.top + margins.bottom"
+      >
+        <g :transform="`translate(${margins.left}, ${margins.top})`">
+          <g>
             <g
-              ref="vAxisBottom"
-              :transform="`translate(0, ${height})`"
-            />
-            <g
-              :font-size="type === 'xs' ? '10' : '12'"
-              font-family="sans-serif"
-              text-anchor="middle"
+              v-for="bars in stackedData"
+              :key="bars.key"
+              :fill="colorsByBarKey[bars.key]"
             >
-              <text
-                v-for="bar in barsTotal"
+              <rect
+                v-for="bar in bars"
+                :key="bars.key + bar.data.group"
+                :x="x(String(bar.data.group))"
+                :y="y(bar[1])"
+                :height="Math.max(y(bar[0]) - y(bar[1]), 0)"
+                :width="x.bandwidth()"
+              />
+            </g>
+            <g :fill="ELECTRICITY_PRICE_COLOR">
+              <rect
+                v-for="bar in negativeBars"
                 :key="bar.key"
-                fill="currentColor"
-                :y="y(Math.max(bar.value, 0)) - 5"
-                :x="(x(bar.group) || -5000) + x.bandwidth() / 2"
-              >{{ formatNumber(bar.value, 2, 2) }}</text>
+                :x="x(bar.group)"
+                :y="y(0)"
+                :height="y(bar.power) - y(0)"
+                :width="x.bandwidth()"
+              />
             </g>
           </g>
-        </svg>
-      </div>
-
-      <div
-        v-if="showInfo"
-        class="
-          fixed right-0 top-0 mt-2 mr-2 max-w-sm
-          grid grid-cols-[auto_auto] gap-2 items-center
-          border border-gray-200 rounded
-          py-2 pl-4 pr-8
-          bg-white shadow
-        "
-        @click="showInfo = false"
-      >
-        <button class="absolute right-0 top-0 py-2 px-3">
-          X
-        </button>
-        <template
-          v-for="feeInfo in infos"
-          :key="feeInfo.id"
-        >
-          <span
-            class="inline-block h-3 w-3 border border-gray-200 rounded"
-            :style="{ backgroundColor: feeInfo.color }"
+          <g ref="vAxisLeft" />
+          <g
+            ref="vAxisBottom"
+            :transform="`translate(0, ${height})`"
           />
-          <span class="whitespace-nowrap">{{ feeInfo.label }}</span>
-        </template>
-        <template v-if="currentDateHasTimezoneShift">
-          <span>SZ</span><span>Sommerzeit</span>
-          <span>NZ</span><span>Normalzeit</span>
-        </template>
-      </div>
+          <g
+            :font-size="type === 'xs' ? '10' : '12'"
+            font-family="sans-serif"
+            text-anchor="middle"
+          >
+            <text
+              v-for="bar in barsTotal"
+              :key="bar.key"
+              fill="currentColor"
+              :y="y(Math.max(bar.value, 0)) - 5"
+              :x="(x(bar.group) || -5000) + x.bandwidth() / 2"
+            >{{ formatNumber(bar.value, 2, 2) }}</text>
+          </g>
+        </g>
+      </svg>
     </div>
-  </UContainer>
+
+    <div
+      v-if="showInfo"
+      class="
+        fixed right-0 top-0 mt-2 mr-2 max-w-sm
+        grid grid-cols-[auto_auto] gap-2 items-center
+        border border-gray-200 rounded
+        py-2 pl-4 pr-8
+        bg-white shadow
+      "
+      @click="showInfo = false"
+    >
+      <button class="absolute right-0 top-0 py-2 px-3">
+        X
+      </button>
+      <template
+        v-for="feeInfo in infos"
+        :key="feeInfo.id"
+      >
+        <span
+          class="inline-block h-3 w-3 border border-gray-200 rounded"
+          :style="{ backgroundColor: feeInfo.color }"
+        />
+        <span class="whitespace-nowrap">{{ feeInfo.label }}</span>
+      </template>
+      <template v-if="currentDateHasTimezoneShift">
+        <span>SZ</span><span>Sommerzeit</span>
+        <span>NZ</span><span>Normalzeit</span>
+      </template>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">

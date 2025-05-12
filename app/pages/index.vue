@@ -60,6 +60,7 @@
               v-for="bars in stackedData"
               :key="bars.key"
               :fill="colorsByBarKey[bars.key]"
+              :data-testid="`bar-group-${bars.key}`"
             >
               <rect
                 v-for="bar in bars"
@@ -90,6 +91,7 @@
             :font-size="type === 'xs' ? '10' : '12'"
             font-family="sans-serif"
             text-anchor="middle"
+            data-testid="bar-labels"
           >
             <text
               v-for="bar in barsTotal"

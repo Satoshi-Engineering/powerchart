@@ -17,14 +17,14 @@ export default function useElectricityPrices() {
     }
     loading.value = [...loading.value, dateIso]
     loadingFailed.value = loadingFailed.value.filter((currentDateIso) => currentDateIso !== dateIso)
-    try {
-      marketpricesByDate[dateIso] = await $fetch('/api/prices', { query: { dateIso } })
-    } catch (error) {
-      console.error(error)
+    const { data, error } = await useFetch(`/api/prices?dateIso=${dateIso}`)
+    if (data.value != null) {
+      marketpricesByDate[dateIso] = data.value
+    } else {
+      console.error(error.value ?? `Error loading data for ${dateIso}`)
       loadingFailed.value = [...loadingFailed.value, dateIso]
-    } finally {
-      loading.value = loading.value.filter((currentDateIso) => currentDateIso !== dateIso)
     }
+    loading.value = loading.value.filter((currentDateIso) => currentDateIso !== dateIso)
   }
 
   const priceForDate = (date: DateTime, electricitySupplier = 'EnergieSteiermark'): CtPerKWh => {

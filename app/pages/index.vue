@@ -86,6 +86,7 @@
           <g
             ref="vAxisBottom"
             :transform="`translate(0, ${height})`"
+            data-testid="x-axis"
           />
           <g
             :font-size="type === 'xs' ? '10' : '12'"

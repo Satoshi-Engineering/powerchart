@@ -4,6 +4,7 @@ import {
   createApp,
   createRouter,
   defineEventHandler,
+  getQuery,
   toNodeListener,
   type Router,
 } from 'h3'
@@ -46,7 +47,14 @@ export class MockAwattarApi {
 
     this.router.get(
       '/v1/marketdata',
-      defineEventHandler(() => defaultResponse),
+      defineEventHandler((event) => {
+        const { start } = getQuery(event)
+        if (start === '1743289200000') {
+          console.log('Returning startSummerTimeResponse')
+          return startSummerTimeResponse
+        }
+        return defaultResponse
+      }),
     )
   }
 
@@ -221,4 +229,149 @@ const defaultResponse = {
     },
   ],
   url: 'https://api.awattar.at/v1/marketdata?start=1747000800000&end=1747087200000',
+}
+
+const startSummerTimeResponse = {
+  object: 'list',
+  data: [
+    {
+      start_timestamp: 1743289200000,
+      end_timestamp: 1743292800000,
+      marketprice: 46.22,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743292800000,
+      end_timestamp: 1743296400000,
+      marketprice: 15.88,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743296400000,
+      end_timestamp: 1743300000000,
+      marketprice: 5.09,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743300000000,
+      end_timestamp: 1743303600000,
+      marketprice: 1.2,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743303600000,
+      end_timestamp: 1743307200000,
+      marketprice: 0.09,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743307200000,
+      end_timestamp: 1743310800000,
+      marketprice: 0.72,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743310800000,
+      end_timestamp: 1743314400000,
+      marketprice: 0.75,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743314400000,
+      end_timestamp: 1743318000000,
+      marketprice: 1.11,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743318000000,
+      end_timestamp: 1743321600000,
+      marketprice: 0.06,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743321600000,
+      end_timestamp: 1743325200000,
+      marketprice: 0,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743325200000,
+      end_timestamp: 1743328800000,
+      marketprice: -1.65,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743328800000,
+      end_timestamp: 1743332400000,
+      marketprice: -15.98,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743332400000,
+      end_timestamp: 1743336000000,
+      marketprice: -23.41,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743336000000,
+      end_timestamp: 1743339600000,
+      marketprice: -24.02,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743339600000,
+      end_timestamp: 1743343200000,
+      marketprice: -12.34,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743343200000,
+      end_timestamp: 1743346800000,
+      marketprice: -4.05,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743346800000,
+      end_timestamp: 1743350400000,
+      marketprice: 1.36,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743350400000,
+      end_timestamp: 1743354000000,
+      marketprice: 39.82,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743354000000,
+      end_timestamp: 1743357600000,
+      marketprice: 92,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743357600000,
+      end_timestamp: 1743361200000,
+      marketprice: 86,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743361200000,
+      end_timestamp: 1743364800000,
+      marketprice: 78.95,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743364800000,
+      end_timestamp: 1743368400000,
+      marketprice: 77.85,
+      unit: 'Eur/MWh',
+    },
+    {
+      start_timestamp: 1743368400000,
+      end_timestamp: 1743372000000,
+      marketprice: 55.99,
+      unit: 'Eur/MWh',
+    },
+  ],
+  url: 'https://api.awattar.at/v1/marketdata?start=1743289200000&end=1743372000000',
 }

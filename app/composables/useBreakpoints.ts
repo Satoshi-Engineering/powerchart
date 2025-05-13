@@ -1,8 +1,8 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 export default () => {
-  const clientWidth = ref(1000)
-  const clientHeight = ref(500)
+  const clientWidth = ref(0)
+  const clientHeight = ref(0)
 
   const onResize = async () => {
     clientWidth.value = document.body.clientWidth

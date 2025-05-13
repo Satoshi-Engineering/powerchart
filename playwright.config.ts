@@ -11,7 +11,7 @@ export default defineConfig({
   },
   // Run your local dev server before starting the tests.
   webServer: {
-    command: 'npm run build; node --env-file=.env.e2e ./.output/server/index.mjs',
+    command: 'npm run build; TZ=\'Europe/Vienna\' node --env-file=.env.e2e ./.output/server/index.mjs',
     url: 'http://localhost:3000/boot',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

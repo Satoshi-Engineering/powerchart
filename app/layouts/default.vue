@@ -4,7 +4,11 @@ import IconLogo from '~/components/icon/IconLogo.vue'
 
 <template>
   <div class="min-h-dvh flex flex-col">
-    <UHeader>
+    <UHeader
+      :ui="{
+        toggle: 'hidden',
+      }"
+    >
       <template #title>
         <figure class="flex items-center gap-4">
           <IconLogo
@@ -12,7 +16,7 @@ import IconLogo from '~/components/icon/IconLogo.vue'
           />
           <TypoHeadline
             level="h1"
-            class="!my-0"
+            class="!my-0 text-base md:text-2xl"
           >
             Powerchart
           </TypoHeadline>

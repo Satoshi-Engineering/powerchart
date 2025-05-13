@@ -2,7 +2,7 @@
   <div
     class="
       flex items-center justify-center
-      rounded-md border-2 border-transparent
+      rounded-md border-1 border-transparent
     "
     :class="{
       'bg-green-400': price <= thresholdLowest,

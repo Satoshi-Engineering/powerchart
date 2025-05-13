@@ -1,37 +1,39 @@
 <template>
   <div class="flex-1 flex flex-col items-center overflow-hidden">
-    <div class="relative w-full flex mt-4 px-2 justify-left md:justify-center">
-      <button
-        class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-l disabled:opacity-50"
-        :disabled="!prevDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
-        @click="selectPrevDate"
-      >
-        {{ type === 'xs' ? '<' : $t('components.datepicker.previous') }}
-      </button>
-      <label class="bg-gray-300 py-2 px-4">
-        <input
-          type="date"
-          class="bg-transparent outline-none"
-          :value="currentDateIso"
-          :min="(minDate.toISODate() as string)"
-          :max="(maxDate.toISODate() as string)"
-          @change="selectDate"
+    <UContainer>
+      <div class="relative w-full flex mt-4 px-2 justify-left md:justify-center">
+        <button
+          class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-l disabled:opacity-50"
+          :disabled="!prevDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
+          @click="selectPrevDate"
         >
-      </label>
-      <button
-        class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-r disabled:opacity-50"
-        :disabled="!nextDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
-        @click="selectNextDate"
-      >
-        {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}
-      </button>
-      <button
-        class="absolute right-0 h-full bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mr-2 py-2 px-4 rounded disabled:opacity-50"
-        @click="showInfo = !showInfo"
-      >
-        ?
-      </button>
-    </div>
+          {{ type === 'xs' ? '<' : $t('components.datepicker.previous') }}
+        </button>
+        <label class="bg-gray-300 py-2 px-4">
+          <input
+            type="date"
+            class="bg-transparent outline-none"
+            :value="currentDateIso"
+            :min="(minDate.toISODate() as string)"
+            :max="(maxDate.toISODate() as string)"
+            @change="selectDate"
+          >
+        </label>
+        <button
+          class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-r disabled:opacity-50"
+          :disabled="!nextDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
+          @click="selectNextDate"
+        >
+          {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}
+        </button>
+        <button
+          class="absolute right-0 h-full bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 me-2 py-2 px-4 rounded disabled:opacity-50"
+          @click="showInfo = !showInfo"
+        >
+          ?
+        </button>
+      </div>
+    </UContainer>
     <div
       v-if="showLoadingAnimation"
       class="flex-1 grid justify-center content-center"
@@ -109,7 +111,7 @@
     <div
       v-if="showInfo"
       class="
-        fixed right-0 top-0 mt-2 mr-2 max-w-sm
+        fixed right-0 top-(--ui-header-height) mt-2 me-8 max-w-sm
         grid grid-cols-[auto_auto] gap-2 items-center
         border border-gray-200 rounded
         py-2 pl-4 pr-8
@@ -233,7 +235,7 @@ const margins = computed(() => {
   return margins
 })
 const width = computed(() => Math.max(800, Math.min(1800, clientWidth.value - margins.value.left - margins.value.right)))
-const height = computed(() => clientHeight.value - 70 - margins.value.top - margins.value.bottom)
+const height = computed(() => clientHeight.value - 180 - margins.value.top - margins.value.bottom)
 
 const excludeFees = computed(() => {
   let excludeFeesLocal: string[] = []

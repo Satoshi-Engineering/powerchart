@@ -1,2 +1,18 @@
 @import "tailwindcss";
 @import "@nuxt/ui-pro";
+
+@theme {
+  --ui-container: 2000px;
+}
+
+@layer base {
+  :root {
+    --ui-header-height: 2rem;
+  }
+
+  @media (min-width: 768px) { /* --breakpoint-md */
+    :root {
+      --ui-header-height: 4rem;
+    }
+  }
+}

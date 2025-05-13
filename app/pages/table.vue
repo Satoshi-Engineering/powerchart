@@ -1,5 +1,5 @@
 <template>
-  <UContainer class="py-10">
+  <UContainer class="max-w-xl">
     <div class="flex-1 flex flex-col items-center overflow-hidden">
       <div
         v-if="showLoadingAnimation"
@@ -17,7 +17,7 @@
         v-else-if="showContent"
         class="
           w-full max-w-lg mx-auto
-          h-screen min-h-[550px] max-h-[800px]
+          h-[calc(100dvh_-_var(--ui-header-height))] min-h-[550px] max-h-[800px]
           py-1 pr-2
           grid grid-cols-[40px_1fr_1fr_1fr] gap-0.5 text-sm
         "

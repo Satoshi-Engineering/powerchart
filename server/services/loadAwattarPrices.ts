@@ -16,7 +16,9 @@ export const loadAwattarPrices = async (dateIso: string): Promise<AwattarPricesR
   }
   try {
     const data = await fetchPricesFromAwattar(dateIso)
-    cache.cacheValue(dateIso, data, { forMS: 1_000 * 5 })
+    if (data.length > 0) {
+      cache.cacheValue(dateIso, data, { forMS: 1_000 * 60 * 5 })
+    }
     return data
   } catch (error) {
     console.error('Failed to fetch prices from awattar', error)

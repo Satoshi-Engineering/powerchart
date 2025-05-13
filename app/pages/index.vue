@@ -22,6 +22,7 @@
         <button
           class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-r disabled:opacity-50"
           :disabled="!nextDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
+          data-testid="button-next-day"
           @click="selectNextDate"
         >
           {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}

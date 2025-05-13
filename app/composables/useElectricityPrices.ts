@@ -18,7 +18,7 @@ export default function useElectricityPrices() {
     loading.value = [...loading.value, dateIso]
     loadingFailed.value = loadingFailed.value.filter((currentDateIso) => currentDateIso !== dateIso)
     try {
-      marketpricesByDate[dateIso] = await $fetch(`/api/prices`, { query: { dateIso } })
+      marketpricesByDate[dateIso] = await $fetch('/api/prices', { query: { dateIso } })
     } catch (error) {
       console.error(error)
       loadingFailed.value = [...loadingFailed.value, dateIso]

@@ -33,7 +33,7 @@ test('price table renders all hours', async ({ page }) => {
 })
 
 test('price table hightlights the current hour', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-04-08T10:00:00'))
+  await page.clock.setFixedTime(new Date('2025-04-08T10:05:00'))
 
   await gotoAndWaitForNuxtHydration(page, '/table')
 

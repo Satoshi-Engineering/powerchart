@@ -21,6 +21,7 @@
           py-1 pr-2
           grid grid-cols-[40px_1fr_1fr_1fr] gap-0.5 text-sm
         "
+        data-testid="electricity-prices-table"
       >
         <TableHeaderItem />
         <TableHeaderItem>
@@ -50,6 +51,9 @@
             :threshold-mid="addFixedCostsAndVat(10)"
             :threshold-high="addFixedCostsAndVat(15)"
             :threshold-highest="addFixedCostsAndVat(25)"
+            data-testid="price-item"
+            data-test-day="prev"
+            :data-test-hour="price.hour"
           >
             {{ price.pricePrev.toFixed(2) }}
           </TablePriceItem>
@@ -64,6 +68,9 @@
             :threshold-mid="addFixedCostsAndVat(10)"
             :threshold-high="addFixedCostsAndVat(15)"
             :threshold-highest="addFixedCostsAndVat(25)"
+            data-testid="price-item"
+            data-test-day="current"
+            :data-test-hour="price.hour"
           >
             {{ price.price.toFixed(2) }}
           </TablePriceItem>
@@ -79,6 +86,9 @@
             :threshold-mid="addFixedCostsAndVat(10)"
             :threshold-high="addFixedCostsAndVat(15)"
             :threshold-highest="addFixedCostsAndVat(25)"
+            data-testid="price-item"
+            data-test-day="next"
+            :data-test-hour="price.hour"
           >
             {{ price.priceNext.toFixed(2) }}
           </TablePriceItem>
@@ -106,6 +116,7 @@
         <button
           class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-r disabled:opacity-50"
           :disabled="!nextDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
+          data-testid="button-next-day"
           @click="selectNextDate"
         >
           {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}
@@ -116,6 +127,7 @@
           <input
             type="checkbox"
             :checked="addVat"
+            data-testid="checkbox-add-vat"
             @change="addVat = !addVat"
           >
           {{ $t('pages.table.addVat') }}
@@ -126,6 +138,7 @@
             type="number"
             class="border py-1 px-2"
             :value="fixedCosts"
+            data-testid="input-fixed-costs"
             @input="updateFixedCosts"
           >
         </label>

@@ -25,13 +25,13 @@
       >
         <TableHeaderItem />
         <TableHeaderItem>
-          {{ currentDate.minus({ days: 1 }).toFormat('dd. LL.') }}
+          {{ $d(currentDate.minus({ days: 1 }).toJSDate(), 'monthAndDay') }}
         </TableHeaderItem>
         <TableHeaderItem>
-          {{ currentDate.toFormat('dd. LL.') }}
+          {{ $d(currentDate.toJSDate(), 'monthAndDay') }}
         </TableHeaderItem>
         <TableHeaderItem>
-          {{ currentDate.plus({ days: 1 }).toFormat('dd. LL.') }}
+          {{ $d(currentDate.plus({ days: 1 }).toJSDate(), 'monthAndDay') }}
         </TableHeaderItem>
         <template
           v-for="(price, index) in prices"
@@ -55,7 +55,7 @@
             data-test-day="prev"
             :data-test-hour="price.hour"
           >
-            {{ price.pricePrev.toFixed(2) }}
+            {{ $n(price.pricePrev, 'decimal') }}
           </TablePriceItem>
           <TablePriceItem
             :price="addFixedCostsAndVat(price.price)"
@@ -72,7 +72,7 @@
             data-test-day="current"
             :data-test-hour="price.hour"
           >
-            {{ price.price.toFixed(2) }}
+            {{ $n(price.price, 'decimal') }}
           </TablePriceItem>
           <TablePriceItem
             v-if="currentDate.plus({ days: 1 }) <= maxDate"
@@ -90,7 +90,7 @@
             data-test-day="next"
             :data-test-hour="price.hour"
           >
-            {{ price.priceNext.toFixed(2) }}
+            {{ $n(price.priceNext, 'decimal') }}
           </TablePriceItem>
           <div v-else />
         </template>

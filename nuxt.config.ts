@@ -28,6 +28,9 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/css/main.css'],
+  colorMode: {
+    preference: 'light',
+  },
   runtimeConfig: {
     ...runtimeConfig,
     public: {
@@ -55,11 +58,13 @@ export default defineNuxtConfig({
     locales: [
       {
         code: 'de',
+        language: 'de',
         name: 'Deutsch',
         file: 'de.json',
       },
       {
         code: 'en',
+        language: 'en',
         name: 'English',
         file: 'en.json',
       },

@@ -14,7 +14,7 @@
       '!border-black font-bold': isCurrentHour,
     }"
   >
-    {{ price.toFixed(2) }}
+    {{ $n(price, 'decimal') }}
   </div>
 </template>
 

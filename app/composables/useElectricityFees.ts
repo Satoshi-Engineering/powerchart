@@ -1,6 +1,6 @@
 import type { DateTime } from 'luxon'
 
-import fees from '../assets/fees.json'
+import fees from '~~/app/assets/fees.json'
 
 /**
  * FeeValues.validUntil has to be a unix timestamp

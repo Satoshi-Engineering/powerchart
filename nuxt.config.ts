@@ -12,6 +12,21 @@ export default defineNuxtConfig({
     '@nuxt/ui-pro',
   ],
   devtools: { enabled: true },
+  app: {
+    head: {
+      title: 'Powerchart',
+      meta: [
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
+        { name: 'apple-mobile-web-app-title', content: 'Powerchart' },
+        { name: 'theme-color', content: '#ffffff' },
+      ],
+      link: [
+        { rel: 'manifest', href: '/site.webmanifest' },
+        { rel: 'apple-touch-icon', href: '/web-app-manifest-192x192.png' },
+      ],
+    },
+  },
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     ...runtimeConfig,

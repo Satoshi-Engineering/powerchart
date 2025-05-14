@@ -74,7 +74,10 @@
                 :width="x.bandwidth()"
               />
             </g>
-            <g :fill="ELECTRICITY_PRICE_COLOR">
+            <g
+              :fill="ELECTRICITY_PRICE_COLOR"
+              data-testid="bar-group-negative-power"
+            >
               <rect
                 v-for="bar in negativeBars"
                 :key="bar.key"

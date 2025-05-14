@@ -90,34 +90,18 @@
       >
         <g :transform="`translate(${margins.left}, ${margins.top})`">
           <g>
-            <g
-              v-for="bars in stackedData"
-              :key="bars.key"
-              :fill="colorsByBarKey[bars.key]"
-              :data-testid="`bar-group-${bars.key}`"
-            >
-              <rect
-                v-for="bar in bars"
-                :key="bars.key + bar.data.group"
-                :x="x(String(bar.data.group))"
-                :y="y(bar[1])"
-                :height="Math.max(y(bar[0]) - y(bar[1]), 0)"
-                :width="x.bandwidth()"
-              />
-            </g>
-            <g
-              :fill="ELECTRICITY_PRICE_COLOR"
-              data-testid="bar-group-negative-power"
-            >
-              <rect
-                v-for="bar in negativeBars"
-                :key="bar.key"
-                :x="x(bar.group)"
-                :y="y(0)"
-                :height="y(bar.power) - y(0)"
-                :width="x.bandwidth()"
-              />
-            </g>
+            <BarchartBar
+              v-for="(bar, index) in data"
+              :key="bar.id"
+              :transform="`translate(${index * (x.bandwidth() + 15) + 20}, 0)`"
+              :chart-height="height"
+              :max-total-value="44"
+              :bar-width="x.bandwidth() - 10"
+              :segments="infos.map((info) => ({
+                value: Number(bar[info.id]),
+                color: info.color,
+              }))"
+            />
           </g>
           <g ref="vAxisLeft" />
           <g
@@ -149,7 +133,7 @@
 import { max } from 'd3-array'
 import { axisBottom, axisLeft } from 'd3-axis'
 import { select } from 'd3-selection'
-import { stack } from 'd3-shape'
+// import { stack } from 'd3-shape'
 import { scaleBand, scaleLinear } from 'd3-scale'
 import { DateTime } from 'luxon'
 import { computed, watchEffect, ref } from 'vue'
@@ -213,14 +197,14 @@ watchEffect(() => {
   }
 })
 
-const colorsByBarKey = computed<Record<string, string>>(() => ({
-  ...Object.entries(feeById).reduce((accumulator, [key, fee]) => ({
-    ...accumulator,
-    [key]: fee.color,
-  }), {}),
-  power: ELECTRICITY_PRICE_COLOR,
-  salesTax: ELECTRICITY_TAX_COLOR,
-}))
+// const colorsByBarKey = computed<Record<string, string>>(() => ({
+//   ...Object.entries(feeById).reduce((accumulator, [key, fee]) => ({
+//     ...accumulator,
+//     [key]: fee.color,
+//   }), {}),
+//   power: ELECTRICITY_PRICE_COLOR,
+//   salesTax: ELECTRICITY_TAX_COLOR,
+// }))
 
 const margins = computed(() => {
   let margins = { top: 100, right: 40, bottom: 100, left: 60 }
@@ -328,13 +312,17 @@ const data = computed<Record<string, string | number>[]>(() => hourlyTimestampsF
     ...values,
   }
 }))
-const subgroups = computed(() => {
-  const firstEntry = data.value[0]
-  if (firstEntry == null) {
-    return []
-  }
-  return Object.keys(firstEntry).filter((subgroup) => subgroup !== 'group')
-})
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// ;(window as any).logData = () => {
+//   console.log(data.value)
+// }
+// const subgroups = computed(() => {
+//   const firstEntry = data.value[0]
+//   if (firstEntry == null) {
+//     return []
+//   }
+//   return Object.keys(firstEntry).filter((subgroup) => subgroup !== 'group')
+// })
 const groups = computed(() => data.value.map((point) => String(point.group)))
 const maxY = computed(() => data.value
   .map((values) => Object.values(values).reduce((total: number, value: string | number) => {
@@ -390,20 +378,20 @@ const barsTotal = computed(() => data.value.map((values) => {
   }
 }))
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const stackedData = computed(() => stack().keys(subgroups.value)(data.value as any))
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// const stackedData = computed(() => stack().keys(subgroups.value)(data.value as any))
 
 // info about colors
 const showInfo = ref(false)
 const infos = computed(() => [
   {
-    id: 'electricity_tax',
+    id: 'salesTax',
     color: ELECTRICITY_TAX_COLOR,
     label: t('priceComponents.salesTax'),
   },
   ...Object.values(feeById).filter((fee) => !excludeFees.value.includes(fee.id)).reverse(),
   {
-    id: 'electricity_price',
+    id: 'power',
     color: ELECTRICITY_PRICE_COLOR,
     label: t('priceComponents.labelPrice'),
   },

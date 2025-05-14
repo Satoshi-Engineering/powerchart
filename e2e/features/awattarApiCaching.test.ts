@@ -3,8 +3,14 @@ import { test, expect, request } from '@playwright/test'
 import { dataMay13 } from '~~/e2e/mocks/data/2025-05-13'
 import { gotoAndWaitForNuxtHydration } from '~~/e2e/utils/page'
 
+const currentDate = new Date('2025-05-12T10:00:00+02:00')
+
+test.use({
+  timezoneId: 'Europe/Vienna',
+})
+
 test('data next day is not available', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-05-12T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/')
 
@@ -19,7 +25,7 @@ test('data next day is available', async ({ page }) => {
       data: dataMay13,
     },
   })
-  await page.clock.setFixedTime(new Date('2025-05-12T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/')
 
@@ -34,7 +40,7 @@ test('data next day is cached', async ({ page }) => {
       data: [],
     },
   })
-  await page.clock.setFixedTime(new Date('2025-05-12T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/')
 

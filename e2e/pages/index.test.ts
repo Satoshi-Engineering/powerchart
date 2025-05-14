@@ -2,8 +2,12 @@ import { test, expect } from '@playwright/test'
 
 import { gotoAndWaitForNuxtHydration } from '~~/e2e/utils/page'
 
+test.use({
+  timezoneId: 'Europe/Vienna',
+})
+
 test('price chart', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-05-12T10:00:00'))
+  await page.clock.setFixedTime(new Date('2025-05-12T10:00:00+02:00'))
 
   await gotoAndWaitForNuxtHydration(page, '/')
 
@@ -15,7 +19,7 @@ test('price chart', async ({ page }) => {
 })
 
 test('switch to summer time', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2024-03-31T10:00:00'))
+  await page.clock.setFixedTime(new Date('2024-03-31T10:00:00+02:00'))
 
   await gotoAndWaitForNuxtHydration(page, '/')
 
@@ -28,7 +32,7 @@ test('switch to summer time', async ({ page }) => {
 })
 
 test('return to standard time', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2024-10-27T10:00:00'))
+  await page.clock.setFixedTime(new Date('2024-10-27T10:00:00+01:00'))
 
   await gotoAndWaitForNuxtHydration(page, '/')
 

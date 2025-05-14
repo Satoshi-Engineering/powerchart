@@ -5,6 +5,12 @@ import { dataApr8 } from '~~/e2e/mocks/data/2025-04-08'
 import { dataApr9 } from '~~/e2e/mocks/data/2025-04-09'
 import { gotoAndWaitForNuxtHydration } from '~~/e2e/utils/page'
 
+const currentDate = new Date('2025-04-08T10:00:00+02:00')
+
+test.use({
+  timezoneId: 'Europe/Vienna',
+})
+
 test.beforeAll(async () => {
   const apiContext = await request.newContext()
   await apiContext.post('http://localhost:3050/mock/setdata', {
@@ -22,7 +28,7 @@ test.beforeAll(async () => {
 })
 
 test('price table renders all hours', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-04-08T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/table')
 
@@ -33,7 +39,7 @@ test('price table renders all hours', async ({ page }) => {
 })
 
 test('price table hightlights the current hour', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-04-08T10:05:00'))
+  await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/table')
 
@@ -48,7 +54,7 @@ test('price table hightlights the current hour', async ({ page }) => {
 })
 
 test('cell background colors depend on price', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-04-08T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/table')
 
@@ -63,7 +69,7 @@ test('cell background colors depend on price', async ({ page }) => {
 })
 
 test('next day is missing', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-04-08T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/table')
 
@@ -79,7 +85,7 @@ test('next day is available', async ({ page }) => {
       data: dataApr9,
     },
   })
-  await page.clock.setFixedTime(new Date('2025-04-08T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/table')
 

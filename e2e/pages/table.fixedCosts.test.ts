@@ -4,6 +4,12 @@ import { dataApr7 } from '~~/e2e/mocks/data/2025-04-07'
 import { dataApr8 } from '~~/e2e/mocks/data/2025-04-08'
 import { gotoAndWaitForNuxtHydration } from '~~/e2e/utils/page'
 
+const currentDate = new Date('2025-04-08T10:00:00+02:00')
+
+test.use({
+  timezoneId: 'Europe/Vienna',
+})
+
 test.beforeAll(async () => {
   const apiContext = await request.newContext()
   await apiContext.post('http://localhost:3050/mock/setdata', {
@@ -21,7 +27,7 @@ test.beforeAll(async () => {
 })
 
 test('add fixed costs', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-04-08T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
   await gotoAndWaitForNuxtHydration(page, '/table')
 
   await page.getByTestId('input-fixed-costs').fill('8')
@@ -31,7 +37,7 @@ test('add fixed costs', async ({ page }) => {
 })
 
 test('deeplink with fixed costs', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-04-08T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/table?fixedCosts=8')
 
@@ -39,7 +45,7 @@ test('deeplink with fixed costs', async ({ page }) => {
 })
 
 test('remove fixed costs', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-04-08T10:00:00'))
+  await page.clock.setFixedTime(currentDate)
   await gotoAndWaitForNuxtHydration(page, '/table?fixedCosts=8')
 
   await page.getByTestId('input-fixed-costs').fill('')

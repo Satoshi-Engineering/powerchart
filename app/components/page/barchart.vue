@@ -27,12 +27,43 @@
         >
           {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}
         </button>
-        <button
-          class="absolute right-0 h-full bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 me-2 py-2 px-4 rounded disabled:opacity-50"
-          @click="showInfo = !showInfo"
-        >
-          ?
-        </button>
+        <div class="absolute right-0 h-full me-2">
+          <button
+            class="h-full py-2 px-4 bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 rounded disabled:opacity-50"
+            @click="showInfo = !showInfo"
+          >
+            ?
+          </button>
+          <div
+            v-if="showInfo"
+            class="
+                absolute right-0 top-0 max-w-sm
+                grid grid-cols-[auto_auto] gap-2 items-center
+                border border-gray-200 rounded
+                py-2 pl-4 pr-8
+                bg-white shadow
+              "
+            @click="showInfo = false"
+          >
+            <button class="absolute right-0 top-0 py-2 px-3">
+              X
+            </button>
+            <template
+              v-for="feeInfo in infos"
+              :key="feeInfo.id"
+            >
+              <span
+                class="inline-block h-3 w-3 border border-gray-200 rounded"
+                :style="{ backgroundColor: feeInfo.color }"
+              />
+              <span class="whitespace-nowrap">{{ feeInfo.label }}</span>
+            </template>
+            <template v-if="currentDateHasTimezoneShift">
+              <span>SZ</span><span>Sommerzeit</span>
+              <span>NZ</span><span>Normalzeit</span>
+            </template>
+          </div>
+        </div>
       </div>
     </UContainer>
     <div
@@ -110,36 +141,6 @@
           </g>
         </g>
       </svg>
-    </div>
-
-    <div
-      v-if="showInfo"
-      class="
-        fixed right-0 top-(--ui-header-height) mt-2 me-8 max-w-sm
-        grid grid-cols-[auto_auto] gap-2 items-center
-        border border-gray-200 rounded
-        py-2 pl-4 pr-8
-        bg-white shadow
-      "
-      @click="showInfo = false"
-    >
-      <button class="absolute right-0 top-0 py-2 px-3">
-        X
-      </button>
-      <template
-        v-for="feeInfo in infos"
-        :key="feeInfo.id"
-      >
-        <span
-          class="inline-block h-3 w-3 border border-gray-200 rounded"
-          :style="{ backgroundColor: feeInfo.color }"
-        />
-        <span class="whitespace-nowrap">{{ feeInfo.label }}</span>
-      </template>
-      <template v-if="currentDateHasTimezoneShift">
-        <span>SZ</span><span>Sommerzeit</span>
-        <span>NZ</span><span>Normalzeit</span>
-      </template>
     </div>
   </div>
 </template>

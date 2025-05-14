@@ -12,17 +12,29 @@
   </g>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
 const props = defineProps({
-  segments: Array as PropType<{
-    value: number
-    color: string
-  }[]>,
-  barWidth: Number,
-  chartHeight: Number,
-  maxTotalValue: Number,
+  segments: {
+    type: Array as PropType<{
+      value: number
+      color: string
+    }[]>,
+    required: true,
+  },
+  barWidth: {
+    type: Number,
+    required: true,
+  },
+  chartHeight: {
+    type: Number,
+    required: true,
+  },
+  maxTotalValue: {
+    type: Number,
+    required: true,
+  },
 })
 
 const totalValue = computed(() =>

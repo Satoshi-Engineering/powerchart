@@ -22,4 +22,5 @@ export const prepareAwattarCache = async (...prices: AwattarPrice[][]) => {
 export const flushAwattarCache = async () => {
   const apiContext = await request.newContext()
   await apiContext.post('http://localhost:3000/api/flush-awattar-cache')
+  await apiContext.post('http://localhost:3050/mock/flushdata')
 }

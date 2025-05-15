@@ -93,6 +93,12 @@ export class MockAwattarApi {
         this.data[start] = data
       }),
     )
+    this.router.post(
+      '/mock/flushdata',
+      defineEventHandler(async () => {
+        this.data = {}
+      }),
+    )
   }
 
   protected startServer(port: number) {

@@ -14,20 +14,7 @@ export const loadAwattarPrices = async (dateIso: string): Promise<AwattarPricesR
   if (data) {
     return data
   }
-  try {
-    const data = await fetchPricesFromAwattar(dateIso)
-    if (data.length > 0) {
-      cache.cacheValue(dateIso, data, { forMS: 1_000 * 60 * 5 })
-    }
-    return data
-  } catch (error) {
-    console.error('Failed to fetch prices from awattar', error)
-    const data = cache.safeGetExpiredValue(dateIso)
-    if (data) {
-      return data
-    }
-    throw error
-  }
+  return await fetchPrices(dateIso)
 }
 
 const AwattarPricesResponse = z.object({
@@ -40,6 +27,16 @@ const { cache } = useInMemoryCache<AwattarPricesResponse['data']>()
 
 type AwattarPricesResponse = z.infer<typeof AwattarPricesResponse>
 
+const fetchPrices = async (dateIso: string): Promise<AwattarPricesResponse['data']> => {
+  try {
+    const data = await fetchPricesFromAwattar(dateIso)
+    updateCache(dateIso, data, data.length > 0)
+    return data
+  } catch (error) {
+    return handleFailedFetch(dateIso, error)
+  }
+}
+
 const fetchPricesFromAwattar = async (dateIso: string): Promise<AwattarPricesResponse['data']> => {
   const url = buildUrl(dateIso)
   const { data } = await axios.get(url)
@@ -51,4 +48,25 @@ const buildUrl = (dateIso: string) => {
   const start = targetDate.toMillis()
   const end = targetDate.plus({ days: 1 }).toMillis()
   return `${config.awattarApiOrigin}/v1/marketdata?start=${start}&end=${end}`
+}
+
+const updateCache = (
+  dateIso: string,
+  data: AwattarPricesResponse['data'],
+  isDataAvailable: boolean = false,
+) => {
+  cache.cacheValue(dateIso, data, {
+    forMS: isDataAvailable ? 1_000 * 60 * 5 : 1_000 * 60,
+  })
+}
+
+const handleFailedFetch = (dateIso: string, error: unknown) => {
+  console.error('Failed to fetch prices from awattar', error)
+  const data = cache.safeGetExpiredValue(dateIso)
+  // updating the cache prevents the fetch from being retried too often
+  updateCache(dateIso, data ?? [])
+  if (data) {
+    return data
+  }
+  throw error
 }

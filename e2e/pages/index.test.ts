@@ -1,9 +1,21 @@
 import { test, expect } from '@playwright/test'
 
+import { dataMarch31 } from '~~/e2e/mocks/data/2024-03-31'
+import { dataOctober27 } from '~~/e2e/mocks/data/2024-10-27'
+import { dataMay11 } from '~~/e2e/mocks/data/2025-05-11'
+import { dataMay12 } from '~~/e2e/mocks/data/2025-05-12'
+import { prepareAwattarCache } from '~~/e2e/utils/awattarCache'
 import { gotoAndWaitForNuxtHydration } from '~~/e2e/utils/page'
 
 test.use({
   timezoneId: 'Europe/Vienna',
+})
+
+test.beforeAll(async () => {
+  await prepareAwattarCache(
+    dataMarch31, dataOctober27,
+    dataMay11, dataMay12,
+  )
 })
 
 test('price chart', async ({ page }) => {

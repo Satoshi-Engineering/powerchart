@@ -17,6 +17,10 @@ export const loadAwattarPrices = async (dateIso: string): Promise<AwattarPricesR
   return await fetchPrices(dateIso)
 }
 
+export const flushCache = (): void => {
+  cache.clearAllValues()
+}
+
 const AwattarPricesResponse = z.object({
   object: z.literal('list'),
   data: AwattarPrice.array(),

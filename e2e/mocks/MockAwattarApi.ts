@@ -13,11 +13,6 @@ import { z } from 'zod'
 
 import { AwattarPrice } from '~~/shared/data/AwattarPrice'
 
-import { dataSwitchToSummerTime } from '~~/e2e/mocks/data/2024-03-31'
-import { dataReturnToStandardTimeResponse } from '~~/e2e/mocks/data/2024-10-27'
-import { dataMay11 } from '~~/e2e/mocks/data/2025-05-11'
-import { dataMay12 } from '~~/e2e/mocks/data/2025-05-12'
-
 export class MockAwattarApi {
   static async init(port: number) {
     if (this.instance) {
@@ -54,7 +49,6 @@ export class MockAwattarApi {
     this.router = createRouter()
     this.app.use(this.router)
     this.server = createServer(toNodeListener(this.app))
-    this.initData()
     this.initGetDataRoute()
     this.initSetDataRoute()
   }
@@ -99,13 +93,6 @@ export class MockAwattarApi {
         this.data[start] = data
       }),
     )
-  }
-
-  protected initData() {
-    this.data['1711839600000'] = dataSwitchToSummerTime
-    this.data['1729980000000'] = dataReturnToStandardTimeResponse
-    this.data['1746914400000'] = dataMay11
-    this.data['1747000800000'] = dataMay12
   }
 
   protected startServer(port: number) {

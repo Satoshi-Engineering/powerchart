@@ -1,6 +1,6 @@
 import type { DateTime } from 'luxon'
 
-import fees from '~~/app/assets/fees.json'
+import { fees } from '~~/app/assets/fees'
 
 /**
  * FeeValues.validUntil has to be a unix timestamp
@@ -44,6 +44,13 @@ const feeForDate = (fee: string, date: DateTime): number => {
   return 0
 }
 
+const colorForFeeId = (feeId: Fee['id']): Fee['color'] => {
+  if (feeById[feeId] == null) {
+    throw new Error(`Fee with id ${feeId} not found`)
+  }
+  return feeById[feeId].color
+}
+
 export default function useElectricityFees() {
-  return { fees, feeById, feeForDate }
+  return { fees, feeById, feeForDate, colorForFeeId }
 }

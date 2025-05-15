@@ -91,16 +91,15 @@
         <g :transform="`translate(${margins.left}, ${margins.top})`">
           <g>
             <BarchartBar
-              v-for="(bar, index) in data"
-              :key="bar.id"
-              :transform="`translate(${index * (x.bandwidth() + 15) + 20}, 0)`"
+              v-for="(bar, index) in bars"
+              :key="`bar_${index}`"
               :chart-height="height"
-              :max-total-value="44"
+              :x="index * (x.bandwidth() + 15) + 20"
+              :date="bar.date"
+              :max-total-value="maxY"
+              :price="bar.price"
+              :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
               :bar-width="x.bandwidth() - 10"
-              :segments="infos.map((info) => ({
-                value: Number(bar[info.id]),
-                color: info.color,
-              }))"
             />
           </g>
           <g ref="vAxisLeft" />
@@ -109,20 +108,6 @@
             :transform="`translate(0, ${height})`"
             data-testid="x-axis"
           />
-          <g
-            :font-size="type === 'xs' ? '10' : '12'"
-            font-family="sans-serif"
-            text-anchor="middle"
-            data-testid="bar-labels"
-          >
-            <text
-              v-for="bar in barsTotal"
-              :key="bar.key"
-              fill="currentColor"
-              :y="y(Math.max(bar.value, 0)) - 5"
-              :x="(x(bar.group) || -5000) + x.bandwidth() / 2"
-            >{{ formatNumber(bar.value, 2, 2) }}</text>
-          </g>
         </g>
       </svg>
     </div>
@@ -133,7 +118,6 @@
 import { max } from 'd3-array'
 import { axisBottom, axisLeft } from 'd3-axis'
 import { select } from 'd3-selection'
-// import { stack } from 'd3-shape'
 import { scaleBand, scaleLinear } from 'd3-scale'
 import { DateTime } from 'luxon'
 import { computed, watchEffect, ref } from 'vue'
@@ -147,7 +131,6 @@ const props = defineProps({
   },
 })
 
-const { formatNumber } = useFormatNumber()
 const route = useRoute()
 const { t } = useI18n()
 const { info } = useDebugInfo()
@@ -197,15 +180,6 @@ watchEffect(() => {
   }
 })
 
-// const colorsByBarKey = computed<Record<string, string>>(() => ({
-//   ...Object.entries(feeById).reduce((accumulator, [key, fee]) => ({
-//     ...accumulator,
-//     [key]: fee.color,
-//   }), {}),
-//   power: ELECTRICITY_PRICE_COLOR,
-//   salesTax: ELECTRICITY_TAX_COLOR,
-// }))
-
 const margins = computed(() => {
   let margins = { top: 100, right: 40, bottom: 100, left: 60 }
   if (type.value === 'xs') {
@@ -251,6 +225,11 @@ const negativeBars = computed(() =>
       }
     }),
 )
+
+const bars = computed(() => hourlyTimestampsForCurrentDate.value.map((timestamp) => ({
+  date: DateTime.fromMillis(timestamp),
+  price: priceForTimestamp(timestamp, props.electricitySupplier),
+})))
 
 const hourlyTimestampsForCurrentDate = computed(() => {
   const timestamps = []
@@ -312,17 +291,7 @@ const data = computed<Record<string, string | number>[]>(() => hourlyTimestampsF
     ...values,
   }
 }))
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// ;(window as any).logData = () => {
-//   console.log(data.value)
-// }
-// const subgroups = computed(() => {
-//   const firstEntry = data.value[0]
-//   if (firstEntry == null) {
-//     return []
-//   }
-//   return Object.keys(firstEntry).filter((subgroup) => subgroup !== 'group')
-// })
+
 const groups = computed(() => data.value.map((point) => String(point.group)))
 const maxY = computed(() => data.value
   .map((values) => Object.values(values).reduce((total: number, value: string | number) => {
@@ -363,23 +332,6 @@ watchEffect(() => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   select(vAxisBottom.value).call(axisBottom(x.value).tickSizeOuter(0) as any)
 })
-
-const barsTotal = computed(() => data.value.map((values) => {
-  const value = Object.entries(values).reduce((total: number, [, value]) => {
-    if (typeof value !== 'number') {
-      return total
-    }
-    return total + value
-  }, 0)
-  return {
-    key: `valuesTotal_${values.group}`,
-    group: String(values.group),
-    value,
-  }
-}))
-
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// const stackedData = computed(() => stack().keys(subgroups.value)(data.value as any))
 
 // info about colors
 const showInfo = ref(false)

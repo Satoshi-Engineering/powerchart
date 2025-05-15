@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-import fees from '~~/app/assets/fees.json' with { type: 'json' }
+import { fees } from '~~/app/assets/fees'
 import { dataMay11 } from '~~/e2e/mocks/data/2025-05-11'
 import { dataMay12 } from '~~/e2e/mocks/data/2025-05-12'
 import { prepareAwattarCache } from '~~/e2e/utils/awattarCache'

@@ -7,6 +7,7 @@ export const runtimeConfig = {
     messageMaxLength: 500,
   },
   public: {
+    appTitle: 'Powerchart',
     appOrigin: '',
     disableSurroundingLayout: false,
   },

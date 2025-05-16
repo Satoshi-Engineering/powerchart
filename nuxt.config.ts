@@ -14,11 +14,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     head: {
-      title: 'Powerchart',
+      title: process.env.NUXT_PUBLIC_APP_TITLE || runtimeConfig.public.appTitle,
       meta: [
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
-        { name: 'apple-mobile-web-app-title', content: 'Powerchart' },
+        { name: 'apple-mobile-web-app-title', content: process.env.NUXT_PUBLIC_APP_TITLE || runtimeConfig.public.appTitle },
         { name: 'theme-color', content: '#ffffff' },
       ],
       link: [

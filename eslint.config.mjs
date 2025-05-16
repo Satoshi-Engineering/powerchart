@@ -18,3 +18,8 @@ export default createConfigForNuxt({
       ignores: [...INLINE_ELEMENTS, 'LinkDefault'],
     }],
   })
+  .append({
+    rules: {
+      'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
+    },
+  })

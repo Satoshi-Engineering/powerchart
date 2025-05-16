@@ -25,7 +25,5 @@ useHead({
 
 const config = useRuntimeConfig()
 
-console.log('config', config.public)
-
 const layout = computed<LayoutKey>(() => config.public.disableSurroundingLayout ? 'no-surrounding' : 'default')
 </script>

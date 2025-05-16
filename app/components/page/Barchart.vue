@@ -94,12 +94,12 @@
               v-for="(bar, index) in bars"
               :key="`bar_${index}`"
               :chart-height="height"
-              :x="index * (x.bandwidth() + 15) + 20"
+              :x="getBarPositionX(bar.label) || 0"
               :date="bar.date"
               :max-total-value="maxY"
               :price="bar.price"
               :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
-              :bar-width="x.bandwidth() - 10"
+              :bar-width="getBarPositionX.bandwidth()"
             />
           </g>
           <g ref="vAxisLeft" />
@@ -227,6 +227,7 @@ const negativeBars = computed(() =>
 )
 
 const bars = computed(() => hourlyTimestampsForCurrentDate.value.map((timestamp) => ({
+  label: labelForTimestamp(timestamp),
   date: DateTime.fromMillis(timestamp),
   price: priceForTimestamp(timestamp, props.electricitySupplier),
 })))
@@ -292,7 +293,6 @@ const data = computed<Record<string, string | number>[]>(() => hourlyTimestampsF
   }
 }))
 
-const groups = computed(() => data.value.map((point) => String(point.group)))
 const maxY = computed(() => data.value
   .map((values) => Object.values(values).reduce((total: number, value: string | number) => {
     if (typeof value === 'number') {
@@ -307,11 +307,11 @@ const maxY = computed(() => data.value
     return max
   }, 0))
 
-const x = computed(() => scaleBand()
-  .domain(groups.value)
+const getBarPositionX = computed(() => scaleBand()
+  .domain(bars.value.map((bar) => bar.label))
   .range([0, width.value])
   .padding(0.2))
-const y = computed(() => scaleLinear()
+const getBarPositionY = computed(() => scaleLinear()
   .domain([0, Math.max(35, maxY.value * 1.2)])
   .range([height.value, 0]))
 
@@ -321,7 +321,7 @@ watchEffect(() => {
     return
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  select(vAxisLeft.value).call(axisLeft(y.value) as any)
+  select(vAxisLeft.value).call(axisLeft(getBarPositionY.value) as any)
 })
 
 const vAxisBottom = ref<HTMLElement>()
@@ -330,7 +330,7 @@ watchEffect(() => {
     return
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  select(vAxisBottom.value).call(axisBottom(x.value).tickSizeOuter(0) as any)
+  select(vAxisBottom.value).call(axisBottom(getBarPositionX.value).tickSizeOuter(0) as any)
 })
 
 // info about colors

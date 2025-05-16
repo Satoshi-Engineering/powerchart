@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-// todo : fix bar width and spacing
+// todo : fix bar height
 // todo : handle negative price
 
 import type { DateTime } from 'luxon'

@@ -59,9 +59,11 @@ const providerItems = ref<NavigationMenuItem[]>([
   {
     label: 'Energie Steiermark',
     to: '/',
+    icon: 'i-lucide-chart-column',
   }, {
     label: 'Awattar',
     to: '/awattar',
+    icon: 'i-lucide-chart-column',
   },
 ])
 

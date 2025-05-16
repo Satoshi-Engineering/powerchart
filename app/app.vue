@@ -20,7 +20,7 @@ useHead({
   },
   link: [...(i18nHead.value.link || [])],
   meta: [...(i18nHead.value.meta || [])],
-  titleTemplate: (titleChunk) => titleChunk ? `${titleChunk} - Powerchart` : 'Powerchart',
+  titleTemplate: (titleChunk) => titleChunk ? `${titleChunk} - ${config.public.appTitle}` : config.public.appTitle,
 })
 
 const config = useRuntimeConfig()

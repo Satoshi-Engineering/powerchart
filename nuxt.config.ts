@@ -14,7 +14,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     head: {
-      title: process.env.NUXT_PUBLIC_APP_TITLE || runtimeConfig.public.appTitle,
       meta: [
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },

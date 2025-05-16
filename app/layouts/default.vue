@@ -18,7 +18,7 @@
             level="h1"
             class="!my-0 text-base md:text-2xl"
           >
-            Powerchart
+            {{ $config.public.appTitle }}
           </TypoHeadline>
         </figure>
       </template>

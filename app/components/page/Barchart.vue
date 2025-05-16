@@ -96,7 +96,7 @@
               :chart-height="height"
               :x="getBarPositionX(bar.label) || 0"
               :date="bar.date"
-              :max-total-value="maxY"
+              :max-total-value="priceMaxOnChart"
               :price="bar.price"
               :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
               :bar-width="getBarPositionX.bandwidth()"
@@ -307,12 +307,14 @@ const maxY = computed(() => data.value
     return max
   }, 0))
 
+const priceMaxOnChart = computed(() => Math.max(35, maxY.value * 1.2))
+
 const getBarPositionX = computed(() => scaleBand()
   .domain(bars.value.map((bar) => bar.label))
   .range([0, width.value])
   .padding(0.2))
 const getBarPositionY = computed(() => scaleLinear()
-  .domain([0, Math.max(35, maxY.value * 1.2)])
+  .domain([0, priceMaxOnChart.value])
   .range([height.value, 0]))
 
 const vAxisLeft = ref<HTMLElement>()

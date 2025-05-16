@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-// todo : fix bar height
+// todo : calculate max bar height (maxY) in barchart with same logic as in here
 // todo : handle negative price
 
 import type { DateTime } from 'luxon'

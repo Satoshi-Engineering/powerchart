@@ -1,12 +1,12 @@
-<script setup lang="ts">
-import IconLogo from '~/components/icon/IconLogo.vue'
-</script>
-
 <template>
   <div class="min-h-dvh flex flex-col">
     <UHeader
+      mode="slideover"
       :ui="{
-        toggle: 'hidden',
+        center: 'lg:hidden',
+        toggle: 'lg:block',
+        content: 'lg:block',
+        overlay: 'lg:block',
       }"
     >
       <template #title>
@@ -22,6 +22,16 @@ import IconLogo from '~/components/icon/IconLogo.vue'
           </TypoHeadline>
         </figure>
       </template>
+
+      <UNavigationMenu :items="items" />
+
+      <template #body>
+        <UNavigationMenu
+          :items="items"
+          orientation="vertical"
+        />
+      </template>
+
       <template #right>
         <LayoutLangNav />
       </template>
@@ -36,3 +46,23 @@ import IconLogo from '~/components/icon/IconLogo.vue'
     </UFooter>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { NavigationMenuItem } from '@nuxt/ui'
+
+const items = ref<NavigationMenuItem[]>([
+  {
+    label: 'Energie Steiermark',
+    to: '/',
+    icon: 'i-lucide-lightbulb',
+  }, {
+    label: 'Awattar',
+    to: '/awattar',
+    icon: 'i-lucide-lightbulb',
+  }, {
+    label: 'Table',
+    to: '/table',
+    icon: 'i-lucide-table',
+  },
+])
+</script>

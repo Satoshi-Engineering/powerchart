@@ -1,12 +1,14 @@
 <template>
   <UApp>
-    <NuxtLayout>
+    <NuxtLayout :name="layout">
       <NuxtPage />
     </NuxtLayout>
   </UApp>
 </template>
 
 <script setup lang="ts">
+import type { LayoutKey } from '#build/types/layouts'
+
 const i18nHead = useLocaleHead({
   dir: true,
   lang: true,
@@ -20,4 +22,10 @@ useHead({
   meta: [...(i18nHead.value.meta || [])],
   titleTemplate: (titleChunk) => titleChunk ? `${titleChunk} - Powerchart` : 'Powerchart',
 })
+
+const config = useRuntimeConfig()
+
+console.log('config', config.public)
+
+const layout = computed<LayoutKey>(() => config.public.disableSurroundingLayout ? 'no-surrounding' : 'default')
 </script>

@@ -23,11 +23,16 @@
         </figure>
       </template>
 
-      <UNavigationMenu :items="items" />
-
       <template #body>
         <UNavigationMenu
-          :items="items"
+          :items="providerItems"
+          orientation="vertical"
+        />
+
+        <USeparator class="my-4" />
+
+        <UNavigationMenu
+          :items="viewItems"
           orientation="vertical"
         />
       </template>
@@ -50,19 +55,20 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const items = ref<NavigationMenuItem[]>([
+const providerItems = ref<NavigationMenuItem[]>([
   {
     label: 'Energie Steiermark',
     to: '/',
-    icon: 'i-lucide-lightbulb',
   }, {
     label: 'Awattar',
     to: '/awattar',
-    icon: 'i-lucide-lightbulb',
-  }, {
-    label: 'Table',
-    to: '/table',
-    icon: 'i-lucide-table',
   },
+])
+
+const viewItems = ref<NavigationMenuItem[]>([{
+  label: 'Table',
+  to: '/table',
+  icon: 'i-lucide-table',
+},
 ])
 </script>

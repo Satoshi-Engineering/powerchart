@@ -6,5 +6,8 @@ export default defineVitestConfig({
       'e2e/**',
       '**/node_modules/**',
     ],
+    include: [
+      '**/*.test.ts',
+    ],
   },
 })

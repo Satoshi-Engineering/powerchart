@@ -31,3 +31,5 @@ deploy_development:
   script:
     - echo "Deploying on development environment $DEPLOY_DEVELOPMENT_SERVER"
     - ssh -p 222 -tt $DEPLOY_USER@$DEPLOY_DEVELOPMENT_SERVER sudo $DEPLOY_DEVELOPMENT_SCRIPT
+    - echo "Deploying on development environment $DEPLOY_DEVELOPMENT_2_SERVER"
+    - ssh -p 222 -tt $DEPLOY_USER@$DEPLOY_DEVELOPMENT_2_SERVER sudo $DEPLOY_DEVELOPMENT_2_SCRIPT

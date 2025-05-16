@@ -57,6 +57,7 @@
     "@types/luxon": "^3.6.2",
     "better-npm-audit": "^3.11.0",
     "changelogen": "^0.6.1",
+    "happy-dom": "^17.4.7",
     "tsc-alias": "^1.8.16",
     "vitest": "^3.1.3"
   }

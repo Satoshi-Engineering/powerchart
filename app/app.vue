@@ -9,6 +9,8 @@
 <script setup lang="ts">
 import type { LayoutKey } from '#build/types/layouts'
 
+const config = useRuntimeConfig()
+
 const i18nHead = useLocaleHead({
   dir: true,
   lang: true,
@@ -19,11 +21,12 @@ useHead({
     lang: i18nHead.value.htmlAttrs!.lang,
   },
   link: [...(i18nHead.value.link || [])],
-  meta: [...(i18nHead.value.meta || [])],
+  meta: [
+    { name: 'apple-mobile-web-app-title', content: config.public.appTitle },
+    ...(i18nHead.value.meta || []),
+  ],
   titleTemplate: (titleChunk) => titleChunk ? `${titleChunk} - ${config.public.appTitle}` : config.public.appTitle,
 })
-
-const config = useRuntimeConfig()
 
 const layout = computed<LayoutKey>(() => config.public.disableSurroundingLayout ? 'no-surrounding' : 'default')
 </script>

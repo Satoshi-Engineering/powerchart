@@ -6,11 +6,11 @@ import type { AwattarPrice } from '~~/shared/data/AwattarPrice'
 export type CtPerKWh = number
 export type EurPerMWh = number
 
-export default function useElectricityPrices() {
-  const loading = ref<string[]>([])
-  const loadingFailed = ref<string[]>([])
-  const marketpricesByDate = reactive<Record<string, AwattarPrice[]>>({})
+const loading = ref<string[]>([])
+const loadingFailed = ref<string[]>([])
+const marketpricesByDate = reactive<Record<string, AwattarPrice[]>>({})
 
+export default function useElectricityPrices() {
   const loadForDateIso = async (dateIso: string) => {
     if (marketpricesByDate[dateIso] != null || loading.value.includes(dateIso)) {
       return

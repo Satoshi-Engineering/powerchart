@@ -1,0 +1,136 @@
+<template>
+  <g>
+    <g>
+      <BarchartBar
+        v-for="(bar) in bars"
+        :key="`bar_${bar.label}`"
+        :x="getBarPositionX(bar.label) || 0"
+        :bar-width="getBarPositionX.bandwidth()"
+        :chart-height="chartHeight"
+        :total-price="bar.totalPrice"
+        :max-total-price="maxTotalPrice"
+        :segments="bar.segments"
+      />
+    </g>
+    <BarchartAxisLeft
+      :chart-height="chartHeight"
+      :max-total-price="maxTotalPrice"
+    />
+    <BarchartAxisBottom
+      :chart-height="chartHeight"
+      :chart-width="chartWidth"
+      :labels="bars.map((bar) => bar.label)"
+    />
+  </g>
+</template>
+
+<script setup lang="ts">
+import { scaleBand } from 'd3-scale'
+import { DateTime } from 'luxon'
+
+import type { Fee } from '~/assets/fees'
+import type { BarSegment } from '~/types/BarSegment'
+
+const props = defineProps({
+  chartHeight: {
+    type: Number,
+    required: true,
+  },
+  chartWidth: {
+    type: Number,
+    required: true,
+  },
+  date: {
+    type: Object as PropType<DateTime>,
+    required: true,
+  },
+  electricitySupplier: {
+    type: String,
+    default: undefined,
+  },
+  feeIds: {
+    type: Array as PropType<Fee['id'][]>,
+    required: true,
+  },
+  vat: {
+    type: Number,
+    default: 0.2,
+  },
+})
+
+const { feeForDate, colorForFeeId } = useElectricityFees()
+const { priceForTimestamp } = useElectricityPrices()
+
+const bars = computed(() => hourlyTimestampsForCurrentDate.value.map((timestamp) => {
+  const price = priceForTimestamp(timestamp, props.electricitySupplier)
+  const feeSegments = feeSegmentsForTimestamp(timestamp)
+  const totalPriceBeforeVat = calculateTotalPriceBeforeVat(price, feeSegments)
+  const vat = totalPriceBeforeVat * props.vat
+  return {
+    label: labelForTimestamp(timestamp),
+    segments: buildBarSegments(price, feeSegments, vat),
+    totalPrice: totalPriceBeforeVat + vat,
+  }
+}))
+
+const hourlyTimestampsForCurrentDate = computed(() => {
+  const timestamps = []
+  const first = props.date.startOf('day').toMillis()
+  const last = props.date.set({ hour: 23 }).toMillis()
+  for (let current = first; current <= last; current += 1000 * 60 * 60) {
+    timestamps.push(current)
+  }
+  return timestamps
+})
+
+const currentDateHasTimezoneShift = computed(() => hourlyTimestampsForCurrentDate.value.length !== 24)
+
+const maxTotalPrice = computed(() => {
+  const max = Math.max(
+    35, // even if all bars are below this value, we draw the y axis (price ct/kwH) to this value
+    ...bars.value.map((bar) => bar.totalPrice),
+  )
+  return max * 1.2 // add some space above the highest bar
+})
+
+const labelForTimestamp = (timestamp: number) => {
+  const date = DateTime.fromMillis(timestamp)
+  const timeFormatted = [date.toLocaleString(DateTime.TIME_24_SIMPLE)]
+  if (currentDateHasTimezoneShift.value) {
+    const timezoneLabel = date.toFormat('ZZZZZ') === 'Central European Summer Time' ? 'SZ' : 'NZ'
+    timeFormatted.push(timezoneLabel)
+  }
+  return timeFormatted.join(' ')
+}
+
+const buildBarSegments = (
+  price: number,
+  feeSegments: BarSegment[],
+  vat: number,
+) => [
+  {
+    value: vat,
+    color: '#9A998C',
+  },
+  ...feeSegments,
+  {
+    value: price,
+    color: '#FFCB47',
+  },
+].filter((segment) => segment.value > 0)
+
+const feeSegmentsForTimestamp = (timestamp: number): BarSegment[] => props.feeIds
+  .map((feeId) => ({
+    value: feeForDate(feeId, DateTime.fromMillis(timestamp)),
+    color: colorForFeeId(feeId),
+  }))
+  .filter((fee) => fee.value > 0)
+
+const calculateTotalPriceBeforeVat = (price: number, fees: BarSegment[]) => fees
+  .reduce((total, fee) => total + fee.value, price)
+
+const getBarPositionX = computed(() => scaleBand()
+  .domain(bars.value.map((bar) => bar.label))
+  .range([0, props.chartWidth])
+  .padding(0.2))
+</script>

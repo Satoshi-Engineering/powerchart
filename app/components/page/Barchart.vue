@@ -88,27 +88,14 @@
         :width="width + margins.left + margins.right"
         :height="height + margins.top + margins.bottom"
       >
-        <g :transform="`translate(${margins.left}, ${margins.top})`">
-          <g>
-            <BarchartBar
-              v-for="(bar, index) in bars"
-              :key="`bar_${index}`"
-              :chart-height="height"
-              :x="getBarPositionX(bar.label) || 0"
-              :date="bar.date"
-              :max-total-value="priceMaxOnChart"
-              :price="bar.price"
-              :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
-              :bar-width="getBarPositionX.bandwidth()"
-            />
-          </g>
-          <g ref="vAxisLeft" />
-          <g
-            ref="vAxisBottom"
-            :transform="`translate(0, ${height})`"
-            data-testid="x-axis"
-          />
-        </g>
+        <Barchart
+          :transform="`translate(${margins.left}, ${margins.top})`"
+          :chart-height="height"
+          :chart-width="width"
+          :date="currentDate"
+          :electricity-supplier="props.electricitySupplier"
+          :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
+        />
       </svg>
     </div>
   </div>
@@ -116,9 +103,6 @@
 
 <script setup lang="ts">
 import { max } from 'd3-array'
-import { axisBottom, axisLeft } from 'd3-axis'
-import { select } from 'd3-selection'
-import { scaleBand, scaleLinear } from 'd3-scale'
 import { DateTime } from 'luxon'
 import { computed, watchEffect, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -133,12 +117,11 @@ const props = defineProps({
 
 const route = useRoute()
 const { t } = useI18n()
-const { info } = useDebugInfo()
 const config = useRuntimeConfig()
 
 const { width: clientWidth, height: clientHeight, type } = useBreakpoints()
 const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimation(500, true)
-const { feeForDate, feeById } = useElectricityFees()
+const { feeById } = useElectricityFees()
 const {
   loadForDateIso, loading: loadingPrices, loadingFailed,
   priceForDate, priceForTimestamp,
@@ -217,20 +200,11 @@ const negativeBars = computed(() =>
     .filter((timestamp) => priceForTimestamp(timestamp, props.electricitySupplier) < 0)
     .map((timestamp) => {
       const power = priceForTimestamp(timestamp, props.electricitySupplier)
-      const group = labelForTimestamp(timestamp)
       return {
-        key: `negative_price_${group}`,
-        group,
         power: power / 10, // scale down the negative bars to make the diagram prettier
       }
     }),
 )
-
-const bars = computed(() => hourlyTimestampsForCurrentDate.value.map((timestamp) => ({
-  label: labelForTimestamp(timestamp),
-  date: DateTime.fromMillis(timestamp),
-  price: priceForTimestamp(timestamp, props.electricitySupplier),
-})))
 
 const hourlyTimestampsForCurrentDate = computed(() => {
   const timestamps = []
@@ -243,97 +217,6 @@ const hourlyTimestampsForCurrentDate = computed(() => {
 })
 
 const currentDateHasTimezoneShift = computed(() => hourlyTimestampsForCurrentDate.value.length !== 24)
-
-const labelForTimestamp = (timestamp: number) => {
-  const date = DateTime.fromMillis(timestamp)
-  const timeFormatted = [date.toLocaleString(DateTime.TIME_24_SIMPLE)]
-  if (currentDateHasTimezoneShift.value) {
-    const timezoneLabel = date.toFormat('ZZZZZ') === 'Central European Summer Time' ? 'SZ' : 'NZ'
-    timeFormatted.push(timezoneLabel)
-  }
-  return timeFormatted.join(' ')
-}
-
-const data = computed<Record<string, string | number>[]>(() => hourlyTimestampsForCurrentDate.value.map((timestamp) => {
-  const usedDate = DateTime.fromMillis(timestamp)
-  const values: Record<string, number> = {}
-
-  info('\n\n\n')
-  info(`Calculating values for: ${usedDate.toISOTime()}`)
-
-  const power = priceForTimestamp(timestamp, props.electricitySupplier)
-  values.power = Math.max(power, 0)
-  Object.keys(feeById).forEach((feeId) => {
-    if (excludeFees.value.includes(feeId)) {
-      return
-    }
-    values[feeId] = feeForDate(feeId, usedDate)
-  })
-  if (power < 0) {
-    let powerSubtracted = 0
-    Object.keys(feeById).forEach((feeId) => {
-      if (excludeFees.value.includes(feeId) || values[feeId] == null) {
-        return
-      }
-      const powerToSubtract = Math.min(Math.abs(power) - powerSubtracted, values[feeId])
-      powerSubtracted += powerToSubtract
-      values[feeId] -= powerToSubtract
-    })
-    values.power = power + powerSubtracted
-  }
-  values.salesTax = Object.values(values).reduce((total, current) => total + current, 0) * 0.2
-
-  info('values in Ct/KWh')
-  info(JSON.stringify(values, undefined, '  '))
-  info(`total: ${Object.values(values).reduce((total, current) => total + current, 0)}`)
-
-  return {
-    group: labelForTimestamp(timestamp),
-    ...values,
-  }
-}))
-
-const maxY = computed(() => data.value
-  .map((values) => Object.values(values).reduce((total: number, value: string | number) => {
-    if (typeof value === 'number') {
-      return total + value
-    }
-    return total
-  }, 0))
-  .reduce((max, value) => {
-    if (value > max) {
-      return value
-    }
-    return max
-  }, 0))
-
-const priceMaxOnChart = computed(() => Math.max(35, maxY.value * 1.2))
-
-const getBarPositionX = computed(() => scaleBand()
-  .domain(bars.value.map((bar) => bar.label))
-  .range([0, width.value])
-  .padding(0.2))
-const getBarPositionY = computed(() => scaleLinear()
-  .domain([0, priceMaxOnChart.value])
-  .range([height.value, 0]))
-
-const vAxisLeft = ref<HTMLElement>()
-watchEffect(() => {
-  if (vAxisLeft.value == null) {
-    return
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  select(vAxisLeft.value).call(axisLeft(getBarPositionY.value) as any)
-})
-
-const vAxisBottom = ref<HTMLElement>()
-watchEffect(() => {
-  if (vAxisBottom.value == null) {
-    return
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  select(vAxisBottom.value).call(axisBottom(getBarPositionX.value).tickSizeOuter(0) as any)
-})
 
 // info about colors
 const showInfo = ref(false)

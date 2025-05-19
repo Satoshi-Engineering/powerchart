@@ -18,12 +18,18 @@
       :height="segment.height"
       :fill="segment.color"
     />
+    <rect
+      v-if="positionedNegativeSegment"
+      :x="0"
+      :y="barHeight"
+      :width="barWidth"
+      :height="positionedNegativeSegment.height"
+      :fill="positionedNegativeSegment.color"
+    />
   </g>
 </template>
 
 <script setup lang="ts">
-// todo : handle negative price
-
 import { computed } from 'vue'
 
 import type { BarSegment } from '~/types/BarSegment'
@@ -54,6 +60,10 @@ const props = defineProps({
     type: Array as PropType<BarSegment[]>,
     required: true,
   },
+  negativeSegment: {
+    type: Object as PropType<BarSegment | null>,
+    default: null,
+  },
 })
 
 const { formatNumber } = useFormatNumber()
@@ -75,5 +85,16 @@ const positionedSegments = computed(() => {
       color: segment.color,
     }
   })
+})
+
+const positionedNegativeSegment = computed(() => {
+  if (props.negativeSegment == null) {
+    return null
+  }
+  const height = (props.negativeSegment.value / props.maxTotalPrice) * props.chartHeight / 10
+  return {
+    height,
+    color: props.negativeSegment.color,
+  }
 })
 </script>

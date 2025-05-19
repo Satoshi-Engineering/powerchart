@@ -10,6 +10,7 @@
         :total-price="bar.totalPrice"
         :max-total-price="maxTotalPrice"
         :segments="bar.segments"
+        :negative-segment="bar.negativePriceSegment"
       />
     </g>
     <BarchartAxisLeft
@@ -68,8 +69,9 @@ const bars = computed(() => hourlyTimestampsForCurrentDate.value.map((timestamp)
   const vat = totalPriceBeforeVat * props.vat
   return {
     label: labelForTimestamp(timestamp),
-    segments: buildBarSegments(price, feeSegments, vat),
     totalPrice: totalPriceBeforeVat + vat,
+    segments: buildBarSegments(price, feeSegments, vat),
+    negativePriceSegment: buildNegativePriceSegment(price),
   }
 }))
 
@@ -107,17 +109,20 @@ const buildBarSegments = (
   price: number,
   feeSegments: BarSegment[],
   vat: number,
-) => [
-  {
-    value: vat,
-    color: '#9A998C',
-  },
-  ...feeSegments,
-  {
-    value: price,
-    color: '#FFCB47',
-  },
-].filter((segment) => segment.value > 0)
+) => {
+  const feeSegmentsNormalized = subtractNegativePriceFromFeeSegments(price, feeSegments)
+  return [
+    {
+      value: vat,
+      color: '#9A998C',
+    },
+    ...feeSegmentsNormalized,
+    {
+      value: price,
+      color: '#FFCB47',
+    },
+  ].filter((segment) => segment.value > 0)
+}
 
 const feeSegmentsForTimestamp = (timestamp: number): BarSegment[] => props.feeIds
   .map((feeId) => ({
@@ -128,6 +133,34 @@ const feeSegmentsForTimestamp = (timestamp: number): BarSegment[] => props.feeId
 
 const calculateTotalPriceBeforeVat = (price: number, fees: BarSegment[]) => fees
   .reduce((total, fee) => total + fee.value, price)
+
+const subtractNegativePriceFromFeeSegments = (price: number, fees: BarSegment[]) => {
+  const normalizedFees = [...fees]
+  for (
+    let x = fees.length - 1;
+    x >= 0 && price < 0;
+    x -= 1
+  ) {
+    const fee = fees[x] as BarSegment
+    const feeReduction = Math.min(fee.value, Math.abs(price))
+    price += feeReduction
+    normalizedFees[x] = {
+      ...fee,
+      value: fee.value - feeReduction,
+    }
+  }
+  return normalizedFees
+}
+
+const buildNegativePriceSegment = (price: number) => {
+  if (price >= 0) {
+    return null
+  }
+  return {
+    value: Math.abs(price),
+    color: '#FFCB47',
+  }
+}
 
 const getBarPositionX = computed(() => scaleBand()
   .domain(bars.value.map((bar) => bar.label))

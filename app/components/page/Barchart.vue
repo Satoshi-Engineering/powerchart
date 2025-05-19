@@ -85,13 +85,13 @@
     >
       <svg
         class="mx-auto"
-        :width="width + margins.left + margins.right"
-        :height="height + margins.top + margins.bottom"
+        :width="chartWidth + margins.left + margins.right"
+        :height="chartHeight + margins.top + margins.bottom"
       >
         <Barchart
           :transform="`translate(${margins.left}, ${margins.top})`"
-          :chart-height="height"
-          :chart-width="width"
+          :chart-height="chartHeight"
+          :chart-width="chartWidth"
           :date="currentDate"
           :electricity-supplier="props.electricitySupplier"
           :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
@@ -102,7 +102,6 @@
 </template>
 
 <script setup lang="ts">
-import { max } from 'd3-array'
 import { DateTime } from 'luxon'
 import { computed, watchEffect, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -124,7 +123,7 @@ const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimatio
 const { feeById } = useElectricityFees()
 const {
   loadForDateIso, loading: loadingPrices, loadingFailed,
-  priceForDate, priceForTimestamp,
+  priceForDate,
 } = useElectricityPrices()
 
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
@@ -171,15 +170,10 @@ const margins = computed(() => {
   if (type.value === 'md') {
     margins = { top: 20, right: 10, bottom: 30, left: 30 }
   }
-  const maxNegative = max(negativeBars.value.map((data) => Math.abs(data.power))) || 0
-  if (maxNegative > 0) {
-    const minMarginBottom = (clientHeight.value - 70 - margins.top) * (maxNegative / (maxNegative + 35))
-    margins.bottom = Math.max(minMarginBottom, margins.bottom)
-  }
   return margins
 })
-const width = computed(() => Math.max(800, Math.min(1800, clientWidth.value - margins.value.left - margins.value.right)))
-const height = computed(() => {
+const chartWidth = computed(() => Math.max(800, Math.min(1800, clientWidth.value - margins.value.left - margins.value.right)))
+const chartHeight = computed(() => {
   const heightReduction = config.public.disableSurroundingLayout ? 70 : 180
   return clientHeight.value - heightReduction - margins.value.top - margins.value.bottom
 })
@@ -194,17 +188,6 @@ const excludeFees = computed(() => {
   }
   return excludeFeesLocal
 })
-
-const negativeBars = computed(() =>
-  hourlyTimestampsForCurrentDate.value
-    .filter((timestamp) => priceForTimestamp(timestamp, props.electricitySupplier) < 0)
-    .map((timestamp) => {
-      const power = priceForTimestamp(timestamp, props.electricitySupplier)
-      return {
-        power: power / 10, // scale down the negative bars to make the diagram prettier
-      }
-    }),
-)
 
 const hourlyTimestampsForCurrentDate = computed(() => {
   const timestamps = []

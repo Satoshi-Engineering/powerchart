@@ -79,26 +79,28 @@
       {{ $t('errors.loadingPricesFailed') }}
     </div>
     <div
-      v-else-if="showContent"
+      v-else-if="
+        showContent
+          && clientHeight > 0
+          && clientWidth > 0
+      "
       class="w-full overflow-x-auto"
       data-testid="electricity-price-chart"
     >
-      <ClientOnly>
-        <svg
-          class="mx-auto"
-          :width="chartWidth + margins.left + margins.right"
-          :height="chartHeight + margins.top + margins.bottom"
-        >
-          <Barchart
-            :transform="`translate(${margins.left}, ${margins.top})`"
-            :chart-height="chartHeight"
-            :chart-width="chartWidth"
-            :date="currentDate"
-            :electricity-supplier="props.electricitySupplier"
-            :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
-          />
-        </svg>
-      </ClientOnly>
+      <svg
+        class="mx-auto"
+        :width="chartWidth + margins.left + margins.right"
+        :height="chartHeight + margins.top + margins.bottom"
+      >
+        <Barchart
+          :transform="`translate(${margins.left}, ${margins.top})`"
+          :chart-height="chartHeight"
+          :chart-width="chartWidth"
+          :date="currentDate"
+          :electricity-supplier="props.electricitySupplier"
+          :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
+        />
+      </svg>
     </div>
   </div>
 </template>

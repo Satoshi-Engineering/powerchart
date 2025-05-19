@@ -178,7 +178,7 @@ watchEffect(() => {
   if (currentDateIso.value == null) {
     return
   }
-  loading.value = loadingPrices.value.includes(currentDateIso.value)
+  loading.value = loadingPrices.includes(currentDateIso.value)
 })
 watchEffect(() => {
   if (currentDateIso.value == null) {

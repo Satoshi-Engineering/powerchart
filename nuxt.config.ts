@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxtjs/i18n',
     '@nuxt/ui-pro',
+    '@pinia/nuxt',
   ],
   devtools: { enabled: true },
   app: {

@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
 
 import type { AwattarPrice } from '~~/shared/data/AwattarPrice'
@@ -6,11 +7,11 @@ import type { AwattarPrice } from '~~/shared/data/AwattarPrice'
 export type CtPerKWh = number
 export type EurPerMWh = number
 
-const loading = ref<string[]>([])
-const loadingFailed = ref<string[]>([])
-const marketpricesByDate = reactive<Record<string, AwattarPrice[]>>({})
+export const useElectricityPrices = defineStore('electricityPrices', () => {
+  const loading = ref<string[]>([])
+  const loadingFailed = ref<string[]>([])
+  const marketpricesByDate = reactive<Record<string, AwattarPrice[]>>({})
 
-export default function useElectricityPrices() {
   const loadForDateIso = async (dateIso: string) => {
     if (marketpricesByDate[dateIso] != null || loading.value.includes(dateIso)) {
       return
@@ -82,5 +83,9 @@ export default function useElectricityPrices() {
     return price + 1.2
   }
 
-  return { loadForDateIso, loading, loadingFailed, priceForDate, priceForTimestamp }
-}
+  return {
+    loadForDateIso,
+    loading, loadingFailed,
+    priceForDate, priceForTimestamp,
+  }
+})

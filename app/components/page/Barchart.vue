@@ -83,20 +83,22 @@
       class="w-full overflow-x-auto"
       data-testid="electricity-price-chart"
     >
-      <svg
-        class="mx-auto"
-        :width="chartWidth + margins.left + margins.right"
-        :height="chartHeight + margins.top + margins.bottom"
-      >
-        <Barchart
-          :transform="`translate(${margins.left}, ${margins.top})`"
-          :chart-height="chartHeight"
-          :chart-width="chartWidth"
-          :date="currentDate"
-          :electricity-supplier="props.electricitySupplier"
-          :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
-        />
-      </svg>
+      <ClientOnly>
+        <svg
+          class="mx-auto"
+          :width="chartWidth + margins.left + margins.right"
+          :height="chartHeight + margins.top + margins.bottom"
+        >
+          <Barchart
+            :transform="`translate(${margins.left}, ${margins.top})`"
+            :chart-height="chartHeight"
+            :chart-width="chartWidth"
+            :date="currentDate"
+            :electricity-supplier="props.electricitySupplier"
+            :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
+          />
+        </svg>
+      </ClientOnly>
     </div>
   </div>
 </template>
@@ -145,7 +147,7 @@ watchEffect(() => {
   if (currentDateIso.value == null) {
     return
   }
-  loading.value = loadingPrices.value.includes(currentDateIso.value)
+  loading.value = loadingPrices.includes(currentDateIso.value)
 })
 watchEffect(() => {
   if (currentDateIso.value == null) {

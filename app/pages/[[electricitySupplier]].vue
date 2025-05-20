@@ -97,7 +97,7 @@
           :chart-height="chartHeight"
           :chart-width="chartWidth"
           :date="currentDate"
-          :electricity-supplier="props.electricitySupplier"
+          :electricity-supplier="electricitySupplier"
           :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
         />
       </svg>
@@ -110,13 +110,6 @@ import { DateTime } from 'luxon'
 import { computed, watchEffect, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-
-const props = defineProps({
-  electricitySupplier: {
-    type: String,
-    default: undefined,
-  },
-})
 
 const route = useRoute()
 const { t } = useI18n()
@@ -133,7 +126,7 @@ const {
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {
   const dateTomorrow = DateTime.now().endOf('day').plus({ days: 1 })
-  if (priceForDate(dateTomorrow, props.electricitySupplier) === 0) {
+  if (priceForDate(dateTomorrow, electricitySupplier.value) === 0) {
     return DateTime.now().endOf('day')
   }
   return dateTomorrow
@@ -182,12 +175,22 @@ const chartHeight = computed(() => {
   return clientHeight.value - heightReduction - margins.value.top - margins.value.bottom
 })
 
+const electricitySupplier = computed(() => {
+  if (
+    typeof route.params.electricitySupplier === 'string'
+    && route.params.electricitySupplier.length > 0
+  ) {
+    return route.params.electricitySupplier
+  }
+  return undefined
+})
+
 const excludeFees = computed(() => {
   let excludeFeesLocal: string[] = []
   if (typeof route.query.excludeFees === 'string') {
     excludeFeesLocal = route.query.excludeFees.split(',')
   }
-  if (props.electricitySupplier != null) {
+  if (electricitySupplier.value != null) {
     excludeFeesLocal.push('infrastructureFee')
   }
   return excludeFeesLocal

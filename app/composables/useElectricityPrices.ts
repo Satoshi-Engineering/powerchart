@@ -69,10 +69,13 @@ export default function useElectricityPrices() {
     }
 
     // awattar takes 3 % fee in either direction
-    if (electricitySupplier === 'awattar' && price < 0) {
-      return price * 0.97
-    } else if (electricitySupplier === 'awattar') {
-      return price * 1.03
+    if (electricitySupplier === 'awattar') {
+      return price + Math.abs(price * 0.03)
+    }
+
+    // awattar takes 3 % fee in either direction + 1,5 ct/kWh since 2024
+    if (electricitySupplier === 'awattar-2024') {
+      return price + Math.abs(price * 0.03) + 1.5
     }
 
     // Energie Steiermark adds 1,2 ct/kWh (i.e. 12 €/Mwh) on top of EPEX price

@@ -167,6 +167,7 @@ const { formatNumber } = useFormatNumber()
 const route = useRoute()
 const { t } = useI18n()
 const { info } = useDebugInfo()
+const config = useRuntimeConfig()
 
 const { width: clientWidth, height: clientHeight, type } = useBreakpoints()
 const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimation(500, true)
@@ -237,7 +238,10 @@ const margins = computed(() => {
   return margins
 })
 const width = computed(() => Math.max(800, Math.min(1800, clientWidth.value - margins.value.left - margins.value.right)))
-const height = computed(() => clientHeight.value - 180 - margins.value.top - margins.value.bottom)
+const height = computed(() => {
+  const heightReduction = config.public.disableSurroundingLayout ? 70 : 180
+  return clientHeight.value - heightReduction - margins.value.top - margins.value.bottom
+})
 
 const excludeFees = computed(() => {
   let excludeFeesLocal: string[] = []

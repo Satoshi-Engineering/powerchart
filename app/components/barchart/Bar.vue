@@ -10,13 +10,14 @@
       {{ formatNumber(totalPrice, 2, 2) }}
     </text>
     <rect
-      v-for="(segment, index) in positionedSegments"
-      :key="index"
+      v-for="(segment) in positionedSegments"
+      :key="`bar-segment-${segment.label}`"
       :x="0"
       :y="segment.y"
       :width="barWidth"
       :height="segment.height"
       :fill="segment.color"
+      :data-testid="`bar-segment-${segment.label}`"
     />
     <rect
       v-if="positionedNegativeSegment"
@@ -25,6 +26,7 @@
       :width="barWidth"
       :height="positionedNegativeSegment.height"
       :fill="positionedNegativeSegment.color"
+      :data-testid="`bar-segment-${positionedNegativeSegment.label}`"
     />
   </g>
 </template>
@@ -83,6 +85,7 @@ const positionedSegments = computed(() => {
       height,
       y,
       color: segment.color,
+      label: segment.label,
     }
   })
 })
@@ -95,6 +98,7 @@ const positionedNegativeSegment = computed(() => {
   return {
     height,
     color: props.negativeSegment.color,
+    label: props.negativeSegment.label,
   }
 })
 </script>

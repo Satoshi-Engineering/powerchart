@@ -11,6 +11,7 @@
         :max-total-price="maxTotalPrice"
         :segments="bar.segments"
         :negative-segment="bar.negativePriceSegment"
+        :data-testid="`bar_${bar.label}`"
       />
     </g>
     <BarchartAxisLeft
@@ -115,11 +116,13 @@ const buildBarSegments = (
     {
       value: vat,
       color: '#9A998C',
+      label: 'vat',
     },
     ...feeSegmentsNormalized,
     {
       value: price,
       color: '#FFCB47',
+      label: 'price',
     },
   ].filter((segment) => segment.value > 0)
 }
@@ -128,6 +131,7 @@ const feeSegmentsForTimestamp = (timestamp: number): BarSegment[] => props.feeId
   .map((feeId) => ({
     value: feeForDate(feeId, DateTime.fromMillis(timestamp)),
     color: colorForFeeId(feeId),
+    label: feeId,
   }))
   .filter((fee) => fee.value > 0)
 
@@ -159,6 +163,7 @@ const buildNegativePriceSegment = (price: number) => {
   return {
     value: Math.abs(price),
     color: '#FFCB47',
+    label: 'negative-price',
   }
 }
 

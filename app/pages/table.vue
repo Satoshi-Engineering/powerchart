@@ -96,31 +96,13 @@
         </template>
       </div>
       <div class="relative w-full flex my-4 px-2 justify-center">
-        <button
-          class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-l disabled:opacity-50"
-          :disabled="!prevDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
-          @click="selectPrevDate"
-        >
-          {{ type === 'xs' ? '<' : $t('components.datepicker.previous') }}
-        </button>
-        <label class="bg-gray-300 py-2 px-4">
-          <input
-            type="date"
-            class="bg-transparent outline-none"
-            :value="currentDateIso"
-            :min="(minDate.toISODate() as string)"
-            :max="(maxDate.toISODate() as string)"
-            @change="selectDate"
-          >
-        </label>
-        <button
-          class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-r disabled:opacity-50"
-          :disabled="!nextDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
-          data-testid="button-next-day"
-          @click="selectNextDate"
-        >
-          {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}
-        </button>
+        <DatePicker
+          v-model="currentDate"
+          :min-date="minDate"
+          :max-date="maxDate"
+          :disabled="currentDateIso != null && loadingPrices.includes(currentDateIso)"
+          :type="type"
+        />
       </div>
       <div class="w-full flex flex-col justify-start my-4 px-2">
         <label class="block">
@@ -170,9 +152,7 @@ const maxDate = computed(() => {
 
 const {
   currentDate, currentDateIso,
-  selectDate, selectPrevDate, selectNextDate,
-  prevDateValid, nextDateValid,
-} = useDatePicker(minDate, maxDate)
+} = useDate()
 
 watchEffect(() => {
   if (currentDateIso.value == null) {

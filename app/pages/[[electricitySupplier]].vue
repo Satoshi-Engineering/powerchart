@@ -2,31 +2,13 @@
   <div class="flex-1 flex flex-col items-center overflow-hidden">
     <UContainer>
       <div class="relative w-full flex mt-4 px-2 justify-left md:justify-center">
-        <button
-          class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-l disabled:opacity-50"
-          :disabled="!prevDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
-          @click="selectPrevDate"
-        >
-          {{ type === 'xs' ? '<' : $t('components.datepicker.previous') }}
-        </button>
-        <label class="bg-gray-300 py-2 px-4">
-          <input
-            type="date"
-            class="bg-transparent outline-none"
-            :value="currentDateIso"
-            :min="(minDate.toISODate() as string)"
-            :max="(maxDate.toISODate() as string)"
-            @change="selectDate"
-          >
-        </label>
-        <button
-          class="bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 mx-2 py-2 px-4 rounded-r disabled:opacity-50"
-          :disabled="!nextDateValid || (currentDateIso != null && loadingPrices.includes(currentDateIso))"
-          data-testid="button-next-day"
-          @click="selectNextDate"
-        >
-          {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}
-        </button>
+        <DatePicker
+          v-model="currentDate"
+          :min-date="minDate"
+          :max-date="maxDate"
+          :disabled="currentDateIso != null && loadingPrices.includes(currentDateIso)"
+          :type="type"
+        />
         <div class="absolute right-0 h-full me-2">
           <button
             class="h-full py-2 px-4 bg-gray-300 hover:enabled:bg-gray-400 text-gray-800 rounded disabled:opacity-50"
@@ -134,9 +116,7 @@ const maxDate = computed(() => {
 
 const {
   currentDate, currentDateIso,
-  selectDate, selectPrevDate, selectNextDate,
-  prevDateValid, nextDateValid,
-} = useDatePicker(minDate, maxDate)
+} = useDate()
 
 watchEffect(() => {
   if (currentDateIso.value == null) {

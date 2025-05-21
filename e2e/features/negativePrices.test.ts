@@ -21,7 +21,7 @@ test('negative prices are displayed', async ({ page }) => {
   await gotoAndWaitForNuxtHydration(page, '/')
 
   await expect(page.getByTestId('electricity-price-chart')).toBeVisible()
-  await expect(page.getByTestId('bar-group-power').locator(':scope > rect')).toHaveCount(24)
-  await expect(page.getByTestId('bar-group-power').locator(':scope > rect').nth(13)).toHaveAttribute('height', '0')
-  await expect(page.getByTestId('bar-group-negative-power').locator(':scope > rect')).toHaveCount(7)
+  await expect(page.getByTestId('bar_12:00').locator(':scope > rect')).toHaveCount(1)
+  await expect(page.getByTestId('bar_12:00').getByTestId('bar-segment-negative-price')).toHaveCount(1)
+  await expect(page.getByTestId('bar-segment-negative-price')).toHaveCount(7)
 })

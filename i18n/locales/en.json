@@ -18,7 +18,8 @@
   "pages": {
     "table": {
       "addVat": "Add VAT (20 %)",
-      "fixedCosts": "Fixed costs"
+      "fixedCosts": "Fixed costs",
+      "disableSurroundingLayout": "Hide header and footer"
     }
   }
 }

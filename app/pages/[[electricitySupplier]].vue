@@ -95,7 +95,7 @@ import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const { t } = useI18n()
-const config = useRuntimeConfig()
+const { surroundingLayoutDisabled } = useDisableSurroundingLayout()
 
 const { width: clientWidth, height: clientHeight, type } = useBreakpoints()
 const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimation(500, true)
@@ -151,7 +151,7 @@ const margins = computed(() => {
 })
 const chartWidth = computed(() => Math.max(800, Math.min(1800, clientWidth.value - margins.value.left - margins.value.right)))
 const chartHeight = computed(() => {
-  const heightReduction = config.public.disableSurroundingLayout ? 70 : 180
+  const heightReduction = surroundingLayoutDisabled ? 70 : 180
   return clientHeight.value - heightReduction - margins.value.top - margins.value.bottom
 })
 

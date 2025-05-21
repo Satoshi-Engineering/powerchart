@@ -104,8 +104,8 @@
           :type="type"
         />
       </div>
-      <div class="w-full flex flex-col justify-start my-4 px-2">
-        <label class="block">
+      <div class="w-full flex flex-col justify-start px-2">
+        <label class="my-4 block">
           <input
             type="checkbox"
             :checked="addVat"
@@ -114,7 +114,7 @@
           >
           {{ $t('pages.table.addVat') }}
         </label>
-        <label class="mt-4 flex flex-col">
+        <label class="my-4 flex flex-col">
           {{ $t('pages.table.fixedCosts') }}
           <input
             type="number"
@@ -123,6 +123,18 @@
             data-testid="input-fixed-costs"
             @input="updateFixedCosts"
           >
+        </label>
+        <label
+          v-if="!surroundingLayoutDisabledByRuntimeConfig"
+          class="my-4 block"
+        >
+          <input
+            type="checkbox"
+            :checked="surroundingLayoutDisabled"
+            data-testid="checkbox-disable-surrounding-layout"
+            @change="$event => disableSurroundingLayout(($event.target as HTMLInputElement).checked)"
+          >
+          {{ $t('pages.table.disableSurroundingLayout') }}
         </label>
       </div>
     </div>
@@ -140,6 +152,8 @@ const {
   loadForDateIso, loading: loadingPrices, loadingFailed,
   priceForDate,
 } = useElectricityPrices()
+
+const { surroundingLayoutDisabled, disableSurroundingLayout, surroundingLayoutDisabledByRuntimeConfig } = useDisableSurroundingLayout()
 
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {

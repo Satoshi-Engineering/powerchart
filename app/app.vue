@@ -10,6 +10,7 @@
 import type { LayoutKey } from '#build/types/layouts'
 
 const config = useRuntimeConfig()
+const { surroundingLayoutDisabled } = useDisableSurroundingLayout()
 
 const i18nHead = useLocaleHead({
   dir: true,
@@ -28,5 +29,5 @@ useHead({
   titleTemplate: (titleChunk) => titleChunk ? `${titleChunk} - ${config.public.appTitle}` : config.public.appTitle,
 })
 
-const layout = computed<LayoutKey>(() => config.public.disableSurroundingLayout ? 'no-surrounding' : 'default')
+const layout = computed<LayoutKey>(() => surroundingLayoutDisabled.value ? 'no-surrounding' : 'default')
 </script>

@@ -18,7 +18,8 @@
   "pages": {
     "table": {
       "addVat": "Umsatzsteuer hinzufügen (20 %)",
-      "fixedCosts": "Fixkosten"
+      "fixedCosts": "Fixkosten",
+      "disableSurroundingLayout": "Header und Footer verstecken"
     }
   }
 }

@@ -41,24 +41,18 @@
             {{ String(price.hour).padStart(2, '0') }}
           </div>
           <TablePriceItem
-            :price="addFixedCostsAndVat(price.pricePrev)"
+            :price="price.pricePrev.net"
             :is-current-hour="
               currentDate.minus({ days: 1 }).toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
             "
-            :threshold-lowest="addFixedCostsAndVat(-8)"
-            :threshold-low="addFixedCostsAndVat(5)"
-            :threshold-mid="addFixedCostsAndVat(10)"
-            :threshold-high="addFixedCostsAndVat(15)"
-            :threshold-highest="addFixedCostsAndVat(25)"
+            :price-range="price.pricePrev.range"
             data-testid="price-item"
             data-test-day="prev"
             :data-test-hour="price.hour"
-          >
-            {{ $n(price.pricePrev, 'decimal') }}
-          </TablePriceItem>
+          />
           <TablePriceItem
-            :price="addFixedCostsAndVat(price.price)"
+            :price="price.price.gross"
             :is-current-hour="
               currentDate.toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
@@ -71,12 +65,11 @@
             data-testid="price-item"
             data-test-day="current"
             :data-test-hour="price.hour"
-          >
-            {{ $n(price.price, 'decimal') }}
-          </TablePriceItem>
+            :price-range="price.price.range"
+          />
           <TablePriceItem
             v-if="currentDate.plus({ days: 1 }) <= maxDate"
-            :price="addFixedCostsAndVat(price.priceNext)"
+            :price="price.priceNext.gross"
             :is-current-hour="
               currentDate.plus({ days: 1 }).toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
@@ -89,9 +82,8 @@
             data-testid="price-item"
             data-test-day="next"
             :data-test-hour="price.hour"
-          >
-            {{ $n(price.priceNext, 'decimal') }}
-          </TablePriceItem>
+            :price-range="price.priceNext.range"
+          />
           <div v-else />
         </template>
       </div>
@@ -136,6 +128,17 @@
           >
           {{ $t('pages.table.disableSurroundingLayout') }}
         </label>
+        <label
+          v-if="!surroundingLayoutDisabledByRuntimeConfig"
+          class="my-4 block"
+        >
+          <input
+            v-model="showDynamicColors"
+            type="checkbox"
+            data-testid="checkbox-show-dynamic-colors"
+          >
+          {{ $t('pages.table.showDynamicColors') }}
+        </label>
       </div>
     </div>
   </UContainer>
@@ -145,6 +148,7 @@
 import { DateTime } from 'luxon'
 import { computed, watchEffect, ref, onBeforeMount, onBeforeUnmount, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import type { PriceRange } from '~/components/table/PriceItem.vue'
 
 const { size } = useBreakpoints()
 const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimation(500, true)
@@ -154,6 +158,8 @@ const {
 } = useElectricityPrices()
 
 const { surroundingLayoutDisabled, disableSurroundingLayout, surroundingLayoutDisabledByRuntimeConfig } = useDisableSurroundingLayout()
+
+const showDynamicColors = ref(false)
 
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {
@@ -192,11 +198,26 @@ watchEffect(() => {
 const prices = computed(() => {
   const prices = []
   for (let hour = 0; hour < 24; hour++) {
+    const net = priceForDate(currentDate.value.set({ hour }), 'EPEX')
+    const netNext = priceForDate(currentDate.value.plus({ days: 1 }).set({ hour }), 'EPEX')
+    const netPrev = priceForDate(currentDate.value.minus({ days: 1 }).set({ hour }), 'EPEX')
     prices.push({
       hour,
-      pricePrev: priceForDate(currentDate.value.minus({ days: 1 }).set({ hour }), 'EPEX'),
-      price: priceForDate(currentDate.value.set({ hour }), 'EPEX'),
-      priceNext: priceForDate(currentDate.value.plus({ days: 1 }).set({ hour }), 'EPEX'),
+      pricePrev: {
+        net: netPrev,
+        gross: addFixedCostsAndVat(netPrev),
+        range: getRange(netPrev),
+      },
+      price: {
+        net,
+        gross: addFixedCostsAndVat(net),
+        range: getRange(net),
+      },
+      priceNext: {
+        net: netNext,
+        gross: addFixedCostsAndVat(netNext),
+        range: getRange(netNext),
+      },
     })
   }
   return prices
@@ -261,6 +282,59 @@ const addFixedCostsAndVat = (price: number) => {
     priceWithFixedCosts *= 1.2
   }
   return priceWithFixedCosts
+}
+
+const getRange = (price: number): PriceRange => {
+  if (showDynamicColors.value) {
+    return getDynamicRange(price, prices.value.flatMap((p) => [
+      p.pricePrev.net,
+      p.price.net,
+      p.priceNext.net,
+    ]))
+  }
+  return getHardcodedRange(price)
+}
+
+const getHardcodedRange = (price: number): PriceRange => {
+  if (price <= -8) {
+    return 'lowest'
+  }
+  if (price <= 5) {
+    return 'lower'
+  }
+  if (price <= 10) {
+    return 'low'
+  }
+  if (price <= 15) {
+    return 'mid'
+  }
+  if (price <= 25) {
+    return 'high'
+  }
+  return 'highest'
+}
+
+const getDynamicRange = (price: number, allPrices: number[]): PriceRange => {
+  const mean = allPrices.reduce((sum, val) => sum + val, 0) / allPrices.length
+  const variance = allPrices.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / allPrices.length
+  const stdDev = Math.sqrt(variance)
+  const z = (price - mean) / stdDev
+  if (z <= -2.4) {
+    return 'lowest'
+  }
+  if (z <= -1.3) {
+    return 'lower'
+  }
+  if (z <= 0) {
+    return 'low'
+  }
+  if (z <= 1.3) {
+    return 'mid'
+  }
+  if (z <= 2.4) {
+    return 'high'
+  }
+  return 'highest'
 }
 
 /////

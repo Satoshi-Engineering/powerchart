@@ -19,7 +19,8 @@
     "table": {
       "addVat": "Add VAT (20 %)",
       "fixedCosts": "Fixed costs",
-      "disableSurroundingLayout": "Hide header and footer"
+      "disableSurroundingLayout": "Hide header and footer",
+      "showDynamicColors": "Dynamic colors"
     }
   }
 }

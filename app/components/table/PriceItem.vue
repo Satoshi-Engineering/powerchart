@@ -5,12 +5,12 @@
       rounded-md border-1 border-transparent
     "
     :class="{
-      'bg-green-400': price <= thresholdLowest,
-      'bg-green-200': price > thresholdLowest && price <= thresholdLow,
-      'bg-yellow-100': price > thresholdLow && price <= thresholdMid,
-      'bg-orange-200': price > thresholdMid && price <= thresholdHigh,
-      'bg-red-300': price > thresholdHigh && price <= thresholdHighest,
-      'bg-red-500': price > thresholdHighest,
+      'bg-green-400': priceRange === 'lowest',
+      'bg-green-200': priceRange === 'lower',
+      'bg-yellow-100': priceRange === 'low',
+      'bg-orange-200': priceRange === 'mid',
+      'bg-red-300': priceRange === 'high',
+      'bg-red-500': priceRange === 'highest',
       '!border-black font-bold': isCurrentHour,
     }"
   >
@@ -19,6 +19,14 @@
 </template>
 
 <script setup lang="ts">
+export type PriceRange =
+  'lowest'
+  | 'lower'
+  | 'low'
+  | 'mid'
+  | 'high'
+  | 'highest'
+
 defineProps({
   price: {
     type: Number,
@@ -28,25 +36,9 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  thresholdLowest: {
-    type: Number,
-    default: -8,
-  },
-  thresholdLow: {
-    type: Number,
-    default: 5,
-  },
-  thresholdMid: {
-    type: Number,
-    default: 10,
-  },
-  thresholdHigh: {
-    type: Number,
-    default: 15,
-  },
-  thresholdHighest: {
-    type: Number,
-    default: 25,
+  priceRange: {
+    type: String as PropType<PriceRange>,
+    required: true,
   },
 })
 </script>

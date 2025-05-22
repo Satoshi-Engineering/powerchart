@@ -7,7 +7,7 @@
           :min-date="minDate"
           :max-date="maxDate"
           :disabled="currentDateIso != null && loadingPrices.includes(currentDateIso)"
-          :type="type"
+          :size="size"
         />
         <div class="absolute right-0 h-full me-2">
           <button
@@ -97,7 +97,7 @@ const route = useRoute()
 const { t } = useI18n()
 const { surroundingLayoutDisabled } = useDisableSurroundingLayout()
 
-const { width: clientWidth, height: clientHeight, type } = useBreakpoints()
+const { width: clientWidth, height: clientHeight, size } = useBreakpoints()
 const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimation(500, true)
 const { feeById } = useElectricityFees()
 const {
@@ -141,10 +141,10 @@ watchEffect(() => {
 
 const margins = computed(() => {
   let margins = { top: 100, right: 40, bottom: 100, left: 60 }
-  if (type.value === 'xs') {
+  if (size.value === 'xs') {
     margins = { top: 20, right: 10, bottom: 30, left: 30 }
   }
-  if (type.value === 'md') {
+  if (size.value === 'md') {
     margins = { top: 20, right: 10, bottom: 30, left: 30 }
   }
   return margins

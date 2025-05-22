@@ -101,7 +101,7 @@
           :min-date="minDate"
           :max-date="maxDate"
           :disabled="currentDateIso != null && loadingPrices.includes(currentDateIso)"
-          :type="type"
+          :size="size"
         />
       </div>
       <div class="w-full flex flex-col justify-start px-2">
@@ -146,7 +146,7 @@ import { DateTime } from 'luxon'
 import { computed, watchEffect, ref, onBeforeMount, onBeforeUnmount, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-const { type } = useBreakpoints()
+const { size } = useBreakpoints()
 const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimation(500, true)
 const {
   loadForDateIso, loading: loadingPrices, loadingFailed,

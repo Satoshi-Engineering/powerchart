@@ -5,7 +5,7 @@
       :disabled="!prevDateValid || disabled"
       @click="selectPrevDate"
     >
-      {{ type === 'xs' ? '<' : $t('components.datepicker.previous') }}
+      {{ size === 'xs' ? '<' : $t('components.datepicker.previous') }}
     </button>
     <label class="bg-gray-300 py-2 px-4">
       <input
@@ -24,7 +24,7 @@
       data-testid="button-next-day"
       @click="selectNextDate"
     >
-      {{ type === 'xs' ? '>' : $t('components.datepicker.next') }}
+      {{ size === 'xs' ? '>' : $t('components.datepicker.next') }}
     </button>
   </div>
 </template>
@@ -37,7 +37,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  type: {
+  size: {
     type: String as PropType<'xs' | 'md' | 'lg'>,
     default: undefined,
   },

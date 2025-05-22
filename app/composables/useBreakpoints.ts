@@ -21,7 +21,7 @@ export default () => {
     screen.orientation.removeEventListener('change', onResize)
   })
 
-  const type = computed(() => {
+  const size = computed(() => {
     if (clientWidth.value < 550) {
       return 'xs'
     }
@@ -34,5 +34,5 @@ export default () => {
   const width = computed(() => clientWidth.value)
   const height = computed(() => clientHeight.value)
 
-  return { width, height, type }
+  return { width, height, size }
 }

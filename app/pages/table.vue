@@ -41,18 +41,18 @@
             {{ String(price.hour).padStart(2, '0') }}
           </div>
           <TablePriceItem
-            :price="price.pricePrev.net"
+            :price="addFixedCostsAndVat(price.pricePrev)"
             :is-current-hour="
               currentDate.minus({ days: 1 }).toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
             "
-            :price-range="price.pricePrev.range"
             data-testid="price-item"
             data-test-day="prev"
             :data-test-hour="price.hour"
+            :price-range="getRange(price.pricePrev)"
           />
           <TablePriceItem
-            :price="price.price.gross"
+            :price="addFixedCostsAndVat(price.price)"
             :is-current-hour="
               currentDate.toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
@@ -65,11 +65,11 @@
             data-testid="price-item"
             data-test-day="current"
             :data-test-hour="price.hour"
-            :price-range="price.price.range"
+            :price-range="getRange(price.price)"
           />
           <TablePriceItem
             v-if="currentDate.plus({ days: 1 }) <= maxDate"
-            :price="price.priceNext.gross"
+            :price="addFixedCostsAndVat(price.priceNext)"
             :is-current-hour="
               currentDate.plus({ days: 1 }).toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
@@ -82,7 +82,7 @@
             data-testid="price-item"
             data-test-day="next"
             :data-test-hour="price.hour"
-            :price-range="price.priceNext.range"
+            :price-range="getRange(price.priceNext)"
           />
           <div v-else />
         </template>
@@ -97,7 +97,7 @@
         />
       </div>
       <div class="w-full flex flex-col justify-start px-2">
-        <label class="my-4 block">
+        <label class="my-3 block">
           <input
             type="checkbox"
             :checked="addVat"
@@ -106,7 +106,7 @@
           >
           {{ $t('pages.table.addVat') }}
         </label>
-        <label class="my-4 flex flex-col">
+        <label class="my-3 flex flex-col">
           {{ $t('pages.table.fixedCosts') }}
           <input
             type="number"
@@ -118,7 +118,7 @@
         </label>
         <label
           v-if="!surroundingLayoutDisabledByRuntimeConfig"
-          class="my-4 block"
+          class="my-3 block"
         >
           <input
             type="checkbox"
@@ -130,7 +130,7 @@
         </label>
         <label
           v-if="!surroundingLayoutDisabledByRuntimeConfig"
-          class="my-4 block"
+          class="my-3 block"
         >
           <input
             v-model="showDynamicColors"
@@ -159,7 +159,7 @@ const {
 
 const { surroundingLayoutDisabled, disableSurroundingLayout, surroundingLayoutDisabledByRuntimeConfig } = useDisableSurroundingLayout()
 
-const showDynamicColors = ref(false)
+const { value: showDynamicColors } = useQueryParameter('dynamicColors')
 
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {
@@ -195,29 +195,19 @@ watchEffect(() => {
   }
 })
 
-const prices = computed(() => {
+const prices = computed<{
+  hour: number
+  pricePrev: number
+  price: number
+  priceNext: number
+}[]>(() => {
   const prices = []
   for (let hour = 0; hour < 24; hour++) {
-    const net = priceForDate(currentDate.value.set({ hour }), 'EPEX')
-    const netNext = priceForDate(currentDate.value.plus({ days: 1 }).set({ hour }), 'EPEX')
-    const netPrev = priceForDate(currentDate.value.minus({ days: 1 }).set({ hour }), 'EPEX')
     prices.push({
       hour,
-      pricePrev: {
-        net: netPrev,
-        gross: addFixedCostsAndVat(netPrev),
-        range: getRange(netPrev),
-      },
-      price: {
-        net,
-        gross: addFixedCostsAndVat(net),
-        range: getRange(net),
-      },
-      priceNext: {
-        net: netNext,
-        gross: addFixedCostsAndVat(netNext),
-        range: getRange(netNext),
-      },
+      pricePrev: priceForDate(currentDate.value.minus({ days: 1 }).set({ hour }), 'EPEX'),
+      price: priceForDate(currentDate.value.set({ hour }), 'EPEX'),
+      priceNext: priceForDate(currentDate.value.plus({ days: 1 }).set({ hour }), 'EPEX'),
     })
   }
   return prices
@@ -284,13 +274,17 @@ const addFixedCostsAndVat = (price: number) => {
   return priceWithFixedCosts
 }
 
+const allCurrentlyDisplayedPrices = computed(() => {
+  return prices.value.flatMap((p) => [
+    p.pricePrev,
+    p.price,
+    p.priceNext,
+  ])
+})
+
 const getRange = (price: number): PriceRange => {
   if (showDynamicColors.value) {
-    return getDynamicRange(price, prices.value.flatMap((p) => [
-      p.pricePrev.net,
-      p.price.net,
-      p.priceNext.net,
-    ]))
+    return getDynamicRange(price, allCurrentlyDisplayedPrices.value)
   }
   return getHardcodedRange(price)
 }

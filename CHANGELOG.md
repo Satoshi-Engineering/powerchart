@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.0.1
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.0.0...v1.0.1)
+
+### 🩹 Fixes
+
+- Reduction of the bar chart's height if surrounding layout is enabled (da6df83)
+
+### ❤️ Contributors
+
+- Dr-erych <dave@satoshiengineering.com>
+
 ## v1.0.0
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v0.0.3...v1.0.0)

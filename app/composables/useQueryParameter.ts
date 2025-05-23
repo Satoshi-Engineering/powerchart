@@ -4,7 +4,7 @@ export default (key: string) => {
   const router = useRouter()
   const route = useRoute()
 
-  const updateQueryParam = (value: string | LocationQueryValue[]) => {
+  const updateQueryParam = (value: string | LocationQueryValue[]): void => {
     router.replace({
       path: route.path,
       query: {
@@ -14,25 +14,19 @@ export default (key: string) => {
     })
   }
 
-  const removeQueryParam = () => {
+  const removeQueryParam = (): void => {
     const { [key]: _, ...newQuery } = route.query
-    router.push({
+    router.replace({
       path: route.path,
       query: newQuery,
     })
   }
 
-  const getQueryParam = () => route.query[key]
+  const getQueryParam = (): LocationQueryValue | LocationQueryValue[] | undefined => route.query[key]
 
-  const isQueryParamTruthy = () => {
-    const queryParam = route.query[key]
-    if (queryParam) {
-      return true
-    }
-    return false
-  }
+  const isQueryParamTruthy = (): boolean => !!route.query[key]
 
-  const value = computed({
+  const queryParamValue = computed<LocationQueryValue | LocationQueryValue[] | undefined>({
     get: getQueryParam,
     set: (newValue) => {
       if (newValue) {
@@ -48,6 +42,6 @@ export default (key: string) => {
     removeQueryParam,
     getQueryParam,
     isQueryParamTruthy,
-    value,
+    queryParamValue,
   }
 }

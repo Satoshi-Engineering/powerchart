@@ -57,11 +57,6 @@
               currentDate.toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
             "
-            :threshold-lowest="addFixedCostsAndVat(-8)"
-            :threshold-low="addFixedCostsAndVat(5)"
-            :threshold-mid="addFixedCostsAndVat(10)"
-            :threshold-high="addFixedCostsAndVat(15)"
-            :threshold-highest="addFixedCostsAndVat(25)"
             data-testid="price-item"
             data-test-day="current"
             :data-test-hour="price.hour"
@@ -74,11 +69,6 @@
               currentDate.plus({ days: 1 }).toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
             "
-            :threshold-lowest="addFixedCostsAndVat(-8)"
-            :threshold-low="addFixedCostsAndVat(5)"
-            :threshold-mid="addFixedCostsAndVat(10)"
-            :threshold-high="addFixedCostsAndVat(15)"
-            :threshold-highest="addFixedCostsAndVat(25)"
             data-testid="price-item"
             data-test-day="next"
             :data-test-hour="price.hour"
@@ -159,7 +149,7 @@ const {
 
 const { surroundingLayoutDisabled, disableSurroundingLayout, surroundingLayoutDisabledByRuntimeConfig } = useDisableSurroundingLayout()
 
-const { value: showDynamicColors } = useQueryParameter('dynamicColors')
+const { queryParamValue: showDynamicColors } = useQueryParameter('dynamicColors')
 
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {
@@ -312,6 +302,11 @@ const getDynamicRange = (price: number, allPrices: number[]): PriceRange => {
   const mean = allPrices.reduce((sum, val) => sum + val, 0) / allPrices.length
   const variance = allPrices.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / allPrices.length
   const stdDev = Math.sqrt(variance)
+  if (stdDev === 0) {
+    // All prices are equal – treat the price as 'mid' to avoid division-by-zero.
+    return 'mid'
+  }
+
   const z = (price - mean) / stdDev
   if (z <= -2.4) {
     return 'lowest'

@@ -14,6 +14,8 @@ deploy_production:
   script:
     - echo "Deploying on production environment $DEPLOY_PRODUCTION_SERVER"
     - ssh -p 222 -tt $DEPLOY_USER@$DEPLOY_PRODUCTION_SERVER sudo $DEPLOY_PRODUCTION_SCRIPT
+    - echo "Deploying on production environment $DEPLOY_PRODUCTION_2_SERVER"
+    - ssh -p 222 -tt $DEPLOY_USER@$DEPLOY_PRODUCTION_2_SERVER sudo $DEPLOY_PRODUCTION_2_SCRIPT
 
 deploy_development:
   image: alpine

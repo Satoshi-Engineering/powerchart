@@ -260,11 +260,11 @@ const hardcodedRanges = {
 }
 
 const dyanmicRanges = computed(() => ({
-  lowest: minPrice.value + priceDelta.value * 0.11,
-  lower: minPrice.value + priceDelta.value * 0.28,
+  lowest: minPrice.value + Math.min(priceDelta.value * 0.11, 3),
+  lower: minPrice.value + Math.min(priceDelta.value * 0.28, 10),
   low: minPrice.value + priceDelta.value * 0.5,
-  mid: minPrice.value + priceDelta.value * 0.72,
-  high: minPrice.value + priceDelta.value * 0.89,
+  mid: maxPrice.value - Math.min(priceDelta.value * 0.28, 10),
+  high: maxPrice.value - Math.min(priceDelta.value * 0.11, 3),
 }))
 
 const minPrice = computed(() => {
@@ -275,13 +275,15 @@ const minPrice = computed(() => {
   return Math.min(...allPrices)
 })
 
-const priceDelta = computed(() => {
+const maxPrice = computed(() => {
   const allPrices = allCurrentlyDisplayedPrices.value
   if (allPrices.length === 0) {
     return 0
   }
-  return Math.max(...allPrices) - minPrice.value
+  return Math.max(...allPrices)
 })
+
+const priceDelta = computed(() => maxPrice.value - minPrice.value)
 
 /////
 // form elements

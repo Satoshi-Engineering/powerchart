@@ -273,11 +273,11 @@ const hardcodedRanges = {
 }
 
 const dyanmicRanges = computed(() => ({
-  lowest: minPrice.value + Math.min(priceDelta.value * 0.11, 3),
-  lower: minPrice.value + Math.min(priceDelta.value * 0.28, 10),
+  lowest: -8,
+  lower: minPrice.value + Math.min(priceDelta.value * 0.25, 10),
   low: minPrice.value + priceDelta.value * 0.5,
-  mid: maxPrice.value - Math.min(priceDelta.value * 0.28, 10),
-  high: maxPrice.value - Math.min(priceDelta.value * 0.11, 3),
+  mid: maxPrice.value - Math.min(priceDelta.value * 0.25, 10),
+  high: 25,
 }))
 
 const minPrice = computed(() => {

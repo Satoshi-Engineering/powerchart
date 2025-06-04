@@ -188,9 +188,17 @@ watchEffect(() => {
   if (dateIsoPrev != null) {
     loadForDateIso(dateIsoPrev)
   }
+  const dateIsoPrevPrev = currentDate.value.minus({ days: 2 }).toISODate()
+  if (dateIsoPrevPrev != null) {
+    loadForDateIso(dateIsoPrevPrev)
+  }
   const dateIsoNext = currentDate.value.plus({ days: 1 }).toISODate()
   if (dateIsoNext != null) {
     loadForDateIso(dateIsoNext)
+  }
+  const dateIsoNextNext = currentDate.value.plus({ days: 2 }).toISODate()
+  if (dateIsoNextNext != null) {
+    loadForDateIso(dateIsoNextNext)
   }
 })
 

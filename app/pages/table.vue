@@ -185,6 +185,8 @@ watchEffect(() => {
   }
 })
 
+/////
+// prices
 const prices = computed<{
   hour: number
   pricePrev: number
@@ -201,6 +203,80 @@ const prices = computed<{
     })
   }
   return prices
+})
+
+const allCurrentlyDisplayedPrices = computed(() => {
+  return prices.value.flatMap((p) => [
+    p.pricePrev,
+    p.price,
+    p.priceNext,
+  ])
+})
+
+const getRange = (price: number): PriceRange => {
+  if (showDynamicColors.value) {
+    return applyRange(price, dyanmicRanges.value)
+  }
+  return applyRange(price, hardcodedRanges)
+}
+
+const applyRange = (price: number, ranges: Ranges): PriceRange => {
+  if (price <= ranges.lowest) {
+    return 'lowest'
+  }
+  if (price <= ranges.lower) {
+    return 'lower'
+  }
+  if (price <= ranges.low) {
+    return 'low'
+  }
+  if (price <= ranges.mid) {
+    return 'mid'
+  }
+  if (price <= ranges.high) {
+    return 'high'
+  }
+  return 'highest'
+}
+
+type Ranges = {
+  lowest: number
+  lower: number
+  low: number
+  mid: number
+  high: number
+}
+
+const hardcodedRanges = {
+  lowest: -8,
+  lower: 5,
+  low: 10,
+  mid: 15,
+  high: 25,
+}
+
+const dyanmicRanges = computed(() => ({
+  lowest: minPrice.value + priceDelta.value * 0.11,
+  lower: minPrice.value + priceDelta.value * 0.28,
+  low: minPrice.value + priceDelta.value * 0.5,
+  mid: minPrice.value + priceDelta.value * 0.72,
+  high: minPrice.value + priceDelta.value * 0.89,
+}))
+
+const minPrice = computed(() => {
+  const allPrices = allCurrentlyDisplayedPrices.value
+  if (allPrices.length === 0) {
+    return 0
+  }
+  return Math.min(...allPrices)
+})
+
+const priceDelta = computed(() => {
+  const allPrices = allCurrentlyDisplayedPrices.value
+  if (allPrices.length === 0) {
+    return 0
+  }
+  return Math.max(...allPrices) - minPrice.value
 })
 
 /////
@@ -262,68 +338,6 @@ const addFixedCostsAndVat = (price: number) => {
     priceWithFixedCosts *= 1.2
   }
   return priceWithFixedCosts
-}
-
-const allCurrentlyDisplayedPrices = computed(() => {
-  return prices.value.flatMap((p) => [
-    p.pricePrev,
-    p.price,
-    p.priceNext,
-  ])
-})
-
-const getRange = (price: number): PriceRange => {
-  if (showDynamicColors.value) {
-    return getDynamicRange(price, allCurrentlyDisplayedPrices.value)
-  }
-  return getHardcodedRange(price)
-}
-
-const getHardcodedRange = (price: number): PriceRange => {
-  if (price <= -8) {
-    return 'lowest'
-  }
-  if (price <= 5) {
-    return 'lower'
-  }
-  if (price <= 10) {
-    return 'low'
-  }
-  if (price <= 15) {
-    return 'mid'
-  }
-  if (price <= 25) {
-    return 'high'
-  }
-  return 'highest'
-}
-
-const getDynamicRange = (price: number, allPrices: number[]): PriceRange => {
-  const mean = allPrices.reduce((sum, val) => sum + val, 0) / allPrices.length
-  const variance = allPrices.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / allPrices.length
-  const stdDev = Math.sqrt(variance)
-  if (stdDev === 0) {
-    // All prices are equal – treat the price as 'mid' to avoid division-by-zero.
-    return 'mid'
-  }
-
-  const z = (price - mean) / stdDev
-  if (z <= -2.4) {
-    return 'lowest'
-  }
-  if (z <= -1.3) {
-    return 'lower'
-  }
-  if (z <= 0) {
-    return 'low'
-  }
-  if (z <= 1.3) {
-    return 'mid'
-  }
-  if (z <= 2.4) {
-    return 'high'
-  }
-  return 'highest'
 }
 
 /////

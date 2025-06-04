@@ -1,6 +1,35 @@
 # Changelog
 
 
+## v1.1.0
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.0.1...v1.1.0)
+
+### 🚀 Enhancements
+
+- Calculate dynamic range colors (d78b2c3)
+- Allow enabling and disabling dynamic colors via get parameter and checkbox (ce7cc49)
+- Make it possible to exclude fees via env settings (0a65b6a)
+- Add loading statue to PriceItem (f19deb1)
+- Table preload more data to prevent loading animation (2d9a89e)
+
+### 🩹 Fixes
+
+- Increase table height if surrounding layout is disabled (6636769)
+- E2e tests for different suppliers do no longer exclude fees (12a12e3)
+
+### 💅 Refactors
+
+- Code rabbit suggestions (7ba6fd9)
+- Code rabbit suggestions (2dd2a72)
+- Table dynamic price range do not use mean and standard deviation but group according to delta from min to max (4728bbd)
+- Set max size for the router ranges of table cell colors (8964086)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+- Dr-erych <dave@satoshiengineering.com>
+
 ## v1.0.1
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.0.0...v1.0.1)

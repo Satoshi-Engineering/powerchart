@@ -93,6 +93,7 @@ import { computed, watchEffect, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
+const config = useRuntimeConfig()
 const route = useRoute()
 const { t } = useI18n()
 const { surroundingLayoutDisabled } = useDisableSurroundingLayout()
@@ -166,12 +167,9 @@ const electricitySupplier = computed(() => {
 })
 
 const excludeFees = computed(() => {
-  let excludeFeesLocal: string[] = []
+  const excludeFeesLocal: string[] = config.public.excludeFees
   if (typeof route.query.excludeFees === 'string') {
-    excludeFeesLocal = route.query.excludeFees.split(',')
-  }
-  if (electricitySupplier.value != null) {
-    excludeFeesLocal.push('infrastructureFee')
+    excludeFeesLocal.push(...route.query.excludeFees.split(','))
   }
   return excludeFeesLocal
 })

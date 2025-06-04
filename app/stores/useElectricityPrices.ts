@@ -11,6 +11,17 @@ export const useElectricityPrices = defineStore('electricityPrices', {
     loadingFailed: [] as string[],
     marketpricesByDate: {} as Record<string, AwattarPrice[]>,
   }),
+  getters: {
+    priceForDateAvailable: (state) => (date: DateTime): boolean => {
+      const dateIso = date.toISODate()
+      if (dateIso == null) {
+        return false
+      }
+      return state.marketpricesByDate[dateIso] != null
+        && state.marketpricesByDate[dateIso].length > 0
+        && !state.loadingFailed.includes(dateIso)
+    },
+  },
   actions: {
     async loadForDateIso(dateIso: string) {
       if (this.marketpricesByDate[dateIso] != null || this.loading.includes(dateIso)) {

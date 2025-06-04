@@ -5,16 +5,17 @@
       rounded-md border-1 border-transparent
     "
     :class="{
-      'bg-green-400': priceRange === 'lowest',
-      'bg-green-200': priceRange === 'lower',
-      'bg-yellow-100': priceRange === 'low',
-      'bg-orange-200': priceRange === 'mid',
-      'bg-red-300': priceRange === 'high',
-      'bg-red-500': priceRange === 'highest',
+      'bg-green-400': priceRange === 'lowest' && !loading,
+      'bg-green-200': priceRange === 'lower' && !loading,
+      'bg-yellow-100': priceRange === 'low' && !loading,
+      'bg-orange-200': priceRange === 'mid' && !loading,
+      'bg-red-300': priceRange === 'high' && !loading,
+      'bg-red-500': priceRange === 'highest' && !loading,
+      'bg-gray-200': loading,
       '!border-black font-bold': isCurrentHour,
     }"
   >
-    {{ $n(price, 'decimal') }}
+    {{ loading ? '' : $n(price, 'decimal') }}
   </div>
 </template>
 
@@ -30,6 +31,10 @@ export type PriceRange =
   | 'highest'
 
 defineProps({
+  loading: {
+    type: Boolean,
+    default: false,
+  },
   price: {
     type: Number,
     required: true,

@@ -45,38 +45,41 @@
             {{ String(price.hour).padStart(2, '0') }}
           </div>
           <TablePriceItem
+            :loading="!priceForDateAvailable(currentDate.minus({ days: 1 }))"
             :price="addFixedCostsAndVat(price.pricePrev)"
             :is-current-hour="
               currentDate.minus({ days: 1 }).toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
             "
+            :price-range="getRange(price.pricePrev)"
             data-testid="price-item"
             data-test-day="prev"
             :data-test-hour="price.hour"
-            :price-range="getRange(price.pricePrev)"
           />
           <TablePriceItem
+            :loading="!priceForDateAvailable(currentDate)"
             :price="addFixedCostsAndVat(price.price)"
             :is-current-hour="
               currentDate.toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
             "
+            :price-range="getRange(price.price)"
             data-testid="price-item"
             data-test-day="current"
             :data-test-hour="price.hour"
-            :price-range="getRange(price.price)"
           />
           <TablePriceItem
             v-if="currentDate.plus({ days: 1 }) <= maxDate"
+            :loading="!priceForDateAvailable(currentDate.plus({ days: 1 }))"
             :price="addFixedCostsAndVat(price.priceNext)"
             :is-current-hour="
               currentDate.plus({ days: 1 }).toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
             "
+            :price-range="getRange(price.priceNext)"
             data-testid="price-item"
             data-test-day="next"
             :data-test-hour="price.hour"
-            :price-range="getRange(price.priceNext)"
           />
           <div v-else />
         </template>
@@ -142,12 +145,14 @@
 import { DateTime } from 'luxon'
 import { computed, watchEffect, ref, onBeforeMount, onBeforeUnmount, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import type { PriceRange } from '~/components/table/PriceItem.vue'
+
+import type { PriceRange } from '~/components/table/TablePriceItem.vue'
 
 const { size } = useBreakpoints()
 const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimation(500, true)
 const {
   loadForDateIso, loading: loadingPrices, loadingFailed,
+  priceForDateAvailable,
   priceForDate,
 } = useElectricityPrices()
 

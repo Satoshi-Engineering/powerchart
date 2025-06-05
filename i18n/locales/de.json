@@ -22,5 +22,13 @@
       "disableSurroundingLayout": "Header und Footer verstecken",
       "showDynamicColors": "Dynamisch einfärben"
     }
+  },
+  "electricityProvider": {
+    "customTariff": "Benutzerdefinierter Tarif",
+    "customTariffDescription": "Hier können Sie Ihren eigenen Tarif definieren. Dieser wird dann in der Liste der verfügbaren Tarife angezeigt.",
+    "customTariffName": "Name des benutzerdefinierten Tarifs",
+    "customTariffProvider": "Anbieter des benutzerdefinierten Tarifs",
+    "customTariffFormula": "Formel für den benutzerdefinierten Tarif (z.B. 0.2 * price + 5)",
+    "selectTariff": "Stromtarif"
   }
 }

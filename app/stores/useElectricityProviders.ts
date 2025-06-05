@@ -1,59 +1,58 @@
 import {
-  type ElectricityProvider,
+  type ElectricityTariff,
   epexSpotAt,
   awattarHourlyPre2024,
   awattarHourly,
   energieSteiermarkSpot,
   smartEnergyControl,
-} from '@/assets/electricityProviders'
+} from '@/assets/electricityTariffs'
 
 export const useElectricityProviders = defineStore('electricityProviders', {
   state: () => ({
-    slectedElectricityProvider: 'epex-spot-at',
-    customElectricityProviderName: '',
-    customElectricityProviderTariff: '',
-    customProviderFormula: (price: number) => price,
+    selectedTariff: 'epex-spot-at',
+    customName: '',
+    customProvider: '',
+    // customFormula: (price: number) => price, has to be a string as nuxt hydration cannot handle functions
   }),
   getters: {
-    availableTariffs(state): ElectricityProvider[] {
+    availableTariffs(): ElectricityTariff[] {
       return [
         epexSpotAt,
-        awattarHourlyPre2024,
-        awattarHourly,
         energieSteiermarkSpot,
         smartEnergyControl,
-        {
-          id: 'custom',
-          name: state.customElectricityProviderName,
-          tariff: state.customElectricityProviderTariff,
-          formula: (price: number) => state.customProviderFormula(price),
-        },
+        awattarHourly,
+        awattarHourlyPre2024,
       ]
     },
-    currentElectricityProvider(state): ElectricityProvider {
+    currentElectricityTariff(state): ElectricityTariff {
+      if (state.selectedTariff === 'custom') {
+        return {
+          id: 'custom',
+          name: state.customName,
+          provider: state.customProvider,
+          formula: (price: number) => price,
+        }
+      }
       const provider = this.availableTariffs
-        .find((provider: ElectricityProvider) => provider.id === state.slectedElectricityProvider)
+        .find((provider: ElectricityTariff) => provider.id === state.selectedTariff)
       if (provider == null) {
-        throw new Error(`No provider found for id: ${this.slectedElectricityProvider}`)
+        throw new Error(`No provider found for id: ${this.selectedTariff}`)
       }
       return provider
     },
   },
   actions: {
-    setSelectedProvider(providerId: string) {
-      this.slectedElectricityProvider = providerId
+    setSelectedTariff(tariffId: string) {
+      this.selectedTariff = tariffId
     },
-    setCustomElectricityProviderName(name: string) {
-      this.customElectricityProviderName = name
+    setCustomName(name: string) {
+      this.customName = name
     },
-    setCustomElectricityProviderTariff(tariff: string) {
-      this.customElectricityProviderTariff = tariff
+    setCustomProvider(provider: string) {
+      this.customProvider = provider
     },
-    setCustomProviderFormula(formula: (price: number) => number) {
-      this.customProviderFormula = formula
-    },
-    getPriceForCurrentElectricityProvider(price: number): number {
-      return this.currentElectricityProvider.formula(price)
+    getPriceForCurrentElectricityTariff(price: number): number {
+      return this.currentElectricityTariff.formula(price)
     },
   },
 })

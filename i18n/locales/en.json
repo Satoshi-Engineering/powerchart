@@ -22,5 +22,13 @@
       "disableSurroundingLayout": "Hide header and footer",
       "showDynamicColors": "Dynamic colors"
     }
+  },
+  "electricityProvider": {
+    "customTariff": "Custom tariff",
+    "customTariffDescription": "Here you can define your own tariff. This will then be displayed in the list of available tariffs.",
+    "customTariffName": "Name of the custom tariff",
+    "customTariffProvider": "Provider of the custom tariff",
+    "customTariffFormula": "Formula for the custom tariff (e.g. 0.2 * price + 5)",
+    "selectTariff": "Electricity Tariff"
   }
 }

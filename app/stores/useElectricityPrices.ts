@@ -60,7 +60,7 @@ export const useElectricityPrices = defineStore('electricityPrices', {
     },
     addElectricityProviderFee(price: CtPerKWh): CtPerKWh {
       const providers = useElectricityProviders()
-      return providers.getPriceForCurrentElectricityProvider(price)
+      return providers.getPriceForCurrentElectricityTariff(price)
     },
   },
 })

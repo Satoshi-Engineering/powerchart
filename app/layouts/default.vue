@@ -28,6 +28,19 @@
           :items="viewItems"
           orientation="vertical"
         />
+
+        <USeparator class="my-4" />
+
+        <TypoHeadline
+          level="h4"
+        >
+          {{ $t('electricityProvider.selectTariff') }}
+        </TypoHeadline>
+        <USelect
+          v-model="electricityProviders.selectedTariff"
+          class="w-full"
+          :items="electricityProviderItems"
+        />
       </template>
 
       <template #right>
@@ -60,4 +73,41 @@ const viewItems = ref<NavigationMenuItem[]>([
     icon: 'i-lucide-table',
   },
 ])
+
+const electricityProviders = useElectricityProviders()
+const { t } = useI18n()
+
+// Type SelectItem type definition from @nuxt/ui does not allow to configure 'separator' or 'label' types,
+// although it's allowed according to the documentation and works in practice.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const electricityProviderItems = computed<any[]>(() => {
+  const tariffs = electricityProviders.availableTariffs.map((tariff) => ({
+    label: `${tariff.name} - ${tariff.provider}`,
+    value: tariff.id,
+    icon: 'i-lucide-sun',
+  }))
+
+  let label = t('electricityProvider.customTariff')
+  if (electricityProviders.customName) {
+    label = `${electricityProviders.customName}`
+  }
+  if (electricityProviders.customProvider) {
+    label += ` - ${electricityProviders.customProvider}`
+  }
+  return [
+    ...tariffs,
+    {
+      type: 'separator',
+    },
+    {
+      type: 'label',
+      label: t('electricityProvider.customTariff'),
+    },
+    {
+      label,
+      value: 'custom',
+      icon: 'i-lucide-edit-2',
+    },
+  ]
+})
 </script>

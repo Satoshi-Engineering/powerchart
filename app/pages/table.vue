@@ -137,6 +137,44 @@
           {{ $t('pages.table.showDynamicColors') }}
         </label>
       </div>
+      <div class="mt-5">
+        <TypoHeadline
+          level="h2"
+        >
+          🟡 How the Colors Work in the Pricing Table
+        </TypoHeadline>
+        <TypoParagraph>
+          The colors in the pricing table help you quickly see whether a price is cheap, expensive, or somewhere in the middle.
+        </TypoParagraph>
+        <ul class="list-disc list-inside space-y-1 mb-4">
+          <li>
+            <strong>Green</strong> means the price is <strong>very low</strong> — a great time to buy.
+          </li>
+          <li>
+            <strong>Yellow or orange</strong> means the price is <strong>average or a bit high</strong> — nothing too surprising.
+          </li>
+          <li>
+            <strong>Red</strong> means the price is <strong>very high</strong> — it might be worth waiting.
+          </li>
+        </ul>
+        <TypoParagraph>
+          While prices are still loading, everything shows up in <strong>gray</strong>.
+        </TypoParagraph>
+        <TypoParagraph>
+          The current hour is always highlighted with a <strong>black border</strong>, so it's easy to find.
+        </TypoParagraph>
+        <TypoHeadline
+          level="h3"
+        >
+          🔄 Dynamic Colors Option
+        </TypoHeadline>
+        <TypoParagraph>
+          If you check the box to <strong>"Dynamic colors"</strong> the color scale will automatically <strong>adjust to match today’s price range</strong> — so the colors reflect how good or bad a price is compared to the rest of the day.
+        </TypoParagraph>
+        <TypoParagraph>
+          If that box is <strong>unchecked</strong>, the color scale uses <strong>fixed rules</strong> instead — the same color always means the same price, no matter what day it is.
+        </TypoParagraph>
+      </div>
     </div>
   </UContainer>
 </template>
@@ -238,6 +276,12 @@ const getRange = (price: number): PriceRange => {
 }
 
 const applyRange = (price: number, ranges: Ranges): PriceRange => {
+  if (price <= ranges.lowAlert) {
+    return 'lowAlert'
+  }
+  if (price > ranges.highest) {
+    return 'highAlert'
+  }
   if (price <= ranges.lowest) {
     return 'lowest'
   }
@@ -253,31 +297,40 @@ const applyRange = (price: number, ranges: Ranges): PriceRange => {
   if (price <= ranges.high) {
     return 'high'
   }
-  return 'highest'
+  if (price <= ranges.highest) {
+    return 'highest'
+  }
+  return 'highAlert'
 }
 
 type Ranges = {
+  lowAlert: number
   lowest: number
   lower: number
   low: number
   mid: number
   high: number
+  highest: number
 }
 
 const hardcodedRanges = {
-  lowest: -8,
+  lowAlert: -10,
+  lowest: 0,
   lower: 5,
   low: 10,
   mid: 15,
-  high: 25,
+  high: 20,
+  highest: 30,
 }
 
 const dyanmicRanges = computed(() => ({
-  lowest: -8,
+  lowAlert: hardcodedRanges.lowAlert,
+  lowest: minPrice.value + Math.min(priceDelta.value * 0.10, 10),
   lower: minPrice.value + Math.min(priceDelta.value * 0.25, 10),
   low: minPrice.value + priceDelta.value * 0.5,
   mid: maxPrice.value - Math.min(priceDelta.value * 0.25, 10),
-  high: 25,
+  high: maxPrice.value - Math.min(priceDelta.value * 0.10, 10),
+  highest: hardcodedRanges.highest,
 }))
 
 const minPrice = computed(() => {

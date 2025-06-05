@@ -5,12 +5,14 @@
       rounded-md border-1 border-transparent
     "
     :class="{
-      'bg-green-400': priceRange === 'lowest' && !loading,
-      'bg-green-200': priceRange === 'lower' && !loading,
+      'bg-green-300': priceRange === 'lowAlert' && !loading,
+      'bg-green-200': priceRange === 'lowest' && !loading,
+      'bg-lime-100': priceRange === 'lower' && !loading,
       'bg-yellow-100': priceRange === 'low' && !loading,
-      'bg-orange-200': priceRange === 'mid' && !loading,
-      'bg-red-300': priceRange === 'high' && !loading,
-      'bg-red-500': priceRange === 'highest' && !loading,
+      'bg-orange-100': priceRange === 'mid' && !loading,
+      'bg-orange-200': priceRange === 'high' && !loading,
+      'bg-red-200': priceRange === 'highest' && !loading,
+      'bg-red-300': priceRange === 'highAlert' && !loading,
       'bg-gray-200': loading,
       '!border-black font-bold': isCurrentHour,
     }"
@@ -23,12 +25,14 @@
 import type { PropType } from 'vue'
 
 export type PriceRange =
-  'lowest'
+  'lowAlert'
+  | 'lowest'
   | 'lower'
   | 'low'
   | 'mid'
   | 'high'
   | 'highest'
+  | 'highAlert'
 
 defineProps({
   loading: {

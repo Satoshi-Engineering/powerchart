@@ -7,13 +7,24 @@ import {
   smartEnergyControl,
 } from '@/assets/electricityTariffs'
 
+// todo : make the custom provider editable in the UI
+// todo : store custom provider settings in the url
+
 export const useElectricityProviders = defineStore('electricityProviders', {
-  state: () => ({
-    selectedTariff: 'epex-spot-at',
-    customName: '',
-    customProvider: '',
-    // customFormula: (price: number) => price, has to be a string as nuxt hydration cannot handle functions
-  }),
+  state: () => {
+    const config = useRuntimeConfig()
+    let selectedTariff = config.public.defaultElectricityTariff
+    const route = useRoute()
+    if (route.query.selectedTariff) {
+      selectedTariff = String(route.query.selectedTariff)
+    }
+    return {
+      selectedTariff,
+      customName: '',
+      customProvider: '',
+      // customFormula: (price: number) => price, has to be a string as nuxt hydration cannot handle functions
+    }
+  },
   getters: {
     availableTariffs(): ElectricityTariff[] {
       return [
@@ -24,7 +35,7 @@ export const useElectricityProviders = defineStore('electricityProviders', {
         awattarHourlyPre2024,
       ]
     },
-    currentElectricityTariff(state): ElectricityTariff {
+    currentElectricityTariff(state): ElectricityTariff | null {
       if (state.selectedTariff === 'custom') {
         return {
           id: 'custom',
@@ -36,7 +47,8 @@ export const useElectricityProviders = defineStore('electricityProviders', {
       const provider = this.availableTariffs
         .find((provider: ElectricityTariff) => provider.id === state.selectedTariff)
       if (provider == null) {
-        throw new Error(`No provider found for id: ${this.selectedTariff}`)
+        console.warn(`No provider found for id: ${this.selectedTariff}`)
+        return null
       }
       return provider
     },
@@ -52,7 +64,7 @@ export const useElectricityProviders = defineStore('electricityProviders', {
       this.customProvider = provider
     },
     getPriceForCurrentElectricityTariff(price: number): number {
-      return this.currentElectricityTariff.formula(price)
+      return this.currentElectricityTariff?.formula(price) || price
     },
   },
 })

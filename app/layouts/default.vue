@@ -59,17 +59,24 @@
 </template>
 
 <script setup lang="ts">
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { NavigationMenuItem, SelectItem } from '@nuxt/ui'
 
-const viewItems = ref<NavigationMenuItem[]>([
+const route = useRoute()
+const viewItems = computed<NavigationMenuItem[]>(() => [
   {
     label: 'BarChart',
-    to: '/',
+    to: {
+      path: '/',
+      query: route.query,
+    },
     icon: 'i-lucide-chart-column',
   },
   {
     label: 'Table',
-    to: '/table',
+    to: {
+      path: '/table',
+      query: route.query,
+    },
     icon: 'i-lucide-table',
   },
 ])
@@ -77,10 +84,7 @@ const viewItems = ref<NavigationMenuItem[]>([
 const electricityProviders = useElectricityProviders()
 const { t } = useI18n()
 
-// Type SelectItem type definition from @nuxt/ui does not allow to configure 'separator' or 'label' types,
-// although it's allowed according to the documentation and works in practice.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const electricityProviderItems = computed<any[]>(() => {
+const electricityProviderItems = computed<SelectItem[]>(() => {
   const tariffs = electricityProviders.availableTariffs.map((tariff) => ({
     label: `${tariff.name} - ${tariff.provider}`,
     value: tariff.id,

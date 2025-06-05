@@ -11,5 +11,6 @@ export const runtimeConfig = {
     appOrigin: '',
     disableSurroundingLayout: false,
     excludeFees: [] as string[],
+    defaultElectricityTariff: 'epex-spot-at',
   },
 }

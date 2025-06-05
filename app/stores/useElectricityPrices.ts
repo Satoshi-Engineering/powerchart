@@ -38,23 +38,10 @@ export const useElectricityPrices = defineStore('electricityPrices', {
       }
       this.loading = this.loading.filter((currentDateIso) => currentDateIso !== dateIso)
     },
-    priceForDate(date: DateTime, electricitySupplier = 'EnergieSteiermark'): CtPerKWh {
-      const dateIso = date.toISODate()
-      if (dateIso == null || this.marketpricesByDate[dateIso] == null) {
-        return 0
-      }
-      const usedPrice = this.marketpricesByDate[dateIso].find(
-        ({ start_timestamp, end_timestamp }: { start_timestamp: number, end_timestamp: number }) => (
-          date.toMillis() >= start_timestamp
-          && date.toMillis() < end_timestamp
-        ),
-      )
-      if (usedPrice == null) {
-        return 0
-      }
-      return this.addSupplierFee(usedPrice.marketprice / 10, electricitySupplier)
+    priceForDate(date: DateTime): CtPerKWh {
+      return this.priceForTimestamp(date.toMillis())
     },
-    priceForTimestamp(timestamp: number, electricitySupplier = 'EnergieSteiermark'): CtPerKWh {
+    priceForTimestamp(timestamp: number): CtPerKWh {
       const date = DateTime.fromMillis(timestamp)
       const dateIso = date.toISODate()
       if (dateIso == null || this.marketpricesByDate[dateIso] == null) {
@@ -69,26 +56,11 @@ export const useElectricityPrices = defineStore('electricityPrices', {
       if (usedPrice == null) {
         return 0
       }
-      return this.addSupplierFee(usedPrice.marketprice / 10, electricitySupplier)
+      return this.addElectricityProviderFee(usedPrice.marketprice / 10)
     },
-    addSupplierFee(price: CtPerKWh, electricitySupplier = 'EnergieSteiermark'): CtPerKWh {
-      // EPEX price is the base price
-      if (electricitySupplier === 'EPEX') {
-        return price
-      }
-
-      // awattar takes 3 % fee in either direction
-      if (electricitySupplier === 'awattar') {
-        return price + Math.abs(price * 0.03)
-      }
-
-      // awattar takes 3 % fee in either direction + 1,5 ct/kWh since 2024
-      if (electricitySupplier === 'awattar-2024') {
-        return price + Math.abs(price * 0.03) + 1.5
-      }
-
-      // Energie Steiermark adds 1,2 ct/kWh (i.e. 12 €/Mwh) on top of EPEX price
-      return price + 1.2
+    addElectricityProviderFee(price: CtPerKWh): CtPerKWh {
+      const providers = useElectricityProviders()
+      return providers.getPriceForCurrentElectricityProvider(price)
     },
   },
 })

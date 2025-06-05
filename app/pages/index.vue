@@ -79,7 +79,6 @@
           :chart-height="chartHeight"
           :chart-width="chartWidth"
           :date="currentDate"
-          :electricity-supplier="electricitySupplier"
           :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
         />
       </svg>
@@ -109,7 +108,7 @@ const {
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {
   const dateTomorrow = DateTime.now().endOf('day').plus({ days: 1 })
-  if (priceForDate(dateTomorrow, electricitySupplier.value) === 0) {
+  if (priceForDate(dateTomorrow) === 0) {
     return DateTime.now().endOf('day')
   }
   return dateTomorrow
@@ -154,16 +153,6 @@ const chartWidth = computed(() => Math.max(800, Math.min(1800, clientWidth.value
 const chartHeight = computed(() => {
   const heightReduction = surroundingLayoutDisabled.value ? 70 : 180
   return clientHeight.value - heightReduction - margins.value.top - margins.value.bottom
-})
-
-const electricitySupplier = computed(() => {
-  if (
-    typeof route.params.electricitySupplier === 'string'
-    && route.params.electricitySupplier.length > 0
-  ) {
-    return route.params.electricitySupplier
-  }
-  return undefined
 })
 
 const excludeFees = computed(() => {

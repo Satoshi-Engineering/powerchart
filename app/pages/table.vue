@@ -163,7 +163,7 @@ const { queryParamValue: showDynamicColors } = useQueryParameter('dynamicColors'
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {
   const dateTomorrow = DateTime.now().endOf('day').plus({ days: 1 })
-  if (priceForDate(dateTomorrow, 'EPEX') === 0) {
+  if (priceForDate(dateTomorrow) === 0) {
     return DateTime.now().endOf('day')
   }
   return dateTomorrow
@@ -214,9 +214,9 @@ const prices = computed<{
   for (let hour = 0; hour < 24; hour++) {
     prices.push({
       hour,
-      pricePrev: priceForDate(currentDate.value.minus({ days: 1 }).set({ hour }), 'EPEX'),
-      price: priceForDate(currentDate.value.set({ hour }), 'EPEX'),
-      priceNext: priceForDate(currentDate.value.plus({ days: 1 }).set({ hour }), 'EPEX'),
+      pricePrev: priceForDate(currentDate.value.minus({ days: 1 }).set({ hour })),
+      price: priceForDate(currentDate.value.set({ hour })),
+      priceNext: priceForDate(currentDate.value.plus({ days: 1 }).set({ hour })),
     })
   }
   return prices

@@ -46,10 +46,6 @@ const props = defineProps({
     type: Object as PropType<DateTime>,
     required: true,
   },
-  electricitySupplier: {
-    type: String,
-    default: undefined,
-  },
   feeIds: {
     type: Array as PropType<Fee['id'][]>,
     required: true,
@@ -64,7 +60,7 @@ const { feeForDate, colorForFeeId } = useElectricityFees()
 const { priceForTimestamp } = useElectricityPrices()
 
 const bars = computed(() => hourlyTimestampsForCurrentDate.value.map((timestamp) => {
-  const price = priceForTimestamp(timestamp, props.electricitySupplier)
+  const price = priceForTimestamp(timestamp)
   const feeSegments = feeSegmentsForTimestamp(timestamp)
   const totalPriceBeforeVat = calculateTotalPriceBeforeVat(price, feeSegments)
   const vat = totalPriceBeforeVat * props.vat

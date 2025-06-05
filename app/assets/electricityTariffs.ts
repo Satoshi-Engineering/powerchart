@@ -12,13 +12,6 @@ export const epexSpotAt: ElectricityTariff = {
   formula: (price: number) => price,
 }
 
-export const awattarHourlyPre2024: ElectricityTariff = {
-  id: 'awattar-hourly-pre-2024',
-  name: 'HOURLY (pre 2024)',
-  provider: 'aWATTar',
-  formula: (price: number) => price + Math.abs(price * 0.03),
-}
-
 export const awattarHourly: ElectricityTariff = {
   id: 'awattar-hourly',
   name: 'HOURLY',

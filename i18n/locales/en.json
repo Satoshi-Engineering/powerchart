@@ -29,6 +29,18 @@
     "customTariffName": "Name of the custom tariff",
     "customTariffProvider": "Provider of the custom tariff",
     "customTariffFormula": "Formula for the custom tariff (e.g. 0.2 * price + 5)",
-    "selectTariff": "Electricity Tariff"
+    "selectTariff": "Electricity Tariff",
+    "formLabels": {
+      "name": "Tariff",
+      "provider": "Provider",
+      "formula": "Formula"
+    },
+    "customProvider": "Custom provider",
+    "customTariffFormulaDescription": "Powerchart uses mathjs to calculate the price. Here are some examples:"
+  },
+  "navigation": {
+    "barchart": "Bar Chart",
+    "table": "Table",
+    "configureCustomTariff": "Edit Custom Tariff"
   }
 }

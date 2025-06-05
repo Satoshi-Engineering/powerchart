@@ -29,6 +29,18 @@
     "customTariffName": "Name des benutzerdefinierten Tarifs",
     "customTariffProvider": "Anbieter des benutzerdefinierten Tarifs",
     "customTariffFormula": "Formel für den benutzerdefinierten Tarif (z.B. 0.2 * price + 5)",
-    "selectTariff": "Stromtarif"
+    "selectTariff": "Stromtarif",
+    "formLabels": {
+      "name": "Tarif",
+      "provider": "Anbieter",
+      "formula": "Formel"
+    },
+    "customProvider": "Benutzerdefinierter Anbieter",
+    "customTariffFormulaDescription": "Powerchart nutzt mathjs um den Preis zu berechnen. Hier einige Beispiele:"
+  },
+  "navigation": {
+    "barchart": "Balkendiagramm",
+    "table": "Tabelle",
+    "configureCustomTariff": "Benutzerdefinierten Tarif Anpassen"
   }
 }

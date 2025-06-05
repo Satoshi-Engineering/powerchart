@@ -41,6 +41,11 @@
           class="w-full"
           :items="electricityProviderItems"
         />
+        <UNavigationMenu
+          :items="configureCustomTariff"
+          orientation="vertical"
+          class="mt-2"
+        />
       </template>
 
       <template #right>
@@ -64,7 +69,7 @@ import type { NavigationMenuItem, SelectItem } from '@nuxt/ui'
 const route = useRoute()
 const viewItems = computed<NavigationMenuItem[]>(() => [
   {
-    label: 'BarChart',
+    label: t('navigation.barchart'),
     to: {
       path: '/',
       query: route.query,
@@ -72,7 +77,7 @@ const viewItems = computed<NavigationMenuItem[]>(() => [
     icon: 'i-lucide-chart-column',
   },
   {
-    label: 'Table',
+    label: t('navigation.table'),
     to: {
       path: '/table',
       query: route.query,
@@ -114,4 +119,15 @@ const electricityProviderItems = computed<SelectItem[]>(() => {
     },
   ]
 })
+
+const configureCustomTariff = computed<NavigationMenuItem[]>(() => [
+  {
+    label: t('navigation.configureCustomTariff'),
+    to: {
+      path: '/settings/custom-tariff',
+      query: route.query,
+    },
+    icon: 'i-lucide-edit-2',
+  },
+])
 </script>

@@ -1,14 +1,13 @@
+import { evaluate } from 'mathjs'
 import {
   type ElectricityTariff,
   epexSpotAt,
-  awattarHourlyPre2024,
   awattarHourly,
   energieSteiermarkSpot,
   smartEnergyControl,
 } from '@/assets/electricityTariffs'
 
-// todo : make the custom provider editable in the UI
-// todo : store custom provider settings in the url
+// todo : store custom tariff settings in the url
 
 export const useElectricityProviders = defineStore('electricityProviders', {
   state: () => {
@@ -22,7 +21,7 @@ export const useElectricityProviders = defineStore('electricityProviders', {
       selectedTariff,
       customName: '',
       customProvider: '',
-      // customFormula: (price: number) => price, has to be a string as nuxt hydration cannot handle functions
+      customFormula: '',
     }
   },
   getters: {
@@ -32,8 +31,20 @@ export const useElectricityProviders = defineStore('electricityProviders', {
         energieSteiermarkSpot,
         smartEnergyControl,
         awattarHourly,
-        awattarHourlyPre2024,
       ]
+    },
+    priceForCustomFormula() {
+      return (price: number) => {
+        try {
+          const calculated = evaluate(`price = ${price}; ${this.customFormula}`)
+          if (typeof calculated.entries[0] !== 'number') {
+            return NaN
+          }
+          return calculated.entries[0]
+        } catch {
+          return NaN
+        }
+      }
     },
     currentElectricityTariff(state): ElectricityTariff | null {
       if (state.selectedTariff === 'custom') {
@@ -41,7 +52,7 @@ export const useElectricityProviders = defineStore('electricityProviders', {
           id: 'custom',
           name: state.customName,
           provider: state.customProvider,
-          formula: (price: number) => price,
+          formula: (price: number) => this.priceForCustomFormula(price),
         }
       }
       const provider = this.availableTariffs

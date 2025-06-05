@@ -1,42 +1,43 @@
 import { evaluate } from 'mathjs'
 import {
   type ElectricityTariff,
-  epexSpotAt,
-  awattarHourly,
-  energieSteiermarkSpot,
-  smartEnergyControl,
+  CustomTariff,
+  electricityTariffs,
 } from '@/assets/electricityTariffs'
 
-// todo : store custom tariff settings in the url
-
 export const useElectricityProviders = defineStore('electricityProviders', {
-  state: () => {
+  state: (): {
+    selectedTariff: string
+    customTariff: ElectricityTariff
+  } => {
     const config = useRuntimeConfig()
-    let selectedTariff = config.public.defaultElectricityTariff
     const route = useRoute()
+
+    let selectedTariff = config.public.defaultElectricityTariff
     if (route.query.selectedTariff) {
       selectedTariff = String(route.query.selectedTariff)
     }
+
+    let customTariff: CustomTariff
+    try {
+      customTariff = CustomTariff.parse(JSON.parse(route.query.customTariff as string))
+    } catch {
+      customTariff = CustomTariff.parse({})
+    }
+
     return {
       selectedTariff,
-      customName: '',
-      customProvider: '',
-      customFormula: '',
+      customTariff,
     }
   },
   getters: {
     availableTariffs(): ElectricityTariff[] {
-      return [
-        epexSpotAt,
-        energieSteiermarkSpot,
-        smartEnergyControl,
-        awattarHourly,
-      ]
+      return electricityTariffs
     },
-    priceForCustomFormula() {
-      return (price: number) => {
+    priceForFormula() {
+      return (price: number, formula: string) => {
         try {
-          const calculated = evaluate(`price = ${price}; ${this.customFormula}`)
+          const calculated = evaluate(`price = ${price}; ${formula}`)
           if (typeof calculated.entries[0] !== 'number') {
             return NaN
           }
@@ -47,13 +48,8 @@ export const useElectricityProviders = defineStore('electricityProviders', {
       }
     },
     currentElectricityTariff(state): ElectricityTariff | null {
-      if (state.selectedTariff === 'custom') {
-        return {
-          id: 'custom',
-          name: state.customName,
-          provider: state.customProvider,
-          formula: (price: number) => this.priceForCustomFormula(price),
-        }
+      if (state.selectedTariff === state.customTariff.id) {
+        return state.customTariff
       }
       const provider = this.availableTariffs
         .find((provider: ElectricityTariff) => provider.id === state.selectedTariff)
@@ -63,19 +59,17 @@ export const useElectricityProviders = defineStore('electricityProviders', {
       }
       return provider
     },
+    currentFormula(): ElectricityTariff['formula'] {
+      return this.currentElectricityTariff?.formula ?? ''
+    },
   },
   actions: {
-    setSelectedTariff(tariffId: string) {
-      this.selectedTariff = tariffId
-    },
-    setCustomName(name: string) {
-      this.customName = name
-    },
-    setCustomProvider(provider: string) {
-      this.customProvider = provider
-    },
     getPriceForCurrentElectricityTariff(price: number): number {
-      return this.currentElectricityTariff?.formula(price) || price
+      const calculatedPrice = this.priceForFormula(price, this.currentFormula)
+      if (isNaN(calculatedPrice)) {
+        return price
+      }
+      return calculatedPrice
     },
   },
 })

@@ -1,3 +1,5 @@
+import { CustomTariff } from '~/assets/electricityTariffs'
+
 export default defineNuxtPlugin(() => {
   const electricityProviders = useElectricityProviders()
 
@@ -15,4 +17,20 @@ export default defineNuxtPlugin(() => {
       },
     })
   })
+
+  watch(() => electricityProviders.customTariff, (newTariff) => {
+    const defaultTariff = CustomTariff.parse({})
+    const customTariff = (JSON.stringify(newTariff) === JSON.stringify(defaultTariff))
+      ? undefined
+      : JSON.stringify(newTariff)
+
+    const route = useRoute()
+    const router = useRouter()
+    router.replace({
+      query: {
+        ...route.query,
+        customTariff,
+      },
+    })
+  }, { deep: true })
 })

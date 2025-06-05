@@ -6,7 +6,7 @@
         :label="$t('electricityProvider.formLabels.name')"
       >
         <UInput
-          v-model="electricityProviders.customName"
+          v-model="electricityProviders.customTariff.name"
           class="w-full"
           :placeholder="$t('electricityProvider.customTariff')"
         />
@@ -16,7 +16,7 @@
         :label="$t('electricityProvider.formLabels.provider')"
       >
         <UInput
-          v-model="electricityProviders.customProvider"
+          v-model="electricityProviders.customTariff.provider"
           class="w-full"
           :placeholder="$t('electricityProvider.customProvider')"
         />
@@ -26,7 +26,7 @@
         :label="$t('electricityProvider.formLabels.formula')"
       >
         <UInput
-          v-model="electricityProviders.customFormula"
+          v-model="electricityProviders.customTariff.formula"
           class="w-full"
           placeholder="price"
         />
@@ -34,13 +34,13 @@
       <pre>
         <code>
 price = 1.5
-{{ electricityProviders.customFormula }} = {{ electricityProviders.priceForCustomFormula(1.5) }}
+{{ electricityProviders.customTariff.formula }} = {{ electricityProviders.priceForFormula(1.5, electricityProviders.customTariff.formula) }}
 
 price = 0
-{{ electricityProviders.customFormula }} = {{ electricityProviders.priceForCustomFormula(0) }}
+{{ electricityProviders.customTariff.formula }} = {{ electricityProviders.priceForFormula(0, electricityProviders.customTariff.formula) }}
 
 price = -3
-{{ electricityProviders.customFormula }} = {{ electricityProviders.priceForCustomFormula(-3) }}
+{{ electricityProviders.customTariff.formula }} = {{ electricityProviders.priceForFormula(-3, electricityProviders.customTariff.formula) }}
         </code>
       </pre>
       <TypoParagraph>

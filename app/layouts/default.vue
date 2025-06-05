@@ -97,11 +97,11 @@ const electricityProviderItems = computed<SelectItem[]>(() => {
   }))
 
   let label = t('electricityProvider.customTariff')
-  if (electricityProviders.customName) {
-    label = `${electricityProviders.customName}`
+  if (electricityProviders.customTariff.name) {
+    label = `${electricityProviders.customTariff.name}`
   }
-  if (electricityProviders.customProvider) {
-    label += ` - ${electricityProviders.customProvider}`
+  if (electricityProviders.customTariff.provider) {
+    label += ` - ${electricityProviders.customTariff.provider}`
   }
   return [
     ...tariffs,

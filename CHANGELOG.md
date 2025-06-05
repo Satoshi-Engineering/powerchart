@@ -1,6 +1,33 @@
 # Changelog
 
 
+## v1.2.0
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.1.1...v1.2.0)
+
+### 🚀 Enhancements
+
+- Make the selected tariff selectable in the ui (9b86b3f)
+- Store selected electricity tariff in the query params (76fc892)
+- Add settings page for custom tariff (618967a)
+- Store custom tariff in url (eb1c235)
+
+### 🩹 Fixes
+
+- ValidateRuntimeConfig handle arrays (3ec6910)
+
+### 💅 Refactors
+
+- Add store for selecting electricity provider and remove it from url segments (a0a27e8)
+- Improve the color scheme for the table page and add a description (0bb4125)
+- Adapt e2e tests to configurable provider refactoring (1571429)
+- Adapt e2e tests to configurable provider refactoring (0c33565)
+- Dynamic colors explanation texts (4e5a9bd)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.1.1
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.1.0...v1.1.1)

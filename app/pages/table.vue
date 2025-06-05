@@ -137,7 +137,47 @@
           {{ $t('pages.table.showDynamicColors') }}
         </label>
       </div>
-      <div class="mt-5">
+      <div
+        v-if="$i18n.locale === 'de'"
+        class="mt-5"
+      >
+        <TypoHeadline level="h2">
+          🟡 So funktionieren die Farben in der Preistabelle
+        </TypoHeadline>
+        <TypoParagraph>
+          Die Farbgebung der Preistabelle dient zur schnellen Orientierung über das aktuelle Preisniveau
+        </TypoParagraph>
+        <ul class="list-disc list-inside space-y-1 mb-4">
+          <li>
+            <strong>Grün</strong> bedeutet, der Preis ist <strong>sehr niedrig</strong> — eine gute Zeit, um Strom zu verbrauchen.
+          </li>
+          <li>
+            <strong>Gelb oder Orange</strong> bedeutet, der Preis ist <strong>durchschnittlich oder etwas hoch</strong> — nichts Ungewöhnliches.
+          </li>
+          <li>
+            <strong>Rot</strong> bedeutet, der Preis ist <strong>sehr hoch</strong> — du solltest Energie sparen.
+          </li>
+        </ul>
+        <TypoParagraph>
+          Während die Preise noch geladen werden, erscheint alles in <strong>Grau</strong>.
+        </TypoParagraph>
+        <TypoParagraph>
+          Die aktuelle Stunde ist immer mit einem <strong>schwarzen Rahmen</strong> hervorgehoben, damit du sie leicht findest.
+        </TypoParagraph>
+        <TypoHeadline level="h3">
+          🔄 Option für dynamische Farben
+        </TypoHeadline>
+        <TypoParagraph>
+          Bei aktivierter Option <strong>"Dynamisch einfärben"</strong> orientiert sich die Farbskala an der Preisspanne der aktuell sichtbaren drei Tage. Dadurch wird das Preisniveau jeweils <strong>relativ zum gesamten dargestellten Zeitraum</strong> dargestellt.
+        </TypoParagraph>
+        <TypoParagraph>
+          Wenn das Kästchen <strong>nicht aktiviert</strong> ist, verwendet die Farbskala <strong>feste Regeln</strong> — dieselbe Farbe bedeutet immer denselben Preis, unabhängig vom Tag.
+        </TypoParagraph>
+      </div>
+      <div
+        v-else
+        class="mt-5"
+      >
         <TypoHeadline
           level="h2"
         >
@@ -148,13 +188,13 @@
         </TypoParagraph>
         <ul class="list-disc list-inside space-y-1 mb-4">
           <li>
-            <strong>Green</strong> means the price is <strong>very low</strong> — a great time to buy.
+            <strong>Green</strong> means the price is <strong>very low</strong> — a great time to consume electricity.
           </li>
           <li>
             <strong>Yellow or orange</strong> means the price is <strong>average or a bit high</strong> — nothing too surprising.
           </li>
           <li>
-            <strong>Red</strong> means the price is <strong>very high</strong> — it might be worth waiting.
+            <strong>Red</strong> means the price is <strong>very high</strong> — you want to save energy.
           </li>
         </ul>
         <TypoParagraph>
@@ -169,7 +209,7 @@
           🔄 Dynamic Colors Option
         </TypoHeadline>
         <TypoParagraph>
-          If you check the box to <strong>"Dynamic colors"</strong> the color scale will automatically <strong>adjust to match today’s price range</strong> — so the colors reflect how good or bad a price is compared to the rest of the day.
+          If the <strong>"Dynamic colors"</strong> option is enabled, the color scale automatically adjusts to the price range across the three displayed days. This allows the colors to reflect how favorable or unfavorable a price is <strong>compared to the rest of the visible period</strong>.
         </TypoParagraph>
         <TypoParagraph>
           If that box is <strong>unchecked</strong>, the color scale uses <strong>fixed rules</strong> instead — the same color always means the same price, no matter what day it is.

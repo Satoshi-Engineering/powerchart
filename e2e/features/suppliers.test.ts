@@ -18,9 +18,9 @@ test.beforeAll(async () => {
 test('use a different electricity supplier', async ({ page }) => {
   await page.clock.setFixedTime(currentDate)
 
-  await gotoAndWaitForNuxtHydration(page, '/awattar')
+  await gotoAndWaitForNuxtHydration(page, '/?selectedTariff=awattar-hourly')
 
   await expect(page.getByTestId('electricity-price-chart')).toBeVisible()
-  await expect(page.getByTestId('bar_14:00').getByTestId('bar-total-price')).toHaveText('16.75')
+  await expect(page.getByTestId('bar_14:00').getByTestId('bar-total-price')).toHaveText('13.75')
   await expect(page.getByTestId('x-axis').locator(':scope > g').nth(14)).toHaveText('14:00')
 })

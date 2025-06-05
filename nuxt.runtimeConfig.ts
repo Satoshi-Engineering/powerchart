@@ -10,7 +10,7 @@ export const runtimeConfig = {
     appTitle: 'Powerchart',
     appOrigin: '',
     disableSurroundingLayout: false,
-    excludeFees: [] as string[],
+    excludeFees: ['infrastructureFee'],
     defaultElectricityTariff: 'epex-spot-at',
   },
 }

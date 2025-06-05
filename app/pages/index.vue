@@ -91,6 +91,7 @@ import { DateTime } from 'luxon'
 import { computed, watchEffect, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { z } from 'zod'
 
 const config = useRuntimeConfig()
 const route = useRoute()
@@ -156,7 +157,13 @@ const chartHeight = computed(() => {
 })
 
 const excludeFees = computed(() => {
-  const excludeFeesLocal: string[] = config.public.excludeFees
+  let excludeFeesLocal: string[]
+  try {
+    excludeFeesLocal = z.string().array().parse(config.public.excludeFees)
+  } catch {
+    console.error(`Invalid excludeFees: ${config.public.excludeFees}`)
+    excludeFeesLocal = []
+  }
   if (typeof route.query.excludeFees === 'string') {
     excludeFeesLocal.push(...route.query.excludeFees.split(','))
   }

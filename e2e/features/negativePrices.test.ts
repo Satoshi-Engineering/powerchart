@@ -23,5 +23,5 @@ test('negative prices are displayed', async ({ page }) => {
   await expect(page.getByTestId('electricity-price-chart')).toBeVisible()
   await expect(page.getByTestId('bar_12:00').locator(':scope > rect')).toHaveCount(1)
   await expect(page.getByTestId('bar_12:00').getByTestId('bar-segment-negative-price')).toHaveCount(1)
-  await expect(page.getByTestId('bar-segment-negative-price')).toHaveCount(7)
+  await expect(page.getByTestId('bar-segment-negative-price')).toHaveCount(9)
 })

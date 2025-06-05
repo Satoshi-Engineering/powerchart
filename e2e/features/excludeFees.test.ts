@@ -20,16 +20,16 @@ test('all fee segments are displayed', async ({ page }) => {
 
   await gotoAndWaitForNuxtHydration(page, '/')
 
-  await expect(page.getByTestId('bar_09:00').locator(':scope > rect')).toHaveCount(7)
-  await expect(page.getByTestId('bar_09:00').getByTestId('bar-segment-electricityFee')).toHaveCount(1)
-  await expect(page.getByTestId('bar-segment-electricityFee')).toHaveCount(24)
+  await expect(page.getByTestId('bar_09:00').locator(':scope > rect')).toHaveCount(6)
+  await expect(page.getByTestId('bar_09:00').getByTestId('bar-segment-gridFee')).toHaveCount(1)
+  await expect(page.getByTestId('bar-segment-gridFee')).toHaveCount(24)
 })
 
-test('no infrastructure fee', async ({ page }) => {
+test('no grid fee', async ({ page }) => {
   await page.clock.setFixedTime(currentDate)
 
-  await gotoAndWaitForNuxtHydration(page, '/?excludeFees=electricityFee')
+  await gotoAndWaitForNuxtHydration(page, '/?excludeFees=gridFee')
 
-  await expect(page.getByTestId('bar_09:00').locator(':scope > rect')).toHaveCount(6)
-  await expect(page.getByTestId('bar-segment-electricityFee')).toHaveCount(0)
+  await expect(page.getByTestId('bar_09:00').locator(':scope > rect')).toHaveCount(5)
+  await expect(page.getByTestId('bar-segment-gridFee')).toHaveCount(0)
 })

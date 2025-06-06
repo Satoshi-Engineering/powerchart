@@ -168,10 +168,10 @@
           🔄 Option für dynamische Farben
         </TypoHeadline>
         <TypoParagraph>
-          Bei aktivierter Option <strong>"Dynamisch einfärben"</strong> orientiert sich die Farbskala an der Preisspanne der aktuell sichtbaren drei Tage. Dadurch wird das Preisniveau jeweils <strong>relativ zum gesamten dargestellten Zeitraum</strong> dargestellt.
+          Bei aktivierter Option <strong>"Dynamisch einfärben"</strong> orientiert sich die Farbskala an der Preisspanne der aktuell sichtbaren drei Tage. Dadurch wird das Preisniveau jeweils <strong>relativ zum angezeigten Zeitraum</strong> dargestellt.
         </TypoParagraph>
         <TypoParagraph>
-          Wenn das Kästchen <strong>nicht aktiviert</strong> ist, verwendet die Farbskala <strong>feste Regeln</strong> — dieselbe Farbe bedeutet immer denselben Preis, unabhängig vom Tag.
+          Wenn die Option <strong>nicht aktiviert</strong> ist, verwendet die Farbskala <strong>feste Regeln</strong> — dieselbe Farbe bedeutet immer denselben Preis, unabhängig vom Preisniveau der dargestellten Tage.
         </TypoParagraph>
       </div>
       <div

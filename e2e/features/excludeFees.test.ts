@@ -15,7 +15,7 @@ test.beforeAll(async () => {
   await prepareAwattarCache(dataMay11, dataMay12)
 })
 
-test('all fee segments are displayed', async ({ page }) => {
+test('all fee segments are displayed (except infrastructureFee is disabled by env setting)', async ({ page }) => {
   await page.clock.setFixedTime(currentDate)
 
   await gotoAndWaitForNuxtHydration(page, '/')

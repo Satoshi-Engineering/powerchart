@@ -35,3 +35,12 @@ test('no surrounding layout', async ({ page }) => {
   await expect(page.getByTestId('layout-main')).toHaveCount(0)
   await expect(page.getByTestId('layout-footer')).toHaveCount(0)
 })
+
+test('all fee segments are displayed', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2025-05-12T10:00:00+02:00'))
+
+  await gotoAndWaitForNuxtHydration(page, '/')
+
+  await expect(page.getByTestId('bar_09:00').locator(':scope > rect')).toHaveCount(7)
+  await expect(page.getByTestId('bar-segment-infrastructureFee')).toHaveCount(24)
+})

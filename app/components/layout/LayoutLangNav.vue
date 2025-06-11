@@ -8,6 +8,7 @@
         size="md"
         variant="ghost"
         color="neutral"
+        data-testid="button-lang-switch"
       >
         {{ currentLocaleName }}
       </UButton>

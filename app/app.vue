@@ -30,4 +30,9 @@ useHead({
 })
 
 const layout = computed<LayoutKey>(() => surroundingLayoutDisabled.value ? 'no-surrounding' : 'default')
+
+const { locale } = useI18n()
+watch(locale, (newLocale) => {
+  document.documentElement.setAttribute('lang', newLocale)
+})
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav data-test-id="layout-lang-nav">
     <UDropdownMenu
       :items="items"
     >

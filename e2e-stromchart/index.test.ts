@@ -30,8 +30,8 @@ test('no surrounding layout', async ({ page }) => {
 
   await gotoAndWaitForNuxtHydration(page, '/')
 
-  await expect(page.getByTestId('app-layout')).toHaveCount(0)
-  await expect(page.locator('header')).toHaveCount(0)
-  await expect(page.getByTestId('app-main')).toHaveCount(0)
-  await expect(page.getByTestId('app-footer')).toHaveCount(0)
+  await expect(page.getByTestId('the-default-layout')).toHaveCount(0)
+  await expect(page.getByTestId('layout-header')).toHaveCount(0)
+  await expect(page.getByTestId('layout-main')).toHaveCount(0)
+  await expect(page.getByTestId('layout-footer')).toHaveCount(0)
 })

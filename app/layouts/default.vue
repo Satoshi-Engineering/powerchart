@@ -1,67 +1,74 @@
 <template>
   <div
     class="min-h-dvh flex flex-col"
-    data-testid="app-layout"
+    data-testid="the-default-layout"
   >
-    <UHeader
-      mode="slideover"
-      :ui="{
-        center: 'lg:hidden',
-        toggle: 'lg:block',
-        content: 'lg:block',
-        overlay: 'lg:block',
-      }"
-    >
-      <template #title>
-        <figure class="flex items-center gap-4">
-          <IconLogo
-            class="w-10 h-10"
-          />
-          <TypoHeadline
-            level="h1"
-            class="!my-0 text-base md:text-2xl"
+    <div data-testid="layout-header">
+      <UHeader
+        mode="slideover"
+        :ui="{
+          center: 'lg:hidden',
+          toggle: 'lg:block',
+          content: 'lg:block',
+          overlay: 'lg:block',
+        }"
+      >
+        <template #title>
+          <figure
+            class="flex items-center gap-4"
+            data-testid="layout-header-logo"
           >
-            {{ $config.public.appTitle }}
+            <IconLogo
+              class="w-10 h-10"
+            />
+            <TypoHeadline
+              level="h1"
+              class="!my-0 text-base md:text-2xl"
+            >
+              {{ $config.public.appTitle }}
+            </TypoHeadline>
+          </figure>
+        </template>
+
+        <template #body>
+          <div data-testid="layout-nav-menu">
+            <UNavigationMenu
+              :items="viewItems"
+              orientation="vertical"
+            />
+          </div>
+
+          <USeparator class="my-4" />
+
+          <TypoHeadline
+            level="h4"
+          >
+            {{ $t('electricityProvider.selectTariff') }}
           </TypoHeadline>
-        </figure>
-      </template>
+          <USelect
+            v-model="electricityProviders.selectedTariff"
+            class="w-full"
+            :items="electricityProviderItems"
+          />
+          <UNavigationMenu
+            :items="configureCustomTariff"
+            orientation="vertical"
+            class="mt-2"
+          />
+        </template>
 
-      <template #body>
-        <UNavigationMenu
-          :items="viewItems"
-          orientation="vertical"
-        />
-
-        <USeparator class="my-4" />
-
-        <TypoHeadline
-          level="h4"
-        >
-          {{ $t('electricityProvider.selectTariff') }}
-        </TypoHeadline>
-        <USelect
-          v-model="electricityProviders.selectedTariff"
-          class="w-full"
-          :items="electricityProviderItems"
-        />
-        <UNavigationMenu
-          :items="configureCustomTariff"
-          orientation="vertical"
-          class="mt-2"
-        />
-      </template>
-
-      <template #right>
-        <LayoutLangNav />
-      </template>
-    </UHeader>
+        <template #right>
+          <LayoutLangNav />
+        </template>
+      </UHeader>
+    </div>
     <UMain
       class="flex-1 min-h-none"
-      data-testid="app-main"
+      data-testid="layout-main"
     >
       <slot />
     </UMain>
-    <UFooter data-testid="app-footer">
+    <UFooter data-testid="layout-footer">
       <template #right>
         Version: {{ $config.public.version }}
       </template>

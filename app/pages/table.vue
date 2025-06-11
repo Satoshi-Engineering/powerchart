@@ -1,5 +1,8 @@
 <template>
-  <UContainer class="max-w-xl">
+  <UContainer
+    class="max-w-xl"
+    data-testid="page-table"
+  >
     <div class="flex-1 flex flex-col items-center overflow-hidden">
       <div
         v-if="showLoadingAnimation"

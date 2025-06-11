@@ -1,5 +1,8 @@
 <template>
-  <div class="flex-1 flex flex-col items-center overflow-hidden">
+  <div
+    class="flex-1 flex flex-col items-center overflow-hidden"
+    data-testid="page-index"
+  >
     <UContainer>
       <div class="relative w-full flex mt-4 px-2 justify-left md:justify-center">
         <DatePicker

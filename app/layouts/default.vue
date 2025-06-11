@@ -1,5 +1,8 @@
 <template>
-  <div class="min-h-dvh flex flex-col">
+  <div
+    class="min-h-dvh flex flex-col"
+    data-testid="app-layout"
+  >
     <UHeader
       mode="slideover"
       :ui="{
@@ -52,10 +55,13 @@
         <LayoutLangNav />
       </template>
     </UHeader>
-    <UMain class="flex-1 min-h-none">
+    <UMain
+      class="flex-1 min-h-none"
+      data-testid="app-main"
+    >
       <slot />
     </UMain>
-    <UFooter>
+    <UFooter data-testid="app-footer">
       <template #right>
         Version: {{ $config.public.version }}
       </template>

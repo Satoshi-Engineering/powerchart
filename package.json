@@ -19,6 +19,8 @@
     "test:units:watch": "npm run test:unit:watch",
     "test:e2e": "playwright test",
     "test:e2e:ui": "npm run test:e2e -- --ui",
+    "test:e2e:stromchart": "playwright test --config playwright.config.stromchart.ts",
+    "test:e2e:stromchart:ui": "npm run test:e2e:stromchart -- --ui",
     "audit": "better-npm-audit audit",
     "bump-version-and-push": "./scripts/bump-version-and-push/bump-version-and-push.sh"
   },

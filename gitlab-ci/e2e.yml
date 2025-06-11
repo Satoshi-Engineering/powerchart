@@ -8,3 +8,14 @@ test-e2e:
     - npx playwright install
     - npx playwright install-deps
     - npm run test:e2e
+
+test-e2e-stromchart:
+  stage: e2e
+  rules:
+    - when: on_success
+  cache:
+    - !reference [.shared_config, cache, node_modules]
+  script:
+    - npx playwright install
+    - npx playwright install-deps
+    - npm run test:e2e:stromchart

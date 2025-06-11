@@ -38,7 +38,11 @@ export default defineNuxtConfig({
       version: pkg.version,
     },
   },
-  ignore: ['**/*.test.*', 'e2e/**'],
+  ignore: [
+    '**/*.test.*',
+    'e2e/**',
+    'e2e-stromchart/**',
+  ],
   future: {
     compatibilityVersion: 4,
   },

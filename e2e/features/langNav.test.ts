@@ -19,6 +19,7 @@ test('switch to german', async ({ page }) => {
   await page.getByTestId('button-lang-switch').click()
   await page.locator('a:has-text("Deutsch")').click()
 
+  await page.waitForURL('**/de/table')
   await expect(page.locator('html')).toHaveAttribute('lang', 'de')
   expect(page.url()).toContain('/de/table')
 })

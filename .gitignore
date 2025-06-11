@@ -23,6 +23,7 @@ logs
 .env.*
 !.env.example
 !.env.e2e
+!.env.e2e.stromchart
 
 # Playwright
 playwright-report

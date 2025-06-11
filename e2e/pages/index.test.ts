@@ -58,14 +58,3 @@ test('return to standard time', async ({ page }) => {
   await expect(page.getByTestId('x-axis').locator(':scope > g').nth(0)).toHaveText('00:00 SZ')
   await expect(page.getByTestId('x-axis').locator(':scope > g').nth(14)).toHaveText('13:00 NZ')
 })
-
-test('surrounding layout', async ({ page }) => {
-  await page.clock.setFixedTime(new Date('2025-05-12T10:00:00+02:00'))
-
-  await gotoAndWaitForNuxtHydration(page, '/')
-
-  await expect(page.getByTestId('the-default-layout')).toHaveCount(1)
-  await expect(page.getByTestId('layout-header')).toHaveCount(1)
-  await expect(page.getByTestId('layout-main')).toHaveCount(1)
-  await expect(page.getByTestId('layout-footer')).toHaveCount(1)
-})

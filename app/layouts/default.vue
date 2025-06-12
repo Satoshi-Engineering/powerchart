@@ -49,6 +49,7 @@
             v-model="electricityProviders.selectedTariff"
             class="w-full"
             :items="electricityProviderItems"
+            data-testid="electricity-provider-select"
           />
           <UNavigationMenu
             :items="configureCustomTariff"

@@ -117,6 +117,16 @@
           >
         </label>
         <label
+          class="my-3 block"
+        >
+          <input
+            v-model="showDynamicColors"
+            type="checkbox"
+            data-testid="checkbox-show-dynamic-colors"
+          >
+          {{ $t('pages.table.showDynamicColors') }}
+        </label>
+        <label
           v-if="!surroundingLayoutDisabledByRuntimeConfig"
           class="my-3 block"
         >
@@ -127,17 +137,6 @@
             @change="$event => disableSurroundingLayout(($event.target as HTMLInputElement).checked)"
           >
           {{ $t('pages.table.disableSurroundingLayout') }}
-        </label>
-        <label
-          v-if="!surroundingLayoutDisabledByRuntimeConfig"
-          class="my-3 block"
-        >
-          <input
-            v-model="showDynamicColors"
-            type="checkbox"
-            data-testid="checkbox-show-dynamic-colors"
-          >
-          {{ $t('pages.table.showDynamicColors') }}
         </label>
       </div>
       <div

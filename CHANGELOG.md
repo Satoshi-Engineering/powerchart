@@ -1,6 +1,40 @@
 # Changelog
 
 
+## v1.3.0
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.2.1...v1.3.0)
+
+### 🚀 Enhancements
+
+- Add privacy policy, legal notice and github links to footer (c7b8f54)
+
+### 🩹 Fixes
+
+- Nuxt and vitest ignore stromchart e2e tests (3c9b161)
+- Add stromchart e2e env file (f56f6e5)
+- E2e lang nav test wait for url change (35a6933)
+- Do not set nuxt ui pro license key in e2e env files or it cannot be set by the pipeline (fbe34e8)
+
+### 🏡 Chore
+
+- Add npm audit exception (8d6733c)
+- Npm audit fix (5170063)
+
+### ✅ Tests
+
+- Add e2e test with different env setup (f3dbe12)
+- Add e2e tests for navigation (0b1af65)
+- Add e2e test for disabling surrounding layout (fcefcf8)
+- Add e2e test for disabled fee via env settings (f455a33)
+- Add e2e test for lang nav (1e20577)
+- Add e2e test for table dynamic colors (b8394e6)
+- Add e2e test for switching electricity providers (329095c)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.2.1
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.2.0...v1.2.1)

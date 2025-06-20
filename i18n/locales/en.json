@@ -41,6 +41,8 @@
   "navigation": {
     "barchart": "Bar Chart",
     "table": "Table",
-    "configureCustomTariff": "Edit Custom Tariff"
+    "configureCustomTariff": "Edit Custom Tariff",
+    "privacyPolicy": "Privacy policy",
+    "legalNotice": "Legal notice"
   }
 }

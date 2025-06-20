@@ -23,10 +23,10 @@ useHead({
   },
   link: [...(i18nHead.value.link || [])],
   meta: [
-    { name: 'apple-mobile-web-app-title', content: config.public.appTitle },
+    { name: 'apple-mobile-web-app-title', content: config.public.app.title },
     ...(i18nHead.value.meta || []),
   ],
-  titleTemplate: (titleChunk) => titleChunk ? `${titleChunk} - ${config.public.appTitle}` : config.public.appTitle,
+  titleTemplate: (titleChunk) => titleChunk ? `${titleChunk} - ${config.public.app.title}` : config.public.app.title,
 })
 
 const layout = computed<LayoutKey>(() => surroundingLayoutDisabled.value ? 'no-surrounding' : 'default')

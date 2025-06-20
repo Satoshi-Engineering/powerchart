@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   typescript: { typeCheck: true },
   i18n: {
-    baseUrl: process.env.NUXT_PUBLIC_APP_ORIGIN || runtimeConfig.public.appOrigin,
+    baseUrl: process.env.NUXT_PUBLIC_APP_ORIGIN || runtimeConfig.public.app.origin,
     strategy: 'prefix_except_default',
     defaultLocale: 'en',
     lazy: true,

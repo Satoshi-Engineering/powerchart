@@ -41,6 +41,8 @@
   "navigation": {
     "barchart": "Balkendiagramm",
     "table": "Tabelle",
-    "configureCustomTariff": "Benutzerdefinierten Tarif Anpassen"
+    "configureCustomTariff": "Benutzerdefinierten Tarif Anpassen",
+    "privacyPolicy": "Datenschutzerklärung",
+    "legalNotice": "Impressum"
   }
 }

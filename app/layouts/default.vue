@@ -25,7 +25,7 @@
               level="h1"
               class="!my-0 text-base md:text-2xl"
             >
-              {{ $config.public.appTitle }}
+              {{ $config.public.app.title }}
             </TypoHeadline>
           </figure>
         </template>
@@ -70,6 +70,11 @@
       <slot />
     </UMain>
     <UFooter data-testid="layout-footer">
+      <UNavigationMenu
+        :items="footerLinks"
+        variant="link"
+      />
+
       <template #right>
         Version: {{ $config.public.version }}
       </template>
@@ -144,4 +149,37 @@ const configureCustomTariff = computed<NavigationMenuItem[]>(() => [
     icon: 'i-lucide-edit-2',
   },
 ])
+
+const tml = useTranslateMultilingualString()
+const config = useRuntimeConfig()
+const footerLinks = computed<NavigationMenuItem[]>(() => {
+  const links = [{
+    label: 'GitHub',
+    to: config.public.githubUrl,
+    target: '_blank',
+    icon: 'i-lucide-github',
+  }]
+
+  const legalNoticeUrl = tml(config.public.legalNoticeUrl)
+  if (legalNoticeUrl?.startsWith('http')) {
+    links.unshift({
+      label: t('navigation.legalNotice'),
+      to: legalNoticeUrl,
+      target: '_blank',
+      icon: 'i-lucide-file-text',
+    })
+  }
+
+  const privacyPolicyUrl = tml(config.public.privacyPolicyUrl)
+  if (privacyPolicyUrl?.startsWith('http')) {
+    links.unshift({
+      label: t('navigation.privacyPolicy'),
+      to: privacyPolicyUrl,
+      target: '_blank',
+      icon: 'i-lucide-file-text',
+    })
+  }
+
+  return links
+})
 </script>

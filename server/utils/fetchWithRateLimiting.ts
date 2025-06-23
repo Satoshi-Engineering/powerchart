@@ -10,7 +10,6 @@ export const fetchWithRateLimiting = async <Schema extends ZodTypeAny>(
   options?: NitroFetchOptions<string, 'get' | 'head' | 'patch' | 'post' | 'put' | 'delete' | 'connect' | 'options' | 'trace'>,
 ): Promise<z.infer<Schema>> => {
   const urlObject = new URL(url)
-  // todo : handle rate limit depending on origin
   assertRateLimit(urlObject.origin)
 
   try {

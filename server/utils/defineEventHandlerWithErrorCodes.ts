@@ -34,6 +34,12 @@ const defineEventHandlerWrapper: DefineEventHandlerWrapper = ({
         if (error.code === ErrorCode.enum.maintenanceMode) {
           statusCode = 503
         }
+        if (
+          error.code === ErrorCode.enum.apiRateLimitReached
+          || error.code === ErrorCode.enum.apiRateLimitWaiting
+        ) {
+          statusCode = 429
+        }
         throw createError({
           statusCode,
           statusMessage: error.code,

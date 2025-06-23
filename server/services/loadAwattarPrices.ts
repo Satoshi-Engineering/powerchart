@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { DateTime } from 'luxon'
 import { z } from 'zod'
 
@@ -43,8 +42,11 @@ const fetchPrices = async (dateIso: string): Promise<AwattarPricesResponse['data
 
 const fetchPricesFromAwattar = async (dateIso: string): Promise<AwattarPricesResponse['data']> => {
   const url = buildUrl(dateIso)
-  const { data } = await axios.get(url)
-  return AwattarPricesResponse.parse(data).data
+  const response = await fetchWithRateLimiting(
+    url,
+    AwattarPricesResponse,
+  )
+  return response.data
 }
 
 const buildUrl = (dateIso: string) => {
@@ -65,12 +67,14 @@ const updateCache = (
 }
 
 const handleFailedFetch = (dateIso: string, error: unknown) => {
-  console.error('Failed to fetch prices from awattar', error)
   const data = cache.safeGetExpiredValue(dateIso)
+
   // updating the cache prevents the fetch from being retried too often
   updateCache(dateIso, data ?? [])
   if (data) {
     return data
   }
+
+  console.error(`Failed to fetch prices from awattar for ${dateIso} and no cached data is available.`, error)
   throw error
 }

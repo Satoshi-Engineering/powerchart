@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v1.4.0
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.3.0...v1.4.0)
+
+### 🚀 Enhancements
+
+- Handle 429 response from awattar and wait for 2 minutes before sending calls to awattar again (83653b6)
+
+### ✅ Tests
+
+- Add e2e test for footer links (32d3df3)
+- Add unit test for fetchWithRateLimiting server util function (0ca76e1)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.3.0
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.2.1...v1.3.0)

@@ -44,5 +44,8 @@
     "configureCustomTariff": "Edit Custom Tariff",
     "privacyPolicy": "Privacy policy",
     "legalNotice": "Legal notice"
+  },
+  "gridFees": {
+    "selectGrid": "Grid Fees"
   }
 }

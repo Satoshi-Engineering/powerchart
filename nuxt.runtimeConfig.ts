@@ -14,8 +14,12 @@ export const runtimeConfig = {
     },
     githubUrl: 'https://github.com/Satoshi-Engineering/powerchart',
     defaultElectricityTariff: 'epex-spot-at',
+    availableGrids: [
+      'noFees',
+      'styriaDoubleTariff',
+    ],
+    defaultGrid: 'noFees',
     disableSurroundingLayout: false,
-    excludeFees: ['infrastructureFee'],
   },
   awattarApiOrigin: 'https://api.awattar.at',
   telegramSender: {

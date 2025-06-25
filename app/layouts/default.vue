@@ -40,22 +40,11 @@
 
           <USeparator class="my-4" />
 
-          <TypoHeadline
-            level="h4"
-          >
-            {{ $t('electricityProvider.selectTariff') }}
-          </TypoHeadline>
-          <USelect
-            v-model="electricityProviders.selectedTariff"
-            class="w-full"
-            :items="electricityProviderItems"
-            data-testid="electricity-provider-select"
-          />
-          <UNavigationMenu
-            :items="configureCustomTariff"
-            orientation="vertical"
-            class="mt-2"
-          />
+          <LayoutElectricityProviderNav />
+
+          <USeparator class="my-4" />
+
+          <LayoutGridFeesNav />
         </template>
 
         <template #right>
@@ -83,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NavigationMenuItem, SelectItem } from '@nuxt/ui'
+import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
 const viewItems = computed<NavigationMenuItem[]>(() => [
@@ -105,51 +94,7 @@ const viewItems = computed<NavigationMenuItem[]>(() => [
   },
 ])
 
-const electricityProviders = useElectricityProviders()
 const { t } = useI18n()
-
-const electricityProviderItems = computed<SelectItem[]>(() => {
-  const tariffs = electricityProviders.availableTariffs.map((tariff) => ({
-    label: `${tariff.name} - ${tariff.provider}`,
-    value: tariff.id,
-    icon: 'i-lucide-sun',
-  }))
-
-  let label = t('electricityProvider.customTariff')
-  if (electricityProviders.customTariff.name) {
-    label = `${electricityProviders.customTariff.name}`
-  }
-  if (electricityProviders.customTariff.provider) {
-    label += ` - ${electricityProviders.customTariff.provider}`
-  }
-  return [
-    ...tariffs,
-    {
-      type: 'separator',
-    },
-    {
-      type: 'label',
-      label: t('electricityProvider.customTariff'),
-    },
-    {
-      label,
-      value: 'custom',
-      icon: 'i-lucide-edit-2',
-    },
-  ]
-})
-
-const configureCustomTariff = computed<NavigationMenuItem[]>(() => [
-  {
-    label: t('navigation.configureCustomTariff'),
-    to: {
-      path: '/settings/custom-tariff',
-      query: route.query,
-    },
-    icon: 'i-lucide-edit-2',
-  },
-])
-
 const tml = useTranslateMultilingualString()
 const config = useRuntimeConfig()
 const footerLinks = computed<NavigationMenuItem[]>(() => {

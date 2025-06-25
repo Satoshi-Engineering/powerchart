@@ -82,7 +82,6 @@
           :chart-height="chartHeight"
           :chart-width="chartWidth"
           :date="currentDate"
-          :fee-ids="Object.keys(feeById).filter((feeId) => !excludeFees.includes(feeId))"
         />
       </svg>
     </div>
@@ -92,22 +91,18 @@
 <script setup lang="ts">
 import { DateTime } from 'luxon'
 import { computed, watchEffect, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { z } from 'zod'
 
-const config = useRuntimeConfig()
-const route = useRoute()
 const { t } = useI18n()
 const { surroundingLayoutDisabled } = useDisableSurroundingLayout()
 
 const { width: clientWidth, height: clientHeight, size } = useBreakpoints()
 const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimation(500, true)
-const { feeById } = useElectricityFees()
 const {
   loadForDateIso, loading: loadingPrices, loadingFailed,
   priceForDate,
 } = useElectricityPrices()
+const { fees } = storeToRefs(useGridFees())
 
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {
@@ -159,20 +154,6 @@ const chartHeight = computed(() => {
   return clientHeight.value - heightReduction - margins.value.top - margins.value.bottom
 })
 
-const excludeFees = computed(() => {
-  let excludeFeesLocal: string[]
-  try {
-    excludeFeesLocal = z.string().array().parse(config.public.excludeFees)
-  } catch {
-    console.error(`Invalid excludeFees: ${config.public.excludeFees}`)
-    excludeFeesLocal = []
-  }
-  if (typeof route.query.excludeFees === 'string') {
-    excludeFeesLocal.push(...route.query.excludeFees.split(','))
-  }
-  return excludeFeesLocal
-})
-
 const hourlyTimestampsForCurrentDate = computed(() => {
   const timestamps = []
   const first = currentDate.value.toMillis()
@@ -193,7 +174,7 @@ const infos = computed(() => [
     color: ELECTRICITY_TAX_COLOR,
     label: t('priceComponents.salesTax'),
   },
-  ...Object.values(feeById).filter((fee) => !excludeFees.value.includes(fee.id)).reverse(),
+  ...[...fees.value].reverse(),
   {
     id: 'power',
     color: ELECTRICITY_PRICE_COLOR,

@@ -30,7 +30,6 @@
 import { scaleBand } from 'd3-scale'
 import { DateTime } from 'luxon'
 
-import type { Fee } from '~/assets/fees'
 import type { BarSegment } from '~/types/BarSegment'
 
 const props = defineProps({
@@ -46,18 +45,16 @@ const props = defineProps({
     type: Object as PropType<DateTime>,
     required: true,
   },
-  feeIds: {
-    type: Array as PropType<Fee['id'][]>,
-    required: true,
-  },
   vat: {
     type: Number,
     default: 0.2,
   },
 })
 
-const { feeForDate, colorForFeeId } = useElectricityFees()
 const { priceForTimestamp } = useElectricityPrices()
+const gridFees = useGridFees()
+const { getFeeForDateTime, getColorForFeeId } = gridFees
+const { fees } = storeToRefs(gridFees)
 
 const bars = computed(() => hourlyTimestampsForCurrentDate.value.map((timestamp) => {
   const price = priceForTimestamp(timestamp)
@@ -123,11 +120,11 @@ const buildBarSegments = (
   ].filter((segment) => segment.value > 0)
 }
 
-const feeSegmentsForTimestamp = (timestamp: number): BarSegment[] => props.feeIds
-  .map((feeId) => ({
-    value: feeForDate(feeId, DateTime.fromMillis(timestamp)),
-    color: colorForFeeId(feeId),
-    label: feeId,
+const feeSegmentsForTimestamp = (timestamp: number): BarSegment[] => fees.value
+  .map((fee) => ({
+    value: getFeeForDateTime(fee.id, DateTime.fromMillis(timestamp)),
+    color: getColorForFeeId(fee.id),
+    label: fee.id,
   }))
   .filter((fee) => fee.value > 0)
 

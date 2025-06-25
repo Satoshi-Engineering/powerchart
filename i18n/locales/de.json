@@ -44,5 +44,8 @@
     "configureCustomTariff": "Benutzerdefinierten Tarif Anpassen",
     "privacyPolicy": "Datenschutzerklärung",
     "legalNotice": "Impressum"
+  },
+  "gridFees": {
+    "selectGrid": "Netzgebühren"
   }
 }

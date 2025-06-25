@@ -1,9 +1,10 @@
 import { evaluate } from 'mathjs'
+
+import { electricityTariffs } from '@/assets/electricityTariffs'
 import {
   type ElectricityTariff,
   CustomTariff,
-  electricityTariffs,
-} from '@/assets/electricityTariffs'
+} from '@/types/ElectricityTariff'
 
 export const useElectricityProviders = defineStore('electricityProviders', {
   state: (): {

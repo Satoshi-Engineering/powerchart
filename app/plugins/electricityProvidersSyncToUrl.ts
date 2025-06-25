@@ -1,9 +1,9 @@
-import { CustomTariff } from '~/assets/electricityTariffs'
+import { CustomTariff } from '@/types/ElectricityTariff'
 
 export default defineNuxtPlugin(() => {
-  const electricityProviders = useElectricityProviders()
+  const { selectedTariff, customTariff } = storeToRefs(useElectricityProviders())
 
-  watch(() => electricityProviders.selectedTariff, (newTariff) => {
+  watch(selectedTariff, (newTariff) => {
     const config = useRuntimeConfig()
     const defaultTariff = config.public.defaultElectricityTariff
     const selectedTariff = (newTariff === defaultTariff) ? undefined : newTariff
@@ -18,7 +18,7 @@ export default defineNuxtPlugin(() => {
     })
   })
 
-  watch(() => electricityProviders.customTariff, (newTariff) => {
+  watch(customTariff, (newTariff) => {
     const defaultTariff = CustomTariff.parse({})
     const customTariff = (JSON.stringify(newTariff) === JSON.stringify(defaultTariff))
       ? undefined

@@ -15,30 +15,34 @@ test.beforeAll(async () => {
   await prepareAwattarCache(dataApr7, dataApr8)
 })
 
-test('add vat', async ({ page }) => {
+test('add vat via ui', async ({ page }) => {
   await page.clock.setFixedTime(currentDate)
   await gotoAndWaitForNuxtHydration(page, '/table')
 
-  await page.getByTestId('checkbox-add-vat').check()
+  await page.getByTestId('layout-header').locator('button[aria-label="Open menu"]').click()
+  await page.waitForTimeout(300)
+  await page.getByTestId('add-vat-checkbox').check()
 
   await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="10"]')).toHaveText('9.84')
-  expect(page.url()).toBe('http://localhost:3000/table?vat=true')
+  await page.waitForURL('**/table?addVat=true')
 })
 
 test('deeplink with vat', async ({ page }) => {
   await page.clock.setFixedTime(currentDate)
 
-  await gotoAndWaitForNuxtHydration(page, '/table?vat=true')
+  await gotoAndWaitForNuxtHydration(page, '/table?addVat=true')
 
   await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="10"]')).toHaveText('9.84')
 })
 
 test('remove vat', async ({ page }) => {
   await page.clock.setFixedTime(currentDate)
-  await gotoAndWaitForNuxtHydration(page, '/table?vat=true')
+  await gotoAndWaitForNuxtHydration(page, '/table?addVat=true')
 
-  await page.getByTestId('checkbox-add-vat').uncheck()
+  await page.getByTestId('layout-header').locator('button[aria-label="Open menu"]').click()
+  await page.waitForTimeout(300)
+  await page.getByTestId('add-vat-checkbox').uncheck()
 
   await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="10"]')).toHaveText('8.20')
-  expect(page.url()).toBe('http://localhost:3000/table')
+  await page.waitForURL('**/table')
 })

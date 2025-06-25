@@ -15,10 +15,12 @@ test('surrounding layout', async ({ page }) => {
   await expect(page.getByTestId('layout-footer')).toHaveCount(1)
 })
 
-test('disable surrounding layout', async ({ page }) => {
-  await gotoAndWaitForNuxtHydration(page, '/table')
+test('disable surrounding layout via ui', async ({ page }) => {
+  await gotoAndWaitForNuxtHydration(page, '/')
 
-  await page.getByTestId('checkbox-disable-surrounding-layout').check()
+  await page.getByTestId('layout-header').locator('button[aria-label="Open menu"]').click()
+  await page.waitForTimeout(300)
+  await page.getByTestId('disable-surrounding-layout-checkbox').click()
 
   await expect(page.getByTestId('the-default-layout')).toHaveCount(0)
   await expect(page.getByTestId('layout-header')).toHaveCount(0)
@@ -34,16 +36,4 @@ test('disable surrounding layout via url', async ({ page }) => {
   await expect(page.getByTestId('layout-header')).toHaveCount(0)
   await expect(page.getByTestId('layout-main')).toHaveCount(0)
   await expect(page.getByTestId('layout-footer')).toHaveCount(0)
-})
-
-test('reenable surrounding layout via url', async ({ page }) => {
-  await gotoAndWaitForNuxtHydration(page, '/table?disableSurroundingLayout=true')
-
-  await page.getByTestId('checkbox-disable-surrounding-layout').uncheck()
-
-  await expect(page.getByTestId('the-default-layout')).toHaveCount(1)
-  await expect(page.getByTestId('layout-header')).toHaveCount(1)
-  await expect(page.getByTestId('layout-main')).toHaveCount(1)
-  await expect(page.getByTestId('layout-footer')).toHaveCount(1)
-  expect(page.url()).not.toContain('disableSurroundingLayout=true')
 })

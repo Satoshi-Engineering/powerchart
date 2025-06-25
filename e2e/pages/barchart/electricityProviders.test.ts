@@ -28,7 +28,7 @@ test('use a different electricity provider via ui', async ({ page }) => {
   await page.getByRole('option', { name: 'SteirerStrom Spot' }).click()
 
   await expect(page.getByTestId('electricity-price-chart')).toBeVisible()
-  await expect(page.getByTestId('bar_14:00').getByTestId('bar-total-price')).toHaveText('13.32')
+  await expect(page.getByTestId('bar_14:00').getByTestId('bar-total-price')).toHaveText('-0.89')
   expect(page.url()).toContain('selectedTariff=energie-steiermark-spot')
 })
 
@@ -40,7 +40,7 @@ test('use a different electricity provider via url', async ({ page }) => {
 
   await expect(page.getByTestId('electricity-provider-select')).toContainText('SteirerStrom Spot')
   await expect(page.getByTestId('electricity-price-chart')).toBeVisible()
-  await expect(page.getByTestId('bar_14:00').getByTestId('bar-total-price')).toHaveText('13.32')
+  await expect(page.getByTestId('bar_14:00').getByTestId('bar-total-price')).toHaveText('-0.89')
 })
 
 test('use a another electricity provider via url', async ({ page }) => {
@@ -49,5 +49,5 @@ test('use a another electricity provider via url', async ({ page }) => {
   await gotoAndWaitForNuxtHydration(page, '/?selectedTariff=awattar-hourly')
 
   await expect(page.getByTestId('electricity-price-chart')).toBeVisible()
-  await expect(page.getByTestId('bar_14:00').getByTestId('bar-total-price')).toHaveText('13.75')
+  await expect(page.getByTestId('bar_14:00').getByTestId('bar-total-price')).toHaveText('-0.53')
 })

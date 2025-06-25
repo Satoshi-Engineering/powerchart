@@ -9,6 +9,7 @@
   <UCheckbox
     v-model="addVat"
     :label="$t('sidebar.addVat')"
+    data-testid="add-vat-checkbox"
   />
 
   <UCheckbox
@@ -16,6 +17,7 @@
     class="mt-3"
     :label="$t('sidebar.disableSurroundingLayout')"
     :description="$t('sidebar.disableSurroundingLayoutDescription')"
+    data-testid="disable-surrounding-layout-checkbox"
     @update:model-value="value => disableSurroundingLayout(!!value)"
   />
 </template>

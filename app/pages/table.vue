@@ -49,7 +49,7 @@
           </div>
           <TablePriceItem
             :loading="!priceForDateAvailable(currentDate.minus({ days: 1 }))"
-            :price="addFixedCostsAndVat(price.pricePrev)"
+            :price="price.pricePrev"
             :is-current-hour="
               currentDate.minus({ days: 1 }).toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
@@ -61,7 +61,7 @@
           />
           <TablePriceItem
             :loading="!priceForDateAvailable(currentDate)"
-            :price="addFixedCostsAndVat(price.price)"
+            :price="price.price"
             :is-current-hour="
               currentDate.toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
@@ -74,7 +74,7 @@
           <TablePriceItem
             v-if="currentDate.plus({ days: 1 }) <= maxDate"
             :loading="!priceForDateAvailable(currentDate.plus({ days: 1 }))"
-            :price="addFixedCostsAndVat(price.priceNext)"
+            :price="price.priceNext"
             :is-current-hour="
               currentDate.plus({ days: 1 }).toISODate() === DateTime.now().toISODate()
                 && DateTime.now().toFormat('H') === String(price.hour)
@@ -97,47 +97,11 @@
         />
       </div>
       <div class="w-full flex flex-col justify-start px-2">
-        <label class="my-3 block">
-          <input
-            type="checkbox"
-            :checked="addVat"
-            data-testid="checkbox-add-vat"
-            @change="addVat = !addVat"
-          >
-          {{ $t('pages.table.addVat') }}
-        </label>
-        <label class="my-3 flex flex-col">
-          {{ $t('pages.table.fixedCosts') }}
-          <input
-            type="number"
-            class="border py-1 px-2"
-            :value="fixedCosts"
-            data-testid="input-fixed-costs"
-            @input="updateFixedCosts"
-          >
-        </label>
-        <label
-          class="my-3 block"
-        >
-          <input
-            v-model="showDynamicColors"
-            type="checkbox"
-            data-testid="checkbox-show-dynamic-colors"
-          >
-          {{ $t('pages.table.showDynamicColors') }}
-        </label>
-        <label
-          v-if="!surroundingLayoutDisabledByRuntimeConfig"
-          class="my-3 block"
-        >
-          <input
-            type="checkbox"
-            :checked="surroundingLayoutDisabled"
-            data-testid="checkbox-disable-surrounding-layout"
-            @change="$event => disableSurroundingLayout(($event.target as HTMLInputElement).checked)"
-          >
-          {{ $t('pages.table.disableSurroundingLayout') }}
-        </label>
+        <UCheckbox
+          v-model="showDynamicColors"
+          :label="$t('pages.table.showDynamicColors')"
+          data-testid="checkbox-show-dynamic-colors"
+        />
       </div>
       <div
         v-if="$i18n.locale === 'de'"
@@ -223,8 +187,7 @@
 
 <script setup lang="ts">
 import { DateTime } from 'luxon'
-import { computed, watchEffect, ref, onBeforeMount, onBeforeUnmount, watch, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, watchEffect, ref, onBeforeMount, onBeforeUnmount } from 'vue'
 
 import type { PriceRange } from '~/components/table/TablePriceItem.vue'
 
@@ -236,9 +199,21 @@ const {
   priceForDate,
 } = useElectricityPrices()
 
-const { surroundingLayoutDisabled, disableSurroundingLayout, surroundingLayoutDisabledByRuntimeConfig } = useDisableSurroundingLayout()
+const { surroundingLayoutDisabled } = useDisableSurroundingLayout()
 
-const { queryParamValue: showDynamicColors } = useQueryParameter('dynamicColors')
+const {
+  queryParamValue: showDynamicColorsQueryParameter,
+  updateQueryParam: updateShowDynamicColorsQueryParameter,
+  removeQueryParam: removeShowDynamicColorsQueryParameter,
+} = useQueryParameter('dynamicColors')
+const showDynamicColors = ref(!!showDynamicColorsQueryParameter.value)
+watch(showDynamicColors, (value) => {
+  if (value) {
+    updateShowDynamicColorsQueryParameter('true')
+    return
+  }
+  removeShowDynamicColorsQueryParameter()
+})
 
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {
@@ -284,6 +259,8 @@ watchEffect(() => {
 
 /////
 // prices
+const { addVat } = storeToRefs(useAddVat())
+const { getAllFeesForDateTime } = useGridFees()
 const prices = computed<{
   hour: number
   pricePrev: number
@@ -294,13 +271,21 @@ const prices = computed<{
   for (let hour = 0; hour < 24; hour++) {
     prices.push({
       hour,
-      pricePrev: priceForDate(currentDate.value.minus({ days: 1 }).set({ hour })),
-      price: priceForDate(currentDate.value.set({ hour })),
-      priceNext: priceForDate(currentDate.value.plus({ days: 1 }).set({ hour })),
+      pricePrev: getPriceForDateTime(currentDate.value.minus({ days: 1 }).set({ hour })),
+      price: getPriceForDateTime(currentDate.value.set({ hour })),
+      priceNext: getPriceForDateTime(currentDate.value.plus({ days: 1 }).set({ hour })),
     })
   }
   return prices
 })
+
+const getPriceForDateTime = (dateTime: DateTime): number => {
+  const price = priceForDate(dateTime) + getAllFeesForDateTime(dateTime)
+  if (addVat.value) {
+    return price * 1.2
+  }
+  return price
+}
 
 const allCurrentlyDisplayedPrices = computed(() => {
   return prices.value.flatMap((p) => [
@@ -392,67 +377,6 @@ const maxPrice = computed(() => {
 })
 
 const priceDelta = computed(() => maxPrice.value - minPrice.value)
-
-/////
-// form elements
-const route = useRoute()
-
-const addVat = ref(false)
-onMounted(() => {
-  if (route.query.vat === 'true') {
-    addVat.value = true
-  }
-})
-watch(addVat, () => {
-  const url = new URL(location.href)
-  if (addVat.value) {
-    url.searchParams.set('vat', 'true')
-  } else {
-    url.searchParams.delete('vat')
-  }
-  history.replaceState(null, '', url.toString())
-})
-
-const fixedCosts = ref<string>('')
-onMounted(() => {
-  const fixedCostsFromUrl = route.query.fixedCosts
-  if (fixedCostsFromUrl != null && !isNaN(Number(fixedCostsFromUrl))) {
-    fixedCosts.value = String(fixedCostsFromUrl)
-  }
-})
-const updateFixedCosts = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  if (isNaN(Number(target.value))) {
-    fixedCosts.value = ''
-  } else {
-    fixedCosts.value = target.value
-  }
-}
-watch(fixedCosts, () => {
-  const url = new URL(location.href)
-  if (fixedCosts.value === '') {
-    url.searchParams.delete('fixedCosts')
-  } else {
-    url.searchParams.set('fixedCosts', fixedCosts.value)
-  }
-  history.replaceState(null, '', url.toString())
-})
-
-const getFixedCosts = () => {
-  if (fixedCosts.value !== '' && !isNaN(Number(fixedCosts.value))) {
-    return Number(fixedCosts.value)
-  }
-  return 0
-}
-
-const addFixedCostsAndVat = (price: number) => {
-  let priceWithFixedCosts = price + getFixedCosts()
-
-  if (addVat.value) {
-    priceWithFixedCosts *= 1.2
-  }
-  return priceWithFixedCosts
-}
 
 /////
 // reload data after one hour

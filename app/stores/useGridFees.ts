@@ -40,6 +40,12 @@ export const useGridFees = defineStore('gridFees', {
     },
   },
   actions: {
+    getAllFeesForDateTime(date: DateTime): number {
+      return this.fees.reduce((total, fee) => {
+        const feeValue = this.getFeeForDateTime(fee.id, date)
+        return total + feeValue
+      }, 0)
+    },
     getFeeForDateTime(feeId: string, date: DateTime): number {
       const fee = this.feeById[feeId]
       if (fee == null) {

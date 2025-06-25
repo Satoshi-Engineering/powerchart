@@ -1,7 +1,7 @@
 import type { GridFees } from '~/types/GridFees'
 
 export const chargingStation: GridFees = {
-  id: 'charingStation',
+  id: 'chargingStation',
   label: 'Charging Station',
   fees: [{
     id: 'infrastructureFee',

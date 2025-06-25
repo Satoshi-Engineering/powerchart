@@ -1,0 +1,30 @@
+<template>
+  <TypoHeadline
+    level="h4"
+    class="mt-5"
+  >
+    {{ $t('sidebar.additionalOptions') }}
+  </TypoHeadline>
+
+  <UCheckbox
+    v-model="addVat"
+    :label="$t('sidebar.addVat')"
+  />
+
+  <UCheckbox
+    v-model="surroundingLayoutDisabled"
+    class="mt-3"
+    :label="$t('sidebar.disableSurroundingLayout')"
+    :description="$t('sidebar.disableSurroundingLayoutDescription')"
+    @update:model-value="value => disableSurroundingLayout(!!value)"
+  />
+</template>
+
+<script setup lang="ts">
+const { addVat } = storeToRefs(useAddVat())
+
+const {
+  surroundingLayoutDisabled,
+  disableSurroundingLayout,
+} = useDisableSurroundingLayout()
+</script>

@@ -14,6 +14,16 @@ export default (key: string) => {
     })
   }
 
+  const pushQueryParam = (value: string | LocationQueryValue[]): void => {
+    router.push({
+      path: route.path,
+      query: {
+        ...route.query,
+        [key]: value,
+      },
+    })
+  }
+
   const removeQueryParam = (): void => {
     const { [key]: _, ...newQuery } = route.query
     router.replace({
@@ -39,6 +49,7 @@ export default (key: string) => {
 
   return {
     updateQueryParam,
+    pushQueryParam,
     removeQueryParam,
     getQueryParam,
     isQueryParamTruthy,

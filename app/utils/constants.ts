@@ -1,2 +1,2 @@
 export const ELECTRICITY_PRICE_COLOR = '#FFCB47'
-export const ELECTRICITY_TAX_COLOR = '#9A998C'
+export const VAT_COLOR = '#9A998C'

@@ -82,6 +82,7 @@
           :chart-height="chartHeight"
           :chart-width="chartWidth"
           :date="currentDate"
+          :vat="addVat ? 0.2 : 0"
         />
       </svg>
     </div>
@@ -167,18 +168,24 @@ const hourlyTimestampsForCurrentDate = computed(() => {
 const currentDateHasTimezoneShift = computed(() => hourlyTimestampsForCurrentDate.value.length !== 24)
 
 // info about colors
+const { addVat } = storeToRefs(useAddVat())
 const showInfo = ref(false)
-const infos = computed(() => [
-  {
-    id: 'salesTax',
-    color: ELECTRICITY_TAX_COLOR,
-    label: t('priceComponents.salesTax'),
-  },
-  ...[...fees.value].reverse(),
-  {
-    id: 'power',
-    color: ELECTRICITY_PRICE_COLOR,
-    label: t('priceComponents.labelPrice'),
-  },
-])
+const infos = computed(() => {
+  const infos = [
+    ...[...fees.value].reverse(),
+    {
+      id: 'power',
+      color: ELECTRICITY_PRICE_COLOR,
+      label: t('priceComponents.labelPrice'),
+    },
+  ]
+  if (addVat.value) {
+    infos.unshift({
+      id: 'vat',
+      color: VAT_COLOR,
+      label: t('priceComponents.salesTax'),
+    })
+  }
+  return infos
+})
 </script>

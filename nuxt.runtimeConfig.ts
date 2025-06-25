@@ -19,6 +19,7 @@ export const runtimeConfig = {
       'styriaDoubleTariff',
     ],
     defaultGrid: 'noFees',
+    defaultAddVat: false,
     disableSurroundingLayout: false,
   },
   awattarApiOrigin: 'https://api.awattar.at',

@@ -1,10 +1,10 @@
 export default () => {
   const runtimeConfig = useRuntimeConfig()
-  const { updateQueryParam, removeQueryParam, isQueryParamTruthy } = useQueryParameter('disableSurroundingLayout')
+  const { pushQueryParam, removeQueryParam, isQueryParamTruthy } = useQueryParameter('disableSurroundingLayout')
 
   const disableSurroundingLayout = (disable: boolean) => {
     if (disable) {
-      updateQueryParam('true')
+      pushQueryParam('true')
     } else {
       removeQueryParam()
     }

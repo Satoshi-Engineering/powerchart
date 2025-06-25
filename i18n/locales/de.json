@@ -17,9 +17,6 @@
   },
   "pages": {
     "table": {
-      "addVat": "Umsatzsteuer hinzufügen (20 %)",
-      "fixedCosts": "Fixkosten",
-      "disableSurroundingLayout": "Header und Footer verstecken",
       "showDynamicColors": "Dynamisch einfärben"
     }
   },
@@ -47,5 +44,11 @@
   },
   "gridFees": {
     "selectGrid": "Netzgebühren"
+  },
+  "sidebar": {
+    "additionalOptions": "Weitere Optionen",
+    "addVat": "Umsatzsteuer hinzufügen (20 %)",
+    "disableSurroundingLayout": "Header und Footer verstecken",
+    "disableSurroundingLayoutDescription": "Diese Option blendet das umgebende Layout der Seite aus, um mehr Platz für die Diagramme zu schaffen. Um diese Option wieder zu deaktivieren, müssen Sie die Einstellung manuell aus der URL entfernen."
   }
 }

@@ -38,13 +38,13 @@
             />
           </div>
 
-          <USeparator class="my-4" />
+          <USeparator class="my-6" />
 
           <LayoutElectricityProviderNav />
 
-          <USeparator class="my-4" />
-
           <LayoutGridFeesNav />
+
+          <LayoutAdditionalOptionsNav />
         </template>
 
         <template #right>

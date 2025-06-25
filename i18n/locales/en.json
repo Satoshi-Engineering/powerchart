@@ -17,9 +17,6 @@
   },
   "pages": {
     "table": {
-      "addVat": "Add VAT (20 %)",
-      "fixedCosts": "Fixed costs",
-      "disableSurroundingLayout": "Hide header and footer",
       "showDynamicColors": "Dynamic colors"
     }
   },
@@ -47,5 +44,11 @@
   },
   "gridFees": {
     "selectGrid": "Grid Fees"
+  },
+  "sidebar": {
+    "additionalOptions": "Additional Options",
+    "addVat": "Add VAT (20 %)",
+    "disableSurroundingLayout": "Hide header and footer",
+    "disableSurroundingLayoutDescription": "This option hides the surrounding layout of the page to create more space for the charts. To disable this option again, you must manually remove the setting from the URL."
   }
 }

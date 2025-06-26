@@ -38,6 +38,9 @@ export const useGridFees = defineStore('gridFees', {
       return Object.fromEntries(this.availableGrids.map((grid) => [grid.id, grid]))
     },
     fees(): Fee[] {
+      if (this.selectedGrid === 'custom') {
+        return this.customGrid.fees
+      }
       const selectedGrid = this.availableGridsById[this.selectedGrid]
       if (selectedGrid == null) {
         return []

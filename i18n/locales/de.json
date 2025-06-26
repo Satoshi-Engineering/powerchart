@@ -55,8 +55,10 @@
         "fees": {
           "title": "Benutzerdefinierte Netzgebühren (JSON-Format)",
           "placeholder": "Geben Sie die Netzgebühren im JSON-Format ein",
-          "description": "Dieses JSON-Schema ermöglicht es Ihnen, eine Liste von Gebührendefinitionen zu konfigurieren, wobei jede Gebührendefinition Identifikationsinformationen und einen Zeitplan für anwendbare Werte enthält. Jeder Eintrag im obersten Array repräsentiert eine Gebührenkonfiguration."
-        }
+          "description": "Dieses JSON-Schema ermöglicht es Ihnen, eine Liste von Gebührendefinitionen zu konfigurieren, wobei jede Gebührendefinition Identifikationsinformationen und einen Zeitplan für anwendbare Werte enthält. Jeder Eintrag im obersten Array repräsentiert eine Gebührenkonfiguration.",
+          "example": "Beispiel: {example}"
+        },
+        "save": "Speichern"
       }
     }
   },

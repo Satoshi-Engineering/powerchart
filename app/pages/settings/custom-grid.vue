@@ -24,6 +24,18 @@
         />
       </UFormField>
     </div>
+
+    <UButton
+      color="primary"
+      class="cursor-pointer"
+      :label="$t('gridFees.customGrid.form.save')"
+      :disabled="!feeValidation.success"
+      @click="save()"
+    />
+    <code v-if="feeValidation.error">
+      <pre class="text-xs bg-gray-100 dark:bg-gray-800 mt-2 p-4 rounded">{{ feeValidation.error }}</pre>
+    </code>
+
     <UCollapsible class="mt-4">
       <UButton
         label="JSON Schema"
@@ -82,4 +94,23 @@ const label = ref(customGrid.value.label)
 const fees = ref<string>(JSON.stringify(customGrid.value.fees, null, 2))
 
 const description = z.toJSONSchema(Fee.array())
+
+const feeValidation = computed(() => {
+  try {
+    return Fee.array().safeParse(JSON.parse(fees.value))
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    }
+  }
+})
+
+const save = () => {
+  customGrid.value = {
+    id: customGrid.value.id,
+    label: label.value,
+    fees: Fee.array().parse(JSON.parse(fees.value)),
+  }
+}
 </script>

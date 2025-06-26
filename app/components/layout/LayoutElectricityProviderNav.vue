@@ -21,6 +21,7 @@
 import type { NavigationMenuItem, SelectItem } from '@nuxt/ui'
 
 const route = useRoute()
+const localePath = useLocalePath()
 const { t } = useI18n()
 
 const {
@@ -64,7 +65,7 @@ const configureCustomTariff = computed<NavigationMenuItem[]>(() => [
   {
     label: t('navigation.configureCustomTariff'),
     to: {
-      path: '/settings/custom-tariff',
+      path: localePath('/settings/custom-tariff'),
       query: route.query,
     },
     icon: 'i-lucide-edit-2',

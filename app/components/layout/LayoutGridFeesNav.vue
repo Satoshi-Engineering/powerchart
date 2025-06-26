@@ -23,6 +23,7 @@ import type { NavigationMenuItem, SelectItem } from '@nuxt/ui'
 import { noFees } from '~/assets/grids/noFees'
 
 const route = useRoute()
+const localePath = useLocalePath()
 const { t } = useI18n()
 const {
   availableGrids,
@@ -83,7 +84,7 @@ const configureCustomTariff = computed<NavigationMenuItem[]>(() => [
   {
     label: t('navigation.configureCustomGrid'),
     to: {
-      path: '/settings/custom-grid',
+      path: localePath('/settings/custom-grid'),
       query: route.query,
     },
     icon: 'i-lucide-edit-2',

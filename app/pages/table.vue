@@ -96,13 +96,6 @@
           :size="size"
         />
       </div>
-      <div class="w-full flex flex-col justify-start px-2">
-        <UCheckbox
-          v-model="showDynamicColors"
-          :label="$t('pages.table.showDynamicColors')"
-          data-testid="checkbox-show-dynamic-colors"
-        />
-      </div>
       <div
         v-if="$i18n.locale === 'de'"
         class="mt-5"
@@ -111,33 +104,41 @@
           🟡 So funktionieren die Farben in der Preistabelle
         </TypoHeadline>
         <TypoParagraph>
-          Die Farbgebung der Preistabelle dient zur schnellen Orientierung über das aktuelle Preisniveau
+          Die Farben in der Preistabelle helfen dir, auf einen Blick zu erkennen, wie günstig oder teuer der Strompreis gerade ist.
         </TypoParagraph>
         <ul class="list-disc list-inside space-y-1 mb-4">
           <li>
-            <strong>Grün</strong> bedeutet, der Preis ist <strong>sehr niedrig</strong> — eine gute Zeit, um Strom zu verbrauchen.
+            <strong>Grün</strong> steht für sehr niedrige Preise – ein guter Zeitpunkt, um Strom zu verbrauchen.
           </li>
           <li>
-            <strong>Gelb oder Orange</strong> bedeutet, der Preis ist <strong>durchschnittlich oder etwas hoch</strong> — nichts Ungewöhnliches.
+            <strong>Gelb oder Orange</strong> zeigen durchschnittliche bis leicht erhöhte Preise – nichts Ungewöhnliches.
           </li>
           <li>
-            <strong>Rot</strong> bedeutet, der Preis ist <strong>sehr hoch</strong> — du solltest Energie sparen.
+            <strong>Rot</strong> bedeutet sehr hohe Preise – besser Strom sparen.
+          </li>
+          <li>
+            <strong>Grau</strong> erscheint, solange die Preise noch geladen werden.
           </li>
         </ul>
         <TypoParagraph>
-          Während die Preise noch geladen werden, erscheint alles in <strong>Grau</strong>.
-        </TypoParagraph>
-        <TypoParagraph>
-          Die aktuelle Stunde ist immer mit einem <strong>schwarzen Rahmen</strong> hervorgehoben, damit du sie leicht findest.
+          Die <strong>aktuelle Stunde</strong> ist immer mit einem schwarzen Rahmen hervorgehoben, damit du sie leicht findest.
         </TypoParagraph>
         <TypoHeadline level="h3">
-          🔄 Option für dynamische Farben
+          🔄 Dynamische Farbanpassung
         </TypoHeadline>
         <TypoParagraph>
-          Bei aktivierter Option <strong>"Dynamisch einfärben"</strong> orientiert sich die Farbskala an der Preisspanne der aktuell sichtbaren drei Tage. Dadurch wird das Preisniveau jeweils <strong>relativ zum angezeigten Zeitraum</strong> dargestellt.
+          Die Farbskala passt sich automatisch an die Preisspanne der drei sichtbaren Tage an. So kannst du schnell erkennen, welche Stunden im Vergleich besonders günstig oder teuer sind.
         </TypoParagraph>
+        <ul class="list-disc list-inside space-y-1 mb-4">
+          <li>
+            Liegt ein Preis <strong>unter {{ lowAlert.toFixed(2) }}</strong>, wird er immer in <strong>dunkelgrün</strong> dargestellt – für besonders niedrige Kosten.
+          </li>
+          <li>
+            Liegt ein Preis <strong>über {{ highAlert.toFixed(2) }}</strong>, wird er immer in <strong>dunkelrot</strong> angezeigt – als Warnung vor besonders hohen Preisen.
+          </li>
+        </ul>
         <TypoParagraph>
-          Wenn die Option <strong>nicht aktiviert</strong> ist, verwendet die Farbskala <strong>feste Regeln</strong> — dieselbe Farbe bedeutet immer denselben Preis, unabhängig vom Preisniveau der dargestellten Tage.
+          Diese festen Farbpunkte sorgen dafür, dass Extrempreise jederzeit deutlich erkennbar sind – unabhängig von der allgemeinen Preisspanne.
         </TypoParagraph>
       </div>
       <div
@@ -150,35 +151,43 @@
           🟡 How the Colors Work in the Pricing Table
         </TypoHeadline>
         <TypoParagraph>
-          The colors in the pricing table help you quickly see whether a price is cheap, expensive, or somewhere in the middle.
+          The colors in the pricing table help you quickly understand how favorable electricity prices are.
         </TypoParagraph>
         <ul class="list-disc list-inside space-y-1 mb-4">
           <li>
-            <strong>Green</strong> means the price is <strong>very low</strong> — a great time to consume electricity.
+            <strong>Green</strong> indicates very low prices — a great time to use electricity.
           </li>
           <li>
-            <strong>Yellow or orange</strong> means the price is <strong>average or a bit high</strong> — nothing too surprising.
+            <strong>Yellow or orange</strong> signals average to slightly high prices — nothing too unusual.
           </li>
           <li>
-            <strong>Red</strong> means the price is <strong>very high</strong> — you want to save energy.
+            <strong>Red</strong> shows very high prices — it’s best to reduce consumption.
+          </li>
+          <li>
+            <strong>Gray</strong> appears while prices are still loading.
           </li>
         </ul>
         <TypoParagraph>
-          While prices are still loading, everything shows up in <strong>gray</strong>.
-        </TypoParagraph>
-        <TypoParagraph>
-          The current hour is always highlighted with a <strong>black border</strong>, so it's easy to find.
+          The <strong>current hour</strong> is always outlined with a black border for easy reference.
         </TypoParagraph>
         <TypoHeadline
           level="h3"
         >
-          🔄 Dynamic Colors Option
+          🔄 Dynamic Color Scaling
         </TypoHeadline>
         <TypoParagraph>
-          If the <strong>"Dynamic colors"</strong> option is enabled, the color scale automatically adjusts to the price range across the three displayed days. This allows the colors to reflect how favorable or unfavorable a price is <strong>compared to the rest of the visible period</strong>.
+          Color scaling adapts automatically to the range of prices shown across the three visible days. This makes it easy to see which hours are relatively cheap or expensive compared to the rest of the current period.
         </TypoParagraph>
+        <ul class="list-disc list-inside space-y-1 mb-4">
+          <li>
+            If a price is <strong>below {{ lowAlert.toFixed(2) }}</strong>, it’s always shown in <strong>dark green</strong> to highlight extremely low costs.
+          </li>
+          <li>
+            If a price is <strong>above {{ highAlert.toFixed(2) }}</strong>, it’s always shown in <strong>dark red</strong> to signal a particularly high price.
+          </li>
+        </ul>
         <TypoParagraph>
-          If that box is <strong>unchecked</strong>, the color scale uses <strong>fixed rules</strong> instead — the same color always means the same price, no matter what day it is.
+          These fixed endpoints ensure that extreme prices stand out clearly, regardless of the overall price range.
         </TypoParagraph>
       </div>
     </div>
@@ -200,20 +209,6 @@ const {
 } = useElectricityPrices()
 
 const { surroundingLayoutDisabled } = useDisableSurroundingLayout()
-
-const {
-  queryParamValue: showDynamicColorsQueryParameter,
-  updateQueryParam: updateShowDynamicColorsQueryParameter,
-  removeQueryParam: removeShowDynamicColorsQueryParameter,
-} = useQueryParameter('dynamicColors')
-const showDynamicColors = ref(!!showDynamicColorsQueryParameter.value)
-watch(showDynamicColors, (value) => {
-  if (value) {
-    updateShowDynamicColorsQueryParameter('true')
-    return
-  }
-  removeShowDynamicColorsQueryParameter()
-})
 
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {
@@ -259,6 +254,7 @@ watchEffect(() => {
 
 /////
 // prices
+const { getPriceForCurrentElectricityTariff } = useElectricityProviders()
 const { addVat } = storeToRefs(useAddVat())
 const { getAllFeesForDateTime } = useGridFees()
 const prices = computed<{
@@ -296,68 +292,58 @@ const allCurrentlyDisplayedPrices = computed(() => {
 })
 
 const getRange = (price: number): PriceRange => {
-  if (showDynamicColors.value) {
-    return applyRange(price, dyanmicRanges.value)
-  }
-  return applyRange(price, hardcodedRanges)
-}
-
-const applyRange = (price: number, ranges: Ranges): PriceRange => {
-  if (price <= ranges.lowAlert) {
+  if (price <= ranges.value.lowAlert) {
     return 'lowAlert'
   }
-  if (price > ranges.highest) {
+  if (price > ranges.value.highest) {
     return 'highAlert'
   }
-  if (price <= ranges.lowest) {
+  if (price <= ranges.value.lowest) {
     return 'lowest'
   }
-  if (price <= ranges.lower) {
+  if (price <= ranges.value.lower) {
     return 'lower'
   }
-  if (price <= ranges.low) {
+  if (price <= ranges.value.low) {
     return 'low'
   }
-  if (price <= ranges.mid) {
+  if (price <= ranges.value.mid) {
     return 'mid'
   }
-  if (price <= ranges.high) {
+  if (price <= ranges.value.high) {
     return 'high'
   }
-  if (price <= ranges.highest) {
+  if (price <= ranges.value.highest) {
     return 'highest'
   }
   return 'highAlert'
 }
 
-type Ranges = {
-  lowAlert: number
-  lowest: number
-  lower: number
-  low: number
-  mid: number
-  high: number
-  highest: number
-}
+const midday = DateTime.fromISO('12:00')
+const lowAlert = computed(() => {
+  const netto = Math.min(getPriceForCurrentElectricityTariff(-10) + getAllFeesForDateTime(midday), 0)
+  if (addVat.value) {
+    return netto * 1.2
+  }
+  return netto
+})
 
-const hardcodedRanges = {
-  lowAlert: -10,
-  lowest: 0,
-  lower: 5,
-  low: 10,
-  mid: 15,
-  high: 20,
-  highest: 30,
-}
+const highAlert = computed(() => {
+  const netto = getPriceForCurrentElectricityTariff(30) + getAllFeesForDateTime(midday)
+  if (addVat.value) {
+    return netto * 1.2
+  }
+  return netto
+})
 
-const dyanmicRanges = computed(() => ({
-  lowAlert: hardcodedRanges.lowAlert,
+const ranges = computed(() => ({
+  lowAlert: lowAlert.value,
   lowest: minPrice.value + Math.min(priceDelta.value * 0.10, 10),
   lower: minPrice.value + Math.min(priceDelta.value * 0.25, 10),
   low: minPrice.value + priceDelta.value * 0.5,
   mid: maxPrice.value - Math.min(priceDelta.value * 0.25, 10),
   high: maxPrice.value - Math.min(priceDelta.value * 0.10, 10),
-  highest: hardcodedRanges.highest,
+  highest: highAlert.value,
 }))
 
 const minPrice = computed(() => {

@@ -39,11 +39,15 @@
     "barchart": "Bar Chart",
     "table": "Table",
     "configureCustomTariff": "Edit Custom Tariff",
+    "configureCustomGrid": "Edit Custom Grid Fees",
     "privacyPolicy": "Privacy policy",
     "legalNotice": "Legal notice"
   },
   "gridFees": {
-    "selectGrid": "Grid Fees"
+    "selectGrid": "Grid Fees",
+    "customGrid": {
+      "label": "Custom grid fees"
+    }
   },
   "sidebar": {
     "additionalOptions": "Additional Options",

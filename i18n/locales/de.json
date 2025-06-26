@@ -39,11 +39,15 @@
     "barchart": "Balkendiagramm",
     "table": "Tabelle",
     "configureCustomTariff": "Benutzerdefinierten Tarif Anpassen",
+    "configureCustomGrid": "Benutzerdefinierte Netzgebühren Anpassen",
     "privacyPolicy": "Datenschutzerklärung",
     "legalNotice": "Impressum"
   },
   "gridFees": {
-    "selectGrid": "Netzgebühren"
+    "selectGrid": "Netzgebühren",
+    "customGrid": {
+      "label": "Benutzerdefinierte Netzgebühren"
+    }
   },
   "sidebar": {
     "additionalOptions": "Weitere Optionen",

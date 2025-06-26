@@ -2,11 +2,12 @@ import { DateTime } from 'luxon'
 
 import availableGrids from '~/assets/grids'
 import type { Fee } from '~/types/Fee'
-import type { GridFees } from '~/types/GridFees'
+import { type GridFees, CustomGridFees } from '~/types/GridFees'
 
 export const useGridFees = defineStore('gridFees', {
   state: (): {
     selectedGrid: string
+    customGrid: CustomGridFees
   } => {
     const config = useRuntimeConfig()
     const route = useRoute()
@@ -16,8 +17,16 @@ export const useGridFees = defineStore('gridFees', {
       selectedGrid = String(route.query.selectedGrid)
     }
 
+    let customGrid: CustomGridFees
+    try {
+      customGrid = CustomGridFees.parse(JSON.parse(route.query.customGrid as string))
+    } catch {
+      customGrid = CustomGridFees.parse({})
+    }
+
     return {
       selectedGrid,
+      customGrid,
     }
   },
   getters: {

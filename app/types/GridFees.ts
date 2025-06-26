@@ -15,3 +15,11 @@ export const GridFees = z.object({
 })
 
 export type GridFees = z.infer<typeof GridFees>
+
+export const CustomGridFees = z.object({
+  id: z.literal('custom').default('custom'),
+  label: z.string().default(''),
+  fees: Fee.array().default([]),
+})
+
+export type CustomGridFees = z.infer<typeof CustomGridFees>

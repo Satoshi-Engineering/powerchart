@@ -46,7 +46,19 @@
   "gridFees": {
     "selectGrid": "Grid Fees",
     "customGrid": {
-      "label": "Custom grid fees"
+      "label": "Custom grid fees",
+      "form": {
+        "name": {
+          "title": "Custom grid name",
+          "placeholder": "Enter a name for the custom grid"
+        },
+        "fees": {
+          "title": "Custom grid fees (JSON format)",
+          "placeholder": "Enter the grid fees in JSON format",
+          "description": "This JSON schema allows you to configure a list of fee definitions, where each fee definition contains identifying information and a schedule of applicable values. Each entry in the top-level array represents one fee configuration.",
+          "example": "Example: {example}"
+        }
+      }
     }
   },
   "sidebar": {

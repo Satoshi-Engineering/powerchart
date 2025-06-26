@@ -3,11 +3,11 @@ import { z } from 'zod/v4'
 
 export const Fee = z.object({
   id: z.string(),
-  label: z.string(),
+  label: z.string().describe('human-readable label for the fee'),
   color: z.string().refine(
     (val) => /^#[0-9A-F]{6}$/i.test(val),
     { message: 'Invalid hex color.' },
-  ),
+  ).describe('hex color code in format #RRGGBB'),
   values: z.object({
     validUntil: z
       .iso.date()
@@ -16,7 +16,7 @@ export const Fee = z.object({
         { error: 'No dates before 2022 allowed.' },
       )
       .nullable()
-      .describe('date in ISO format (YYYY-MM-DD), until which the fee is valid'),
+      .describe('date in ISO format (YYYY-MM-DD), until which the fee is valid. year must be 2022 or later'),
     amount: z.union([
       z.number().gte(0),
       z.array(z.object({

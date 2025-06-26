@@ -75,11 +75,12 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
+const localePath = useLocalePath()
 const viewItems = computed<NavigationMenuItem[]>(() => [
   {
     label: t('navigation.barchart'),
     to: {
-      path: '/',
+      path: localePath('/'),
       query: route.query,
     },
     icon: 'i-lucide-chart-column',
@@ -87,7 +88,7 @@ const viewItems = computed<NavigationMenuItem[]>(() => [
   {
     label: t('navigation.table'),
     to: {
-      path: '/table',
+      path: localePath('/table'),
       query: route.query,
     },
     icon: 'i-lucide-table',

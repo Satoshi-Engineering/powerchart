@@ -48,11 +48,11 @@ test('cell background colors depend on price', async ({ page }) => {
   await gotoAndWaitForNuxtHydration(page, '/table')
 
   await expect(page.locator('[data-testid="price-item"][data-test-day="prev"][data-test-hour="12"]')).toHaveText('4.39')
-  await expect(page.locator('[data-testid="price-item"][data-test-day="prev"][data-test-hour="12"]')).toHaveClass(/.*bg-lime-100.*/)
+  await expect(page.locator('[data-testid="price-item"][data-test-day="prev"][data-test-hour="12"]')).toHaveClass(/.*bg-green-200.*/)
   await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="7"]')).toHaveText('17.99')
   await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="7"]')).toHaveClass(/.*bg-red-200.*/)
   await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="8"]')).toHaveText('13.68')
-  await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="8"]')).toHaveClass(/.*bg-orange-200.*/)
+  await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="8"]')).toHaveClass(/.*bg-orange-100.*/)
   await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="10"]')).toHaveText('8.20')
   await expect(page.locator('[data-testid="price-item"][data-test-day="current"][data-test-hour="10"]')).toHaveClass(/.*bg-yellow-100.*/)
 })

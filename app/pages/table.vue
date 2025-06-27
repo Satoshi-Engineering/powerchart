@@ -284,6 +284,12 @@ const getPriceForDateTime = (dateTime: DateTime): number => {
 }
 
 const allCurrentlyDisplayedPrices = computed(() => {
+  if (currentDate.value.toISODate() === maxDate.value.toISODate()) {
+    return prices.value.flatMap((p) => [
+      p.pricePrev,
+      p.price,
+    ])
+  }
   return prices.value.flatMap((p) => [
     p.pricePrev,
     p.price,

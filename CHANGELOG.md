@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v1.5.2
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.1...v1.5.2)
+
+### 🩹 Fixes
+
+- E2e test handle table color fix (15b201a)
+- Add waitForUrl to remove e2e test flakiness (9c5990d)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.5.1
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.0...v1.5.1)

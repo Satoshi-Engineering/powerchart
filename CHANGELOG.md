@@ -1,6 +1,38 @@
 # Changelog
 
 
+## v1.5.0
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.4.0...v1.5.0)
+
+### 🚀 Enhancements
+
+- Make multiple grid fees possible and selectable via sidebar (0f9a717)
+- Add vat and disableSurroundingLayout options to sidebar (8bc1e99)
+- Add more available grid options (dd1b403)
+- Add customGrid to grid options (37b164b)
+- Add custom grid settings page (b004dbc)
+- Save custom grid settings to url (0f0e402)
+
+### 🩹 Fixes
+
+- Type in chargingStation id (2d9dfab)
+- Navbar use localePath (55cc787)
+
+### 💅 Refactors
+
+- Page table use grid fees instead of fixedCosts (f34265b)
+- Page table always use dynamic colors, but alert colors take electricity provider and grid fee costs into consideration (e7fe2d2)
+
+### ✅ Tests
+
+- Fix e2e tests after selectable gridFees implementation (0f4e342)
+- E2e tests handle dynamic color option default and fixed rule removal (461c97d)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.4.0
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.3.0...v1.4.0)

@@ -29,7 +29,7 @@ test('use a different electricity provider via ui', async ({ page }) => {
 
   await expect(page.getByTestId('electricity-price-chart')).toBeVisible()
   await expect(page.getByTestId('bar_14:00').getByTestId('bar-total-price')).toHaveText('-0.89')
-  expect(page.url()).toContain('selectedTariff=energie-steiermark-spot')
+  await page.waitForURL('**/?selectedTariff=energie-steiermark-spot')
 })
 
 test('use a different electricity provider via url', async ({ page }) => {

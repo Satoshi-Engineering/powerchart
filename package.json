@@ -2,7 +2,7 @@
   "name": "powerchart",
   "private": true,
   "type": "module",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "scripts": {
     "build": "npm run build:nuxt && npm run build:cli",
     "build:nuxt": "nuxt build",

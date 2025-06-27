@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.5.1
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.0...v1.5.1)
+
+### 🩹 Fixes
+
+- Price table to not add empty data from next day if there is no data for the next day (5f20ef8)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.5.0
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.4.0...v1.5.0)

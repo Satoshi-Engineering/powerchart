@@ -151,7 +151,7 @@ const margins = computed(() => {
 })
 const chartWidth = computed(() => Math.max(800, Math.min(1800, clientWidth.value - margins.value.left - margins.value.right)))
 const chartHeight = computed(() => {
-  const heightReduction = surroundingLayoutDisabled.value ? 70 : 180
+  const heightReduction = surroundingLayoutDisabled.value ? 70 : 200
   return clientHeight.value - heightReduction - margins.value.top - margins.value.bottom
 })
 

@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v1.5.3
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.2...v1.5.3)
+
+### 🩹 Fixes
+
+- Adjust the magic heightReduction number to consider new footer height (cea2d15)
+
+### 💅 Refactors
+
+- Do not send api fetch error to telegram on 429 (feae778)
+- Do not wait full 2 minutes on awattar 429 but instead use retry-after header (a4c05de)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+- Dr-erych <dave@satoshiengineering.com>
+
 ## v1.5.2
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.1...v1.5.2)

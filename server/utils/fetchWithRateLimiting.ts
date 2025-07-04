@@ -22,12 +22,12 @@ export const fetchWithRateLimiting = async <Schema extends ZodTypeAny>(
       throw error
     }
 
-    handleRateLimitError(urlObject.origin)
+    handleRateLimitError(urlObject.origin, error)
   }
 }
 
 type origin = string
-const waitTime = 2 // minutes
+const waitTimeDefault = 60 // seconds
 const waitWithRequestsUntil: Record<origin, Date | undefined> = {}
 
 const assertRateLimit = (origin: origin) => {
@@ -40,7 +40,12 @@ const assertRateLimit = (origin: origin) => {
   waitWithRequestsUntil[origin] = undefined
 }
 
-const handleRateLimitError = (origin: origin) => {
-  waitWithRequestsUntil[origin] = new Date(Date.now() + waitTime * 60 * 1_000)
+const handleRateLimitError = (origin: origin, error: FetchError) => {
+  let waitTime = waitTimeDefault
+  const retryAfter = Number(error.response?.headers.get('retry-after'))
+  if (retryAfter > 0) {
+    waitTime = retryAfter
+  }
+  waitWithRequestsUntil[origin] = new Date(Date.now() + waitTime * 1_000)
   throw new ErrorWithCode(`API rate limit exceeded for: ${origin}`, ErrorCode.enum.apiRateLimitReached)
 }

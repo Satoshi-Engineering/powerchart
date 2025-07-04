@@ -75,6 +75,20 @@ const handleFailedFetch = (dateIso: string, error: unknown) => {
     return data
   }
 
-  console.error(`Failed to fetch prices from awattar for ${dateIso} and no cached data is available.`, error)
+  if (
+    !isRateLimitError(error)
+    || dateIso === DateTime.now().toISODate()
+  ) {
+    console.error(`Failed to fetch prices from awattar for ${dateIso} and no cached data is available.`, error)
+  }
+
   throw error
+}
+
+const isRateLimitError = (error: unknown): boolean => {
+  if (!isErrorWithCode(error)) {
+    return false
+  }
+  return error.code === ErrorCode.enum.apiRateLimitReached
+    || error.code === ErrorCode.enum.apiRateLimitWaiting
 }

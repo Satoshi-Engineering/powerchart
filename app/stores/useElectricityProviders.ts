@@ -6,32 +6,27 @@ import {
   CustomTariff,
 } from '@/types/ElectricityTariff'
 
+/**
+ * `selectedTariff` and `customTariff` are actually the "state", but we want the url to be updated whenever the state changes.
+ * So we opted to use getters/setters instead of a state. Also we cannot use a WriteableComputedRef in the state, as we use nuxt
+ * SSR, and therefore the state has to be serializable. We could return a WriteableComputedRef in the getter, but I think that would make
+ * the code more obscure.
+ */
 export const useElectricityProviders = defineStore('electricityProviders', {
-  state: (): {
-    selectedTariff: string
-    customTariff: ElectricityTariff
-  } => {
-    const config = useRuntimeConfig()
-    const route = useRoute()
-
-    let selectedTariff = config.public.defaultElectricityTariff
-    if (route.query.selectedTariff) {
-      selectedTariff = String(route.query.selectedTariff)
-    }
-
-    let customTariff: CustomTariff
-    try {
-      customTariff = CustomTariff.parse(JSON.parse(route.query.customTariff as string))
-    } catch {
-      customTariff = CustomTariff.parse({})
-    }
-
-    return {
-      selectedTariff,
-      customTariff,
-    }
-  },
   getters: {
+    selectedTariff(): string {
+      const config = useRuntimeConfig()
+      const selectedTariff = useQueryParameterSetting('selectedTariff', config.public.defaultElectricityTariff)
+      return selectedTariff.value
+    },
+    customTariff(): ElectricityTariff {
+      const customTariff = useQueryParameterSetting('customTariff', JSON.stringify(CustomTariff.parse({})))
+      try {
+        return JSON.parse(customTariff.value)
+      } catch {
+        return CustomTariff.parse({})
+      }
+    },
     availableTariffs(): ElectricityTariff[] {
       return electricityTariffs
     },
@@ -48,12 +43,12 @@ export const useElectricityProviders = defineStore('electricityProviders', {
         }
       }
     },
-    currentElectricityTariff(state): ElectricityTariff | null {
-      if (state.selectedTariff === state.customTariff.id) {
-        return state.customTariff
+    currentElectricityTariff(): ElectricityTariff | null {
+      if (this.selectedTariff === this.customTariff.id) {
+        return this.customTariff
       }
       const provider = this.availableTariffs
-        .find((provider: ElectricityTariff) => provider.id === state.selectedTariff)
+        .find((provider: ElectricityTariff) => provider.id === this.selectedTariff)
       if (provider == null) {
         console.warn(`No provider found for id: ${this.selectedTariff}`)
         return null
@@ -65,6 +60,15 @@ export const useElectricityProviders = defineStore('electricityProviders', {
     },
   },
   actions: {
+    setSelectedTariff(tariff: string): void {
+      const config = useRuntimeConfig()
+      const selectedTariff = useQueryParameterSetting('selectedTariff', config.public.defaultElectricityTariff)
+      selectedTariff.value = tariff
+    },
+    setCustomTariff(tariff: ElectricityTariff): void {
+      const customTariff = useQueryParameterSetting('customTariff', JSON.stringify(CustomTariff.parse({})))
+      customTariff.value = JSON.stringify(tariff)
+    },
     getPriceForCurrentElectricityTariff(price: number): number {
       const calculatedPrice = this.priceForFormula(price, this.currentFormula)
       if (isNaN(calculatedPrice)) {

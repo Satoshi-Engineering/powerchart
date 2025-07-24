@@ -1,6 +1,6 @@
-type CacheOptions =
-  | { until: Date, forMS?: never }
-  | { forMS: number, until?: never }
+type CacheOptions
+  = { until: Date, forMS?: never }
+    | { forMS: number, until?: never }
 
 export default class InMemoryCache<T> {
   cacheValue(key: string, value: T, options: CacheOptions): void {

@@ -24,15 +24,15 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 
-export type PriceRange =
-  'lowAlert'
-  | 'lowest'
-  | 'lower'
-  | 'low'
-  | 'mid'
-  | 'high'
-  | 'highest'
-  | 'highAlert'
+export type PriceRange
+  = 'lowAlert'
+    | 'lowest'
+    | 'lower'
+    | 'low'
+    | 'mid'
+    | 'high'
+    | 'highest'
+    | 'highAlert'
 
 defineProps({
   loading: {

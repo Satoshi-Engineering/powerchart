@@ -11,17 +11,17 @@ export default () => {
 
   const selectedTariff = useQueryParameterSetting('selectedTariff', config.public.defaultElectricityTariff)
 
-  const customTariffComposable = useQueryParameterSetting('customTariff', JSON.stringify(CustomTariff.parse({})))
+  const customTariffQueryParameter = useQueryParameterSetting('customTariff', JSON.stringify(CustomTariff.parse({})))
   const customTariff = computed({
     get() {
       try {
-        return CustomTariff.parse(JSON.parse(customTariffComposable.value))
+        return CustomTariff.parse(JSON.parse(customTariffQueryParameter.value))
       } catch {
         return CustomTariff.parse({})
       }
     },
     set(tariff: CustomTariff) {
-      customTariffComposable.value = JSON.stringify(tariff)
+      customTariffQueryParameter.value = JSON.stringify(tariff)
     },
   })
 

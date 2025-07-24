@@ -255,7 +255,7 @@ watchEffect(() => {
 /////
 // prices
 const { getPriceForCurrentElectricityTariff } = useElectricityProviders()
-const { addVat } = storeToRefs(useAddVat())
+const { addVat } = useAddVat()
 const { getAllFeesForDateTime } = useGridFees()
 const prices = computed<{
   hour: number

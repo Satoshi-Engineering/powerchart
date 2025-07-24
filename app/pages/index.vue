@@ -168,7 +168,7 @@ const hourlyTimestampsForCurrentDate = computed(() => {
 const currentDateHasTimezoneShift = computed(() => hourlyTimestampsForCurrentDate.value.length !== 24)
 
 // info about colors
-const { addVat } = storeToRefs(useAddVat())
+const { addVat } = useAddVat()
 const showInfo = ref(false)
 const infos = computed(() => {
   const infos = [

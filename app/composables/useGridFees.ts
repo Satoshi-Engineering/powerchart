@@ -9,17 +9,17 @@ export default () => {
 
   const selectedGrid = useQueryParameterSetting('selectedGrid', config.public.defaultGrid)
 
-  const customGridComposable = useQueryParameterSetting('customGrid', JSON.stringify(CustomGridFees.parse({})))
+  const customGridQueryParameter = useQueryParameterSetting('customGrid', JSON.stringify(CustomGridFees.parse({})))
   const customGrid = computed({
     get() {
       try {
-        return JSON.parse(customGridComposable.value)
+        return JSON.parse(customGridQueryParameter.value)
       } catch {
         return CustomGridFees.parse({})
       }
     },
     set(grid: CustomGridFees) {
-      customGridComposable.value = JSON.stringify(grid)
+      customGridQueryParameter.value = JSON.stringify(grid)
     },
   })
 

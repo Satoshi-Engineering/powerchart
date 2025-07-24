@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-const { addVat } = storeToRefs(useAddVat())
+const { addVat } = useAddVat()
 
 const {
   surroundingLayoutDisabled,

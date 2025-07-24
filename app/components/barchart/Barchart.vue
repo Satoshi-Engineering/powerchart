@@ -52,9 +52,7 @@ const props = defineProps({
 })
 
 const { priceForTimestamp } = useElectricityPrices()
-const gridFees = useGridFees()
-const { getFeeForDateTime, getColorForFeeId } = gridFees
-const { fees } = storeToRefs(gridFees)
+const { fees, getFeeForDateTime, getColorForFeeId } = useGridFees()
 
 const bars = computed(() => hourlyTimestampsForCurrentDate.value.map((timestamp) => {
   const price = priceForTimestamp(timestamp)

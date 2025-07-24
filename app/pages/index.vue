@@ -103,7 +103,7 @@ const {
   loadForDateIso, loading: loadingPrices, loadingFailed,
   priceForDate,
 } = useElectricityPrices()
-const { fees } = storeToRefs(useGridFees())
+const { fees } = useGridFees()
 
 const minDate = ref(DateTime.fromISO('2023-01-01').startOf('day'))
 const maxDate = computed(() => {

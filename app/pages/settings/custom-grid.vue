@@ -88,8 +88,7 @@ import { graz } from '~/assets/grids/graz'
 import { grazDoubleTariff } from '~/assets/grids/grazDoubleTariff'
 import { Fee } from '~/types/Fee'
 
-const gridFees = useGridFees()
-const { customGrid } = storeToRefs(gridFees)
+const { customGrid } = useGridFees()
 
 const label = ref(customGrid.value.label)
 const fees = ref<string>(JSON.stringify(customGrid.value.fees, null, 2))
@@ -108,10 +107,10 @@ const feeValidation = computed(() => {
 })
 
 const save = () => {
-  gridFees.setCustomGrid({
+  customGrid.value = {
     id: customGrid.value.id,
     label: label.value,
     fees: Fee.array().parse(JSON.parse(fees.value)),
-  })
+  }
 }
 </script>

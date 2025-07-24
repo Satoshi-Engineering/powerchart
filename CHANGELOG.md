@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v1.5.4
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.3...v1.5.4)
+
+### 💅 Refactors
+
+- Electricity provider store use composable i/o sync to url plugin for persisting settings to url (36ec799)
+- Grid fees use composable i/o sync to url plugin for persisting settings to url (16219bd)
+- UseElectricityProviders from store to composable as the pinia store does not handle url changes correctly (3949c1a)
+- UseGridFees from store to composable as the pinia store does not handle url changes correctly (21c2666)
+- UseAddVat from store to composable and using useQueryParameter composable (ef852be)
+- UCheckbox use ref i/o writableComputed for playwright check/uncheck functions (771136d)
+
+### 🏡 Chore
+
+- Npm audit fix (84aa5db)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.5.3
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.2...v1.5.3)

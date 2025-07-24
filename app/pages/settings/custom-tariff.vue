@@ -9,10 +9,12 @@
           :model-value="customTariff.name"
           class="w-full"
           :placeholder="$t('electricityProvider.customTariff')"
-          @update:model-value="electricityProviders.setCustomTariff({
-            ...customTariff,
-            name: $event,
-          })"
+          @update:model-value="customTariff = {
+            id: customTariff.id,
+            name: String($event),
+            provider: customTariff.provider,
+            formula: customTariff.formula,
+          }"
         />
       </UFormField>
       <UFormField
@@ -23,10 +25,12 @@
           :model-value="customTariff.provider"
           class="w-full"
           :placeholder="$t('electricityProvider.customProvider')"
-          @update:model-value="electricityProviders.setCustomTariff({
-            ...customTariff,
-            provider: $event,
-          })"
+          @update:model-value="customTariff = {
+            id: customTariff.id,
+            name: customTariff.name,
+            provider: String($event),
+            formula: customTariff.formula,
+          }"
         />
       </UFormField>
       <UFormField
@@ -37,22 +41,24 @@
           :model-value="customTariff.formula"
           class="w-full"
           placeholder="price"
-          @update:model-value="electricityProviders.setCustomTariff({
-            ...customTariff,
-            formula: $event,
-          })"
+          @update:model-value="customTariff = {
+            id: customTariff.id,
+            name: customTariff.name,
+            provider: customTariff.provider,
+            formula: String($event),
+          }"
         />
       </UFormField>
       <pre>
         <code>
 price = 1.5
-{{ customTariff.formula }} = {{ electricityProviders.priceForFormula(1.5, customTariff.formula) }}
+{{ customTariff.formula }} = {{ priceForFormula(1.5, customTariff.formula) }}
 
 price = 0
-{{ customTariff.formula }} = {{ electricityProviders.priceForFormula(0, customTariff.formula) }}
+{{ customTariff.formula }} = {{ priceForFormula(0, customTariff.formula) }}
 
 price = -3
-{{ customTariff.formula }} = {{ electricityProviders.priceForFormula(-3, customTariff.formula) }}
+{{ customTariff.formula }} = {{ priceForFormula(-3, customTariff.formula) }}
         </code>
       </pre>
       <TypoParagraph>
@@ -72,8 +78,8 @@ price * 2
 </template>
 
 <script setup lang="ts">
-const electricityProviders = useElectricityProviders()
 const {
   customTariff,
-} = storeToRefs(electricityProviders)
+  priceForFormula,
+} = useElectricityProviders()
 </script>

@@ -5,11 +5,10 @@
     {{ $t('electricityProvider.selectTariff') }}
   </TypoHeadline>
   <USelect
-    :model-value="selectedTariff"
+    v-model="selectedTariff"
     :items="electricityProviderItems"
     class="w-full"
     data-testid="electricity-provider-select"
-    @update:model-value="electricityProviders.setSelectedTariff(String($event))"
   />
   <UNavigationMenu
     :items="configureCustomTariff"
@@ -25,12 +24,11 @@ const route = useRoute()
 const localePath = useLocalePath()
 const { t } = useI18n()
 
-const electricityProviders = useElectricityProviders()
 const {
   availableTariffs,
   selectedTariff,
   customTariff,
-} = storeToRefs(electricityProviders)
+} = useElectricityProviders()
 
 const electricityProviderItems = computed<SelectItem[]>(() => {
   const tariffs = availableTariffs.value.map((tariff) => ({

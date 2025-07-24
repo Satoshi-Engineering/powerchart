@@ -14,7 +14,7 @@ export default (key: string, defaultValue: string, type: UpdateType = 'update') 
       if (value == null) {
         return defaultValue
       }
-      return String(getQueryParam())
+      return String(value)
     },
     set: (newValue) => {
       if (newValue === defaultValue || newValue == null) {

@@ -4,32 +4,27 @@ import availableGrids from '~/assets/grids'
 import type { Fee } from '~/types/Fee'
 import { type GridFees, CustomGridFees } from '~/types/GridFees'
 
+/**
+ * `selectedGrid` and `customGrid` are actually the "state", but we want the url to be updated whenever the state changes.
+ * So we opted to use getters/setters instead of a state. Also we cannot use a WriteableComputedRef in the state, as we use nuxt
+ * SSR, and therefore the state has to be serializable. We could return a WriteableComputedRef in the getter, but I think that would make
+ * the code more obscure.
+ */
 export const useGridFees = defineStore('gridFees', {
-  state: (): {
-    selectedGrid: string
-    customGrid: CustomGridFees
-  } => {
-    const config = useRuntimeConfig()
-    const route = useRoute()
-
-    let selectedGrid = config.public.defaultGrid
-    if (route.query.selectedGrid) {
-      selectedGrid = String(route.query.selectedGrid)
-    }
-
-    let customGrid: CustomGridFees
-    try {
-      customGrid = CustomGridFees.parse(JSON.parse(route.query.customGrid as string))
-    } catch {
-      customGrid = CustomGridFees.parse({})
-    }
-
-    return {
-      selectedGrid,
-      customGrid,
-    }
-  },
   getters: {
+    selectedGrid(): string {
+      const config = useRuntimeConfig()
+      const selectedGrid = useQueryParameterSetting('selectedGrid', config.public.defaultGrid)
+      return selectedGrid.value
+    },
+    customGrid(): CustomGridFees {
+      const customGrid = useQueryParameterSetting('customGrid', JSON.stringify(CustomGridFees.parse({})))
+      try {
+        return JSON.parse(customGrid.value)
+      } catch {
+        return CustomGridFees.parse({})
+      }
+    },
     availableGrids(): GridFees[] {
       const config = useRuntimeConfig()
       return availableGrids.filter((grid) => config.public.availableGrids.includes(grid.id))
@@ -52,6 +47,15 @@ export const useGridFees = defineStore('gridFees', {
     },
   },
   actions: {
+    setSelectedGrid(grid: string): void {
+      const config = useRuntimeConfig()
+      const selectedGrid = useQueryParameterSetting('selectedGrid', config.public.defaultGrid)
+      selectedGrid.value = grid
+    },
+    setCustomGrid(grid: CustomGridFees): void {
+      const customGrid = useQueryParameterSetting('customGrid', JSON.stringify(CustomGridFees.parse({})), 'push')
+      customGrid.value = JSON.stringify(grid)
+    },
     getAllFeesForDateTime(date: DateTime): number {
       return this.fees.reduce((total, fee) => {
         const feeValue = this.getFeeForDateTime(fee.id, date)

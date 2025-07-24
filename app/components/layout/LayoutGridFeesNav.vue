@@ -5,10 +5,11 @@
     {{ $t('gridFees.selectGrid') }}
   </TypoHeadline>
   <USelect
-    v-model="selectedGrid"
+    :model-value="selectedGrid"
     class="w-full"
     :items="gridFeeItems"
     data-testid="grid-fees-select"
+    @update:model-value="gridFees.setSelectedGrid(String($event))"
   />
   <UNavigationMenu
     :items="configureCustomTariff"
@@ -25,11 +26,12 @@ import { noFees } from '~/assets/grids/noFees'
 const route = useRoute()
 const localePath = useLocalePath()
 const { t } = useI18n()
+const gridFees = useGridFees()
 const {
   availableGrids,
   selectedGrid,
   customGrid,
-} = storeToRefs(useGridFees())
+} = storeToRefs(gridFees)
 const tml = useTranslateMultilingualString()
 
 const gridFeeItems = computed<SelectItem[]>(() => {

@@ -94,7 +94,7 @@ const positionedNegativeSegment = computed(() => {
   if (props.negativeSegment == null) {
     return null
   }
-  const height = (props.negativeSegment.value / props.maxTotalPrice) * props.chartHeight / 10
+  const height = (props.negativeSegment.value / props.maxTotalPrice) * props.chartHeight
   return {
     height,
     color: props.negativeSegment.color,

@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.5.6
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.5...v1.5.6)
+
+### 🏡 Chore
+
+- Audit fix (51af00d)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.5.5
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.4...v1.5.5)

@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.5.5
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.4...v1.5.5)
+
+### 💅 Refactors
+
+- Remove negative segment scaling for barchart (ff0ae4b)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.5.4
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.3...v1.5.4)

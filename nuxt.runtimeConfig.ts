@@ -26,7 +26,8 @@ export const runtimeConfig = {
   telegramSender: {
     token: '',
     defaultChatId: '',
-    messagePrefix: 'Powerchart Error',
+    feedbackChatId: '',
+    messagePrefix: 'Powerchart',
     messageMaxLength: 500,
   },
 }

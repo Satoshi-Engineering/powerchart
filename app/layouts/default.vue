@@ -63,6 +63,7 @@
         :items="footerLinks"
         variant="link"
       />
+      <FeedbackForm v-if="config.public.telegramEnabled" />
 
       <template #right>
         Version: {{ $config.public.version }}

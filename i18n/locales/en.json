@@ -67,5 +67,24 @@
     "addVat": "Add VAT (20 %)",
     "disableSurroundingLayout": "Hide header and footer",
     "disableSurroundingLayoutDescription": "This option hides the surrounding layout of the page to create more space for the charts. To disable this option again, you must manually remove the setting from the URL."
+  },
+  "feedback": {
+    "buttonCta": "Send Feedback",
+    "success": {
+      "headline": "❤️ Feedback sent ❤️",
+      "githubLink": "our GitHub page",
+      "message": "Visit {0} to stay up to date with the current development."
+    },
+    "form": {
+      "buttonSend": "Send",
+      "message": {
+        "minCharacters": "Minimum 3 letters",
+        "placeholder": "Your feedback"
+      },
+      "headline": "Thank you for your feedback. It is important to improve our tool.",
+      "contact": {
+        "placeholder": "Contact info (optional)"
+      }
+    }
   }
 }

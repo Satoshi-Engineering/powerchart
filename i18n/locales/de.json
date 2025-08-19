@@ -67,5 +67,24 @@
     "addVat": "Umsatzsteuer hinzufügen (20 %)",
     "disableSurroundingLayout": "Header und Footer verstecken",
     "disableSurroundingLayoutDescription": "Diese Option blendet das umgebende Layout der Seite aus, um mehr Platz für die Diagramme zu schaffen. Um diese Option wieder zu deaktivieren, müssen Sie die Einstellung manuell aus der URL entfernen."
+  },
+  "feedback": {
+    "buttonCta": "Feedback senden",
+    "success": {
+      "headline": "❤️ Feedback gesendet ❤️",
+      "githubLink": "unsere GitHub Seite",
+      "message": "Besuche {0}, um auf dem Laufenden zu bleiben."
+    },
+    "form": {
+      "buttonSend": "Absenden",
+      "message": {
+        "minCharacters": "Mindestens 3 Zeichen",
+        "placeholder": "Dein Feedback"
+      },
+      "headline": "Danke für dein Feedback. Es hilft unser Tool zu verbessern!",
+      "contact": {
+        "placeholder": "Kontaktdaten (optional)"
+      }
+    }
   }
 }

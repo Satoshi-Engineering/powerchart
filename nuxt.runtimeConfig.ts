@@ -21,6 +21,7 @@ export const runtimeConfig = {
     defaultGrid: 'noFees',
     defaultAddVat: false,
     disableSurroundingLayout: false,
+    feedbackFormEnabled: false,
   },
   awattarApiOrigin: 'https://api.awattar.at',
   telegramSender: {

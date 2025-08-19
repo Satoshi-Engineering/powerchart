@@ -35,7 +35,6 @@ export default defineNuxtConfig({
     ...runtimeConfig,
     public: {
       ...runtimeConfig.public,
-      telegramEnabled: !!process.env.NUXT_TELEGRAM_SENDER_TOKEN,
       version: pkg.version,
     },
   },

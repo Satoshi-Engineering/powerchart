@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v1.6.0
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.6...v1.6.0)
+
+### 🚀 Enhancements
+
+- Add feedback form (e838d09)
+
+### 💅 Refactors
+
+- Add feedback form enabled button as reading process.env does not work with the built nuxt app (47ed732)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.5.6
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.5...v1.5.6)

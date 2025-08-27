@@ -9,6 +9,7 @@ const sender = new TelegramSender({
   defaultChatId: config.telegramSender.feedbackChatId,
   messagePrefix: config.telegramSender.messagePrefix ?? undefined,
   messageMaxLength: config.telegramSender.messageMaxLength ?? 4000,
+  telegramApiOriginOverride: config.telegramSender.telegramApiOriginOverride || undefined,
 })
 
 export default defineEventHandlerWithErrorCodes(async (event): Promise<object> => {

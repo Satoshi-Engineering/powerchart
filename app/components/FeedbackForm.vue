@@ -5,13 +5,17 @@
       color="neutral"
       variant="link"
       class="cursor-pointer"
+      data-testid="open-feedback-form"
     >
       {{ $t('feedback.buttonCta') }}
     </UButton>
 
     <template #content>
       <div class="max-w-sm p-4 px-4">
-        <div v-if="success">
+        <div
+          v-if="success"
+          data-testid="feedback-form-success"
+        >
           <TypoHeadline level="h4">
             {{ $t('feedback.success.headline') }}
           </TypoHeadline>
@@ -34,6 +38,7 @@
           :schema="formSchema"
           :state="state"
           class="space-y-4"
+          data-testid="feedback-form"
           @submit="onSubmit"
         >
           <TypoParagraph>
@@ -61,6 +66,7 @@
 
           <UButton
             type="submit"
+            data-testid="feedback-form-submit"
             :loading="sending"
           >
             {{ $t('feedback.form.buttonSend') }}

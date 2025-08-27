@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test'
 import { isCI, isWindows } from 'std-env'
+import dotenv from 'dotenv'
+
+// Read from ".env.e2e" file.
+dotenv.config({ path: new URL('.env.e2e', import.meta.url).pathname })
 
 export default defineConfig({
   tsconfig: './tsconfig.json',

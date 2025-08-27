@@ -30,5 +30,6 @@ export const runtimeConfig = {
     feedbackChatId: '',
     messagePrefix: 'Powerchart',
     messageMaxLength: 500,
+    telegramApiOriginOverride: '',
   },
 }

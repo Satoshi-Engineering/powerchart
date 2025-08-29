@@ -12,7 +12,7 @@ const checkConfig = (rootKey: string, config: object) => {
       checkConfig(currentKey, value)
       return
     }
-    if (value != null && process.env[currentKey] == null) {
+    if (process.env[currentKey] == null) {
       throw new Error(`Missing environment variable ${currentKey}`)
     }
   })

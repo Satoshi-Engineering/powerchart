@@ -6,10 +6,10 @@
     <UContainer>
       <div class="relative w-full flex mt-4 px-2 justify-left md:justify-center">
         <DatePicker
-          v-model="currentDate"
+          v-model="selectedDate"
           :min-date="minDate"
           :max-date="maxDate"
-          :disabled="currentDateIso != null && loadingPrices.includes(currentDateIso)"
+          :disabled="selectedDateIso != null && loadingPrices.includes(selectedDateIso)"
           :size="size"
         />
         <div class="absolute right-0 h-full me-2">
@@ -43,7 +43,7 @@
               />
               <span class="whitespace-nowrap">{{ feeInfo.label }}</span>
             </template>
-            <template v-if="currentDateHasTimezoneShift">
+            <template v-if="selectedDateHasTimezoneShift">
               <span>SZ</span><span>Sommerzeit</span>
               <span>NZ</span><span>Normalzeit</span>
             </template>
@@ -58,7 +58,7 @@
       <AnimatedLoadingWheel />
     </div>
     <div
-      v-else-if="showContent && currentDateIso != null && loadingFailed.includes(currentDateIso)"
+      v-else-if="showContent && selectedDateIso != null && loadingFailed.includes(selectedDateIso)"
       class="flex-1 grid justify-center content-center text-red-600"
     >
       {{ $t('errors.loadingPricesFailed') }}
@@ -81,7 +81,7 @@
           :transform="`translate(${margins.left}, ${margins.top})`"
           :chart-height="chartHeight"
           :chart-width="chartWidth"
-          :date="currentDate"
+          :date="selectedDate"
           :vat="addVat ? 0.2 : 0"
         />
       </svg>
@@ -115,25 +115,25 @@ const maxDate = computed(() => {
 })
 
 const {
-  currentDate, currentDateIso,
+  selectedDate, selectedDateIso,
 } = useDate()
 
 watchEffect(() => {
-  if (currentDateIso.value == null) {
+  if (selectedDateIso.value == null) {
     return
   }
-  loading.value = loadingPrices.includes(currentDateIso.value)
+  loading.value = loadingPrices.includes(selectedDateIso.value)
 })
 watchEffect(() => {
-  if (currentDateIso.value == null) {
+  if (selectedDateIso.value == null) {
     return
   }
-  loadForDateIso(currentDateIso.value)
-  const dateIsoPrev = currentDate.value.minus({ days: 1 }).toISODate()
+  loadForDateIso(selectedDateIso.value)
+  const dateIsoPrev = selectedDate.value.minus({ days: 1 }).toISODate()
   if (dateIsoPrev != null) {
     loadForDateIso(dateIsoPrev)
   }
-  const dateIsoNext = currentDate.value.plus({ days: 1 }).toISODate()
+  const dateIsoNext = selectedDate.value.plus({ days: 1 }).toISODate()
   if (dateIsoNext != null) {
     loadForDateIso(dateIsoNext)
   }
@@ -157,15 +157,15 @@ const chartHeight = computed(() => {
 
 const hourlyTimestampsForCurrentDate = computed(() => {
   const timestamps = []
-  const first = currentDate.value.toMillis()
-  const last = currentDate.value.set({ hour: 23 }).toMillis()
+  const first = selectedDate.value.toMillis()
+  const last = selectedDate.value.set({ hour: 23 }).toMillis()
   for (let current = first; current <= last; current += 1000 * 60 * 60) {
     timestamps.push(current)
   }
   return timestamps
 })
 
-const currentDateHasTimezoneShift = computed(() => hourlyTimestampsForCurrentDate.value.length !== 24)
+const selectedDateHasTimezoneShift = computed(() => hourlyTimestampsForCurrentDate.value.length !== 24)
 
 // info about colors
 const { addVat } = useAddVat()

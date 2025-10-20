@@ -11,7 +11,7 @@
         <AnimatedLoadingWheel />
       </div>
       <div
-        v-else-if="showContent && currentDateIso != null && loadingFailed.includes(currentDateIso)"
+        v-else-if="showContent && selectedDateIso != null && loadingFailed.includes(selectedDateIso)"
         class="flex-1 grid justify-center content-center text-red-600"
       >
         {{ $t('errors.loadingPricesFailed') }}
@@ -32,13 +32,13 @@
       >
         <TableHeaderItem />
         <TableHeaderItem>
-          {{ $d(currentDate.minus({ days: 1 }).toJSDate(), 'monthAndDay') }}
+          {{ $d(selectedDate.minus({ days: 1 }).toJSDate(), 'monthAndDay') }}
         </TableHeaderItem>
         <TableHeaderItem>
-          {{ $d(currentDate.toJSDate(), 'monthAndDay') }}
+          {{ $d(selectedDate.toJSDate(), 'monthAndDay') }}
         </TableHeaderItem>
         <TableHeaderItem>
-          {{ $d(currentDate.plus({ days: 1 }).toJSDate(), 'monthAndDay') }}
+          {{ $d(selectedDate.plus({ days: 1 }).toJSDate(), 'monthAndDay') }}
         </TableHeaderItem>
         <template
           v-for="(price, index) in prices"
@@ -48,11 +48,11 @@
             {{ String(price.hour).padStart(2, '0') }}
           </div>
           <TablePriceItem
-            :loading="!priceForDateAvailable(currentDate.minus({ days: 1 }))"
+            :loading="!priceForDateAvailable(selectedDate.minus({ days: 1 }))"
             :price="price.pricePrev"
             :is-current-hour="
-              currentDate.minus({ days: 1 }).toISODate() === DateTime.now().toISODate()
-                && DateTime.now().toFormat('H') === String(price.hour)
+              selectedDate.minus({ days: 1 }).toISODate() === today
+                && String(price.hour) === currentHour
             "
             :price-range="getRange(price.pricePrev)"
             data-testid="price-item"
@@ -60,11 +60,11 @@
             :data-test-hour="price.hour"
           />
           <TablePriceItem
-            :loading="!priceForDateAvailable(currentDate)"
+            :loading="!priceForDateAvailable(selectedDate)"
             :price="price.price"
             :is-current-hour="
-              currentDate.toISODate() === DateTime.now().toISODate()
-                && DateTime.now().toFormat('H') === String(price.hour)
+              selectedDate.toISODate() === today
+                && String(price.hour) === currentHour
             "
             :price-range="getRange(price.price)"
             data-testid="price-item"
@@ -72,12 +72,12 @@
             :data-test-hour="price.hour"
           />
           <TablePriceItem
-            v-if="currentDate.plus({ days: 1 }) <= maxDate"
-            :loading="!priceForDateAvailable(currentDate.plus({ days: 1 }))"
+            v-if="selectedDate.plus({ days: 1 }) <= maxDate"
+            :loading="!priceForDateAvailable(selectedDate.plus({ days: 1 }))"
             :price="price.priceNext"
             :is-current-hour="
-              currentDate.plus({ days: 1 }).toISODate() === DateTime.now().toISODate()
-                && DateTime.now().toFormat('H') === String(price.hour)
+              selectedDate.plus({ days: 1 }).toISODate() === today
+                && String(price.hour) === currentHour
             "
             :price-range="getRange(price.priceNext)"
             data-testid="price-item"
@@ -89,10 +89,10 @@
       </div>
       <div class="relative w-full flex my-4 px-2 justify-center">
         <DatePicker
-          v-model="currentDate"
+          v-model="selectedDate"
           :min-date="minDate"
           :max-date="maxDate"
-          :disabled="currentDateIso != null && loadingPrices.includes(currentDateIso)"
+          :disabled="selectedDateIso != null && loadingPrices.includes(selectedDateIso)"
           :size="size"
         />
       </div>
@@ -199,6 +199,7 @@ import { DateTime } from 'luxon'
 import { computed, watchEffect, ref, onBeforeMount, onBeforeUnmount } from 'vue'
 
 import type { PriceRange } from '~/components/table/TablePriceItem.vue'
+import useCurrentTime from '~/composables/useCurrentTime'
 
 const { size } = useBreakpoints()
 const { loading, showLoadingAnimation, showContent } = useDelayedLoadingAnimation(500, true)
@@ -220,33 +221,33 @@ const maxDate = computed(() => {
 })
 
 const {
-  currentDate, currentDateIso,
+  selectedDate, selectedDateIso,
 } = useDate()
 
 watchEffect(() => {
-  if (currentDateIso.value == null) {
+  if (selectedDateIso.value == null) {
     return
   }
-  loading.value = loadingPrices.includes(currentDateIso.value)
+  loading.value = loadingPrices.includes(selectedDateIso.value)
 })
 watchEffect(() => {
-  if (currentDateIso.value == null) {
+  if (selectedDateIso.value == null) {
     return
   }
-  loadForDateIso(currentDateIso.value)
-  const dateIsoPrev = currentDate.value.minus({ days: 1 }).toISODate()
+  loadForDateIso(selectedDateIso.value)
+  const dateIsoPrev = selectedDate.value.minus({ days: 1 }).toISODate()
   if (dateIsoPrev != null) {
     loadForDateIso(dateIsoPrev)
   }
-  const dateIsoPrevPrev = currentDate.value.minus({ days: 2 }).toISODate()
+  const dateIsoPrevPrev = selectedDate.value.minus({ days: 2 }).toISODate()
   if (dateIsoPrevPrev != null) {
     loadForDateIso(dateIsoPrevPrev)
   }
-  const dateIsoNext = currentDate.value.plus({ days: 1 }).toISODate()
+  const dateIsoNext = selectedDate.value.plus({ days: 1 }).toISODate()
   if (dateIsoNext != null) {
     loadForDateIso(dateIsoNext)
   }
-  const dateIsoNextNext = currentDate.value.plus({ days: 2 }).toISODate()
+  const dateIsoNextNext = selectedDate.value.plus({ days: 2 }).toISODate()
   if (dateIsoNextNext != null) {
     loadForDateIso(dateIsoNextNext)
   }
@@ -267,9 +268,9 @@ const prices = computed<{
   for (let hour = 0; hour < 24; hour++) {
     prices.push({
       hour,
-      pricePrev: getPriceForDateTime(currentDate.value.minus({ days: 1 }).set({ hour })),
-      price: getPriceForDateTime(currentDate.value.set({ hour })),
-      priceNext: getPriceForDateTime(currentDate.value.plus({ days: 1 }).set({ hour })),
+      pricePrev: getPriceForDateTime(selectedDate.value.minus({ days: 1 }).set({ hour })),
+      price: getPriceForDateTime(selectedDate.value.set({ hour })),
+      priceNext: getPriceForDateTime(selectedDate.value.plus({ days: 1 }).set({ hour })),
     })
   }
   return prices
@@ -284,7 +285,7 @@ const getPriceForDateTime = (dateTime: DateTime): number => {
 }
 
 const allCurrentlyDisplayedPrices = computed(() => {
-  if (currentDate.value.toISODate() === maxDate.value.toISODate()) {
+  if (selectedDate.value.toISODate() === maxDate.value.toISODate()) {
     return prices.value.flatMap((p) => [
       p.pricePrev,
       p.price,
@@ -372,16 +373,18 @@ const priceDelta = computed(() => maxPrice.value - minPrice.value)
 
 /////
 // reload data after one hour
-const currentHour = DateTime.now().toFormat('yyyy-LL-dd HH')
+const { today, currentHour } = useCurrentTime()
+
 const reconnectOnVisibilityChange = () => {
   if (
     document.visibilityState !== 'visible'
-    || DateTime.now().toFormat('yyyy-LL-dd HH') === currentHour
+    || DateTime.now().toFormat('H') === currentHour.value
   ) {
     return
   }
   location.reload()
 }
+
 onBeforeMount(() => {
   document.addEventListener('visibilitychange', reconnectOnVisibilityChange)
 })

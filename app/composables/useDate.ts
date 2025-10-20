@@ -2,13 +2,13 @@ import { DateTime } from 'luxon'
 import { computed, ref } from 'vue'
 
 export default () => {
-  const currentDate = ref(DateTime.now().startOf('day'))
-  const currentDateIso = computed(() => currentDate.value.toISODate())
-  const currentDateFormatted = computed(() => currentDate.value.setLocale('de').toLocaleString(DateTime.DATE_MED))
+  const selectedDate = ref(DateTime.now().startOf('day'))
+  const selectedDateIso = computed(() => selectedDate.value.toISODate())
+  const selectedDateFormatted = computed(() => selectedDate.value.setLocale('de').toLocaleString(DateTime.DATE_MED))
 
   return {
-    currentDate,
-    currentDateIso,
-    currentDateFormatted,
+    selectedDate,
+    selectedDateIso,
+    selectedDateFormatted,
   }
 }

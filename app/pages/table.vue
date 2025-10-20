@@ -20,7 +20,7 @@
         v-else-if="showContent"
         class="
           w-full max-w-lg mx-auto
-          min-h-[550px] max-h-[1000px]
+          min-h-[550px] max-h-[min(1000px,100svh)]
           py-1 pr-2
           grid grid-cols-[40px_1fr_1fr_1fr] gap-0.5 text-sm
         "

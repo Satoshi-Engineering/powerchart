@@ -20,13 +20,15 @@
         v-else-if="showContent"
         class="
           w-full max-w-lg mx-auto
-          min-h-[550px] max-h-[min(1000px,100svh)]
+          min-h-[550px]
           py-1 pr-2
           grid grid-cols-[40px_1fr_1fr_1fr] gap-0.5 text-sm
         "
         :class="{
           'h-[calc(100dvh_-_var(--ui-header-height))]': !surroundingLayoutDisabled,
+          'max-h-[calc(min(1000px,100svh)_-_var(--ui-header-height))]': !surroundingLayoutDisabled,
           'h-dvh': surroundingLayoutDisabled,
+          'max-h-[min(1000px,100svh)]': surroundingLayoutDisabled,
         }"
         data-testid="electricity-prices-table"
       >

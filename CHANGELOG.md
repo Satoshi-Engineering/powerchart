@@ -1,6 +1,36 @@
 # Changelog
 
 
+## v1.6.1
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.6.0...v1.6.1)
+
+### 🩹 Fixes
+
+- Add new env var to example files (627d39d)
+- Allow empty env vars for runtimeConfig vars that are undefined or null by default (095a00e)
+- Allow empty env vars for runtimeConfig vars that are undefined or null by default" (b418021)
+- Add max height to table using svh (851b8fd)
+- Max height for table page also handle surrounding layout (28a4401)
+
+### 💅 Refactors
+
+- Refresh the current hour in the table every minute not only after visibility change (4aa98c8)
+
+### 🏡 Chore
+
+- Npm audit fix (cda4baa)
+- Npm audit (0f15521)
+
+### ✅ Tests
+
+- **e2e:** Add e2e test for feedback form (28983ca)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+- Dr-erych <dave@satoshiengineering.com>
+
 ## v1.6.0
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.5.6...v1.6.0)

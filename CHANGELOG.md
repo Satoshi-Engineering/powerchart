@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v1.6.2
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.6.1...v1.6.2)
+
+### 🩹 Fixes
+
+- UseCurrentTime do not create ref on server (ae3efae)
+
+### 🏡 Chore
+
+- Playwright update (0351d28)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.6.1
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.6.0...v1.6.1)

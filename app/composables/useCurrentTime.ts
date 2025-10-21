@@ -1,13 +1,14 @@
 import { DateTime } from 'luxon'
 
-const today = ref<string>(DateTime.now().toISODate())
-const currentHour = ref(DateTime.now().toFormat('H'))
+export default () => {
+  const today = ref<string>(DateTime.now().toISODate())
+  const currentHour = ref(DateTime.now().toFormat('H'))
 
-onNuxtReady(() => {
-  setInterval(() => {
+  const interval = setInterval(() => {
     today.value = DateTime.now().toISODate()
     currentHour.value = DateTime.now().toFormat('H')
-  }, 60_000)
-})
+  }, 1_000)
+  onBeforeUnmount(() => clearInterval(interval))
 
-export default () => ({ today, currentHour })
+  return { today, currentHour }
+}

@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.6.3
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.6.2...v1.6.3)
+
+### 🩹 Fixes
+
+- Only start interval on client (ff3d579)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.6.2
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.6.1...v1.6.2)

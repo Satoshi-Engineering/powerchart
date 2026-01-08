@@ -10,6 +10,20 @@ export const burgenland: GridFees = {
     values: [{
       validUntil: null,
       amount: 7.26,
+    }, {
+      validUntil: '2026-04-01',
+      amount: 8.46,
+    }, {
+      validUntil: '2026-10-01',
+      amount: [{
+        validUntil: '10:00',
+        value: 8.46,
+      }, {
+        validUntil: '16:00',
+        value: 6.77,
+      }, {
+      validUntil: null,
+      amount: 8.46,
     }],
   }, {
     id: 'renewableFee',
@@ -19,8 +33,11 @@ export const burgenland: GridFees = {
       validUntil: '2025-01-01',
       amount: 0.0,
     }, {
-      validUntil: null,
+      validUntil: '2026-01-01',
       amount: 0.796,
+    }, {
+      validUntil: null,
+      amount: 0.620,
     }],
   }, {
     id: 'electricityFee',
@@ -29,6 +46,12 @@ export const burgenland: GridFees = {
     values: [{
       validUntil: '2025-01-01',
       amount: 0.1,
+    }, {
+      validUntil: '2026-01-01',
+      amount: 1.5,
+    }, {
+      validUntil: '2027-01-01',
+      amount: 0.82,
     }, {
       validUntil: null,
       amount: 1.5,

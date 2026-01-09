@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v1.6.4
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.6.3...v1.6.4)
+
+### 🩹 Fixes
+
+- Grid fees (33e298d)
+- Npm i (f3e20a8)
+- Add vue test utils (3a85297)
+
+### 🏡 Chore
+
+- Npm audit (7801e8e)
+
+### ❤️ Contributors
+
+- Thomas Schagerl <tom@satoshiengineering.com>
+
 ## v1.6.3
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.6.2...v1.6.3)

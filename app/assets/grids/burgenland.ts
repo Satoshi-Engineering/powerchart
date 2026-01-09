@@ -8,7 +8,7 @@ export const burgenland: GridFees = {
     label: 'Netznutzungsentgelt',
     color: '#8AA1B1',
     values: [{
-      validUntil: null,
+      validUntil: '2026-01-01',
       amount: 7.26,
     }, {
       validUntil: '2026-04-01',
@@ -22,6 +22,10 @@ export const burgenland: GridFees = {
         validUntil: '16:00',
         value: 6.77,
       }, {
+        validUntil: null,
+        value: 8.46,
+      }],
+    }, {
       validUntil: null,
       amount: 8.46,
     }],

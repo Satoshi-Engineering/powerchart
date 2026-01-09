@@ -22,6 +22,10 @@ export const graz: GridFees = {
         validUntil: '16:00',
         value: 4.14,
       }, {
+        validUntil: null,
+        value: 5.17,
+      }],
+    }, {
       validUntil: null,
       amount: 5.17,
     }],

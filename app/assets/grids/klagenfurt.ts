@@ -22,6 +22,10 @@ export const klagenfurt: GridFees = {
         validUntil: '16:00',
         value: 5.52,
       }, {
+        validUntil: null,
+        value: 6.90,
+      }],
+    }, {
       validUntil: null,
       amount: 6.90,
     }],

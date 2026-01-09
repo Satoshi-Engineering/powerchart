@@ -22,6 +22,10 @@ export const styria: GridFees = {
         validUntil: '16:00',
         value: 7.06,
       }, {
+        validUntil: null,
+        value: 8.82,
+      }],
+    }, {
       validUntil: null,
       amount: 8.82,
     }],

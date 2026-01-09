@@ -22,6 +22,10 @@ export const tyrol: GridFees = {
         validUntil: '16:00',
         value: 5.45,
       }, {
+        validUntil: null,
+        value: 6.81,
+      }],
+    }, {
       validUntil: null,
       amount: 6.81,
     }],

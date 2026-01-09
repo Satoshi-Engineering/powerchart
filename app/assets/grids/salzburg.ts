@@ -22,6 +22,10 @@ export const salzburg: GridFees = {
         validUntil: '16:00',
         value: 5.27,
       }, {
+        validUntil: null,
+        value: 6.59,
+      }],
+    }, {
       validUntil: null,
       amount: 6.59,
     }],

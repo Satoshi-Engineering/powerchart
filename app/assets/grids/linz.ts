@@ -22,6 +22,10 @@ export const linz: GridFees = {
         validUntil: '16:00',
         value: 4.46,
       }, {
+        validUntil: null,
+        value: 5.57,
+      }],
+    }, {
       validUntil: null,
       amount: 5.57,
     }],

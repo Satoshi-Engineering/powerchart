@@ -22,6 +22,10 @@ export const innsbruck: GridFees = {
         validUntil: '16:00',
         value: 6.42,
       }, {
+        validUntil: null,
+        value: 8.03,
+      }],
+    }, {
       validUntil: null,
       amount: 8.03,
     }],

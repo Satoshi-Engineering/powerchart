@@ -22,6 +22,10 @@ export const vorarlberg: GridFees = {
         validUntil: '16:00',
         value: 3.97,
       }, {
+        validUntil: null,
+        value: 4.96,
+      }],
+    }, {
       validUntil: null,
       amount: 4.96,
     }],

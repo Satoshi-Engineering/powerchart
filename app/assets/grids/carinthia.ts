@@ -22,6 +22,10 @@ export const carinthia: GridFees = {
         validUntil: '16:00',
         value: 7.74,
       }, {
+        validUntil: null,
+        value: 9.67,
+      }],
+    }, {
       validUntil: null,
       amount: 9.67,
     }],

@@ -22,6 +22,10 @@ export const vienna: GridFees = {
         validUntil: '16:00',
         value: 5.58,
       }, {
+        validUntil: null,
+        value: 6.98,
+      }],
+    }, {
       validUntil: null,
       amount: 6.98,
     }],

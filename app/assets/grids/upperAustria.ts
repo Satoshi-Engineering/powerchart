@@ -22,6 +22,10 @@ export const upperAustria: GridFees = {
         validUntil: '16:00',
         value: 5.03,
       }, {
+        validUntil: null,
+        value: 6.29,
+      }],
+    }, {
       validUntil: null,
       amount: 6.29,
     }],

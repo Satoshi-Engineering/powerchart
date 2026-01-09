@@ -2,11 +2,6 @@
   "1108946": {
     "active": true,
     "notes": "Waiting for nuxt test-utils update as it depends on an old version. Minor priority as it's only used for testing.",
-    "expiry": "2026-01-01"
-  },
-  "1109004": {
-    "active": true,
-    "notes": "Waiting for nuxt test-utils update as it depends on an old version. Minor priority as it's only used for testing.",
-    "expiry": "2026-01-01"
+    "expiry": "2026-03-01"
   }
 }

@@ -40,7 +40,7 @@ export const chargingStation: GridFees = {
         value: 3.73,
       }],
     }, {
-      validUntil: null,
+      validUntil: '2026-01-01',
       amount: [{
         validUntil: '06:00',
         value: 6.85,
@@ -51,6 +51,33 @@ export const chargingStation: GridFees = {
         validUntil: null,
         value: 6.85,
       }],
+    }, {
+      validUntil: '2026-04-01',
+      amount: [{
+        validUntil: '06:00',
+        value: 8.30,
+      }, {
+        validUntil: '22:00',
+        value: 9.25,
+      }, {
+        validUntil: null,
+        value: 8.30,
+      }],
+    }, {
+      validUntil: '2026-10-01',
+      amount: [{
+        validUntil: '10:00',
+        value: 8.82,
+      }, {
+        validUntil: '16:00',
+        value: 7.06,
+      }, {
+        validUntil: null,
+        value: 8.82,
+      }],
+    }, {
+      validUntil: null,
+      amount: 8.82,
     }],
   }, {
     id: 'gridLoss',
@@ -66,8 +93,11 @@ export const chargingStation: GridFees = {
       validUntil: '2025-01-01',
       amount: 0.793,
     }, {
-      validUntil: null,
+      validUntil: '2026-01-01',
       amount: 0.444,
+    }, {
+      validUntil: null,
+      amount: 0.336,
     }],
   }, {
     id: 'renewableFee',
@@ -77,8 +107,11 @@ export const chargingStation: GridFees = {
       validUntil: '2025-01-01',
       amount: 0.0,
     }, {
-      validUntil: null,
+      validUntil: '2026-01-01',
       amount: 0.796,
+    }, {
+      validUntil: null,
+      amount: 0.620,
     }],
   }, {
     id: 'electricityFee',
@@ -87,6 +120,12 @@ export const chargingStation: GridFees = {
     values: [{
       validUntil: '2025-01-01',
       amount: 0.1,
+    }, {
+      validUntil: '2026-01-01',
+      amount: 1.5,
+    }, {
+      validUntil: '2027-01-01',
+      amount: 0.82,
     }, {
       validUntil: null,
       amount: 1.5,

@@ -8,16 +8,37 @@ export const upperAustria: GridFees = {
     label: 'Netznutzungsentgelt',
     color: '#8AA1B1',
     values: [{
-      validUntil: null,
+      validUntil: '2026-01-01',
       amount: 6.23,
+    }, {
+      validUntil: '2026-04-01',
+      amount: 6.29,
+    }, {
+      validUntil: '2026-10-01',
+      amount: [{
+        validUntil: '10:00',
+        value: 6.29,
+      }, {
+        validUntil: '16:00',
+        value: 5.03,
+      }, {
+        validUntil: null,
+        value: 6.29,
+      }],
+    }, {
+      validUntil: null,
+      amount: 6.29,
     }],
   }, {
     id: 'gridLoss',
     label: 'Netzverlustentgelt',
     color: '#9AC2C9',
     values: [{
-      validUntil: null,
+      validUntil: '2026-01-01',
       amount: 0.554,
+    }, {
+      validUntil: null,
+      amount: 0.528,
     }],
   }, {
     id: 'renewableFee',
@@ -27,8 +48,11 @@ export const upperAustria: GridFees = {
       validUntil: '2025-01-01',
       amount: 0.0,
     }, {
-      validUntil: null,
+      validUntil: '2026-01-01',
       amount: 0.796,
+    }, {
+      validUntil: null,
+      amount: 0.620,
     }],
   }, {
     id: 'electricityFee',
@@ -37,6 +61,12 @@ export const upperAustria: GridFees = {
     values: [{
       validUntil: '2025-01-01',
       amount: 0.1,
+    }, {
+      validUntil: '2026-01-01',
+      amount: 1.5,
+    }, {
+      validUntil: '2027-01-01',
+      amount: 0.82,
     }, {
       validUntil: null,
       amount: 1.5,

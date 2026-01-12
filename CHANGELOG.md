@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v1.6.5
+
+[compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.6.4...v1.6.5)
+
 ## v1.6.4
 
 [compare changes](https://gitlab.satoshiengineering.com/satoshiengineering/powerchart/compare/v1.6.3...v1.6.4)
